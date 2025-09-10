@@ -1,0 +1,17 @@
+/* make the table 3x6
+    1. MSSV
+    2. Ho Ten
+    3. Vai tro
+
+    soild border 1px #ccc
+*/
+
+.intro {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+}
