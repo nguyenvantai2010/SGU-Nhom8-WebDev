@@ -8,7 +8,7 @@
 	<link rel="icon" type="image/x-icon" href="../assets/icons/jokerBentre.jpg">
 	<link rel="stylesheet" href="../css/loginPage.css">
 	<script src="../src/navbar.js" defer></script>
-
+	<script src="../src/login.js" defer></script>
 </head>
 <body>
 
@@ -47,52 +47,16 @@
 		</ul>
 	</nav>
 	
-	<!-- Main Content -->
-	<div class="main">
-		<div class="toggle-buttons">
-			<button onclick="showPanel('login')">Login</button>
-			<button onclick="showPanel('register')">Register</button>
-		</div>
-
-		<!-- Login Form -->
-		<div id="login" class="form-box active">
+	<div class="login-container">
 		<h2>Login</h2>
-		<form>
-			<label for="login-email">Email</label>
-			<input type="email" id="login-email" name="login-email" required />
-
-			<label for="login-password">Password</label>
-			<input type="password" id="login-password" name="login-password" required />
-
-			<button type="submit" class="submit">Login</button>
+		<form id="loginForm">
+		<input type="text" id="username" placeholder="Username" required />
+		<input type="password" id="password" placeholder="Password" required />
+		<button type="submit">Login</button>
 		</form>
-		</div>
+		<p id="loginMessage"></p>
+ 	</div>
 
-		<!-- Register Form -->
-		<div id="register" class="form-box">
-		<h2>Register</h2>
-		<form>
-			<label for="reg-name">Full Name</label>
-			<input type="text" id="reg-name" name="reg-name" required />
-
-			<label for="reg-email">Email</label>
-			<input type="email" id="reg-email" name="reg-email" required />
-
-			<label for="reg-password">Password</label>
-			<input type="password" id="reg-password" name="reg-password" required />
-
-			<button type="submit" class="submit">Register</button>
-		</form>
-		</div>
-	</div>
-
-	<script>
-		function showPanel(panelId) {
-		document.getElementById('login').classList.remove('active');
-		document.getElementById('register').classList.remove('active');
-		document.getElementById(panelId).classList.add('active');
-		}
-	</script>
 
 </body>
 </html>

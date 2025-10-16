@@ -3,12 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>	Market</title>
+	<title>About us</title>
 	<link rel="stylesheet" href="../css/globalStyle.css">
 	<link rel="icon" type="image/x-icon" href="../assets/icons/jokerBentre.jpg">
-	<link rel="stylesheet" href="../css/marketPage.css">
+	<link rel="stylesheet" href="../css/admin.css">
 	<script src="../src/navbar.js" defer></script>
-	<script src="../src/marketController.js" defer></script>
+    <script src="../src/admin.js" defer></script>
+    <script src="../src/storage.js" defer></script>
 </head>
 <body>
 
@@ -49,17 +50,22 @@
 	
 	<div id="overlay" onclick="closeSidebar()" aria-hidden="true"></div>
 
-	<div class="market-layout">
-		<ul class="category-bar" id="categoryBar"></ul>
 
-		<div class="market-content">
-			<div class="item-container-wraper">
-				<div class="item-container"></div>
-			</div>	
-			<div class="pagination"></div>
-		</div>
-	</div>
+    <div class="admin-layout">
+        <div class="admin-sidebar">
+            <ul class="admin-category-bar">
+            <li id="market-tab" class="active">Market Control</li>
+            <li id="accounts-tab">Accounts Control</li>
+            </ul>
+        </div>
 
+        <div class="admin-content">
+            <h2>Admin Panel</h2>
+            <div id="admin-section-content">
+            <p>Welcome to Market Control.</p>
+            </div>
+        </div>
+    </div>
 	
 </body>
 </html>

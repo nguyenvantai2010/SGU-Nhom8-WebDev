@@ -1,0 +1,55 @@
+.admin-panel-frame {
+  width: 90%;
+  max-width: 1000px;
+  height: 90vh;
+  margin: 40px auto;
+  background-color: #f0f0f0;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  padding: 0;
+  box-sizing: border-box;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.admin-layout {
+  display: flex;
+  height: 100%;
+}
+
+/* Sidebar */
+.admin-sidebar {
+  width: 200px;
+  background-color: #ddd;
+  border-right: 1px solid #bbb;
+}
+
+.admin-category-bar {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-category-bar li {
+  padding: 15px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #333;
+  transition: background 0.2s;
+}
+
+.admin-category-bar li:hover {
+  background-color: #ccc;
+}
+
+.admin-category-bar li.active {
+  background-color: #bbb;
+}
+
+/* Main content */
+.admin-content {
+  flex: 1;
+  padding: 30px;
+  box-sizing: border-box;
+  background-color: #ccc;
+}
