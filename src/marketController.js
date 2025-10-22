@@ -1,4 +1,4 @@
-const marketItems = {
+export const marketItems = {
 	"Default": [
 		{ name: "Vintage Lamp", price: "$45", image: "../assets/images/rickRoll.png" },
 		{ name: "Wooden Chair", price: "$85", image: "../assets/icons/jokerBentre.jpg" },
@@ -178,3 +178,7 @@ document.querySelectorAll(".category-bar li").forEach(li => {
 		renderMarketItems(1);
 	});
 });
+function saveProductsToStorage() {
+    const dataString = JSON.stringify(marketItems);
+    localStorage.setItem("adminProducts", dataString);
+}
