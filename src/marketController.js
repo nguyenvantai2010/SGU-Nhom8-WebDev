@@ -1,4 +1,4 @@
-const marketItems = {
+export const marketItems = {
 	"Default": [
 		{ name: "Vintage Lamp", price: "$45", image: "../assets/images/rickRoll.png" },
 		{ name: "Wooden Chair", price: "$85", image: "../assets/icons/jokerBentre.jpg" },
@@ -36,7 +36,7 @@ const marketItems = {
 		// ... other Category 1 items
 	],
 };
-
+export function initMarketPage(){
 let searchQuery = "";
 let itemsPerPage = 10;
 let selectedCategory = null;
@@ -178,3 +178,4 @@ document.querySelectorAll(".category-bar li").forEach(li => {
 		renderMarketItems(1);
 	});
 });
+}
