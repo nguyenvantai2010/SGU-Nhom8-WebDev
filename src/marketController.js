@@ -171,3 +171,7 @@ document.querySelectorAll(".category-bar li").forEach(li => {
 		renderMarketItems(1);
 	});
 });
+function saveProductsToStorage() {
+    const dataString = JSON.stringify(marketItems);
+    localStorage.setItem("adminProducts", dataString);
+}
