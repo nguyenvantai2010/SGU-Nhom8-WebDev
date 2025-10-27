@@ -218,3 +218,12 @@
 .submit-btn:hover {
     background-color: #45a049;
 }
+.adminlog{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #ffffff;
+  font-weight: bold;
+}

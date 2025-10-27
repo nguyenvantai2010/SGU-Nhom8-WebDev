@@ -1,4 +1,4 @@
-export const marketItems = {
+export const market = {
   "Danh mục": [
     { name: "Toán", price: "$45", image: "https://toanmath.com/wp-content/uploads/2024/02/sach-giao-khoa-toan-12-tap-1-ket-noi-tri-thuc-voi-cuoc-song.png" },
     { name: "Giải tích 1", price: "$85", image: "../assets/images/vantai.png" },
@@ -35,6 +35,8 @@ let itemsPerPage = 10;
 let selectedCategory = null;
 let currentPage = 1;
 
+const dataString = localStorage.getItem("adminProducts");
+const marketItems = dataString?JSON.parse(dataString):market;
 // Hiện thị item trong item-container
 function renderMarketItems(page = 1) {
   const container = document.querySelector(".item-container");
@@ -160,7 +162,7 @@ if (searchInput) { // <-- THÊM DÒNG NÀY
 
 // Thay đổi các hiện thị khi window bị thay đổi khích thước
 window.addEventListener("resize", () => {
-   renderMarketItems(1); // Re-render on resize
+   renderMarketItems(1); // Re-render on resize
 });
 
 // Load lại trang
