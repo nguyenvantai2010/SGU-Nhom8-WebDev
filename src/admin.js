@@ -3,8 +3,6 @@ import {
 } from './marketController.js';
 
 // Đổi tab market và accounts
-document.getElementById("market-tab").addEventListener("click", () => setActiveTab("market"));
-document.getElementById("accounts-tab").addEventListener("click", () => setActiveTab("accounts"));
 
 function setActiveTab(tab) {
     document.querySelectorAll(".admin-category-bar li").forEach(li => li.classList.remove("active"));
@@ -22,36 +20,33 @@ function setActiveTab(tab) {
     }
 }
 
-// load sản phẩm đã lưu nếu không có thì load mặc định
+//xử lý sự kiện khi chuyển tab
+document.getElementById("market-tab").addEventListener("click", () => setActiveTab("market"));
+document.getElementById("accounts-tab").addEventListener("click", () => setActiveTab("accounts"));
 
-// SỬA HÀM NÀY
+// load sản phẩm đã lưu nếu không có thì load mặc định
 function loadProductsFromStorage() {
     const dataString = localStorage.getItem("adminProducts");
     if (dataString) {
-        return JSON.parse(dataString);
+        return JSON.parse(dataString);// chuyển từ string sang object
     }
-   
-    // SỬA DÒNG NÀY: Tải toàn bộ đối tượng mặc định
     return JSON.parse(JSON.stringify(defaultMarketItems));
 }
 
+//hàm lưu sản phẩm
 function saveProductsToStorage() {
-    const dataString = JSON.stringify(marketItems);
+    const dataString = JSON.stringify(marketItems);// chuyển từ object sang string
     localStorage.setItem("adminProducts", dataString);
 }
 
 let marketItems = loadProductsFromStorage();
 
-// === THAY ĐỔI 1: BIẾN VÀ HÀM MỚI CHO DANH MỤC ===
-// BIẾN MỚI: Lấy danh mục đầu tiên làm mặc định
-let currentCategory = Object.keys(marketItems)[0]; 
 
+let currentCategory = Object.keys(marketItems)[0]; // chọn danh mục hiện tại là mặc định
 let currentProductEditIndex = null; 
-
-// BIẾN MỚI: Tìm thẻ select ta vừa thêm
 const categorySelect = document.getElementById("category-select");
 
-// HÀM MỚI: Tải các key (tên danh mục) vào dropdown
+//hàm render bảng dang mục
 function renderCategorySelector() {
     // Thêm kiểm tra null phòng trường hợp không tìm thấy thẻ
     if (!categorySelect) return; 
@@ -67,15 +62,13 @@ function renderCategorySelector() {
     });
 }
 
-// HÀM MỚI: Gán sự kiện khi thay đổi dropdown
-// Thêm kiểm tra null
+// xử lý sự kiện làm xuất hiện các danh mục
 if (categorySelect) {
     categorySelect.addEventListener("change", (e) => {
-        currentCategory = e.target.value; // Cập nhật danh mục đang chọn
-        renderProductTable(); // Vẽ lại bảng sản phẩm cho danh mục mới
+        currentCategory = e.target.value; 
+        renderProductTable(); 
     });
 }
-// ===============================================
 
 const modal = document.getElementById("addform");
 const addProductForm = document.getElementById("add-pr-frm");
@@ -92,9 +85,8 @@ function openModal() {
 }
 
 // Mở form sửa sản phẩm
-// === THAY ĐỔI 2: SỬA HÀM openEditModal ===
 function openEditModal(index) {
-   const item = marketItems[currentCategory][index]; // Sửa ở đây
+   const item = marketItems[currentCategory][index]; 
 
     document.getElementById("product-name").value = item.name;
     document.getElementById("product-price").value = item.price.replace('$', '');
@@ -115,12 +107,13 @@ function closeModal() {
 // Xử lý sự kiện đóng/mở form sản phẩm
 addProductBtn.addEventListener("click", openModal);
 closePrModalBtn.addEventListener("click", closeModal);
+
+//đóng form khi click vào nền ( thẻ div có class là addform)
 modal.addEventListener("click", (e) => {
     if (e.target === modal) closeModal();
 });
 
-// Xử lý nộp form sản phẩm
-// === THAY ĐỔI 3: SỬA HÀM SUBMIT FORM ===
+// Xử lý sự kiện khi nộp form sản phẩm
 addProductForm.addEventListener("submit", (e) => {
 
     const name = document.getElementById("product-name").value;
@@ -129,29 +122,24 @@ addProductForm.addEventListener("submit", (e) => {
     const image = document.getElementById("product-image").value;
     const newItem = { name, price, image };
 
-    // Sửa ở đây: Dùng currentCategory
-    if (currentProductEditIndex !== null) {
+    if (currentProductEditIndex !== null) {// nếu đang sửa thì thay đổi thông tin sản phẩm
         marketItems[currentCategory][currentProductEditIndex] = newItem; 
     } else {
-        marketItems[currentCategory].push(newItem);
+        marketItems[currentCategory].push(newItem);// nếu đang thêm thì thêm sản phẩm mới vào
     }
-    // ===================================
 
     renderProductTable();
     closeModal();
     currentProductEditIndex = null; 
     saveProductsToStorage();
 });
-// =========================================
 
 // Render bảng sản phẩm
-// === THAY ĐỔI 4: SỬA HÀM renderProductTable ===
 function renderProductTable() {
     const tbody = document.querySelector(".product-table tbody");
     tbody.innerHTML = "";
 
     let id = 1;
-    // Sửa ở đây: Lấy mảng item dựa trên danh mục đang chọn
     const itemsToRender = marketItems[currentCategory] || []; 
 
     itemsToRender.forEach((item, index) => { // Sửa ở đây
@@ -182,27 +170,28 @@ function renderProductTable() {
         tbody.appendChild(tr);
     });
 }
-// =================================================
 
-// === PHẦN QUẢN LÝ TÀI KHOẢN (ACCOUNTS) ===
-// (Giữ nguyên không thay đổi)
+
+//load tài khoản đã lưu
 function loadAccountsFromStorage() {
     const dataString = localStorage.getItem("adminAccounts");
     if (dataString) {
         return JSON.parse(dataString);
     }
     return {
-        "Danh mục": [
+        "Tai khoan": [
             { username: "admin", password: "secret123" }
         ]
     };
 }
 
+//lưu tài khoản
 function saveAccountsToStorage() {
     const dataString = JSON.stringify(accountsList);
     localStorage.setItem("adminAccounts", dataString);
 }
 
+//khởi tạo danh sách ban đầu
 let accountsList = loadAccountsFromStorage();
 let currentAccountEditIndex = null; 
 
@@ -211,6 +200,7 @@ const addAccountForm = document.getElementById("add-acc-frm");
 const addAccountBtn = document.querySelector(".add-accounts-bt");
 const closeAccModalBtn = document.getElementById("close-acc-frm-btn");
 
+// mở form tài khoản
 function openAccountModal() {
     addAccountForm.reset();
     currentAccountEditIndex = null;  
@@ -219,29 +209,35 @@ function openAccountModal() {
     accModal.querySelector("button[type='submit']").textContent = "Add Account";
 }
 
+// mở form edit tài khoảng
 function openAccountEditModal(index) {
-    const item = accountsList["Danh mục"][index];
+    const item = accountsList["Tai khoan"][index];
     document.getElementById("account-username").value = item.username;
     document.getElementById("account-password").value = item.password;
 
-    currentAccountEditIndex = index;  
+    currentAccountEditIndex = index; 
     accModal.classList.add("visible");
     accModal.querySelector("h2").textContent = "Edit Account";
     accModal.querySelector("button[type='submit']").textContent = "Save Changes";
 }
 
+//đóng form edit tài khoản
 function closeAccountModal() {
     accModal.classList.remove("visible");
 }
 
+//xử lý sự kiện cho đóng/mở form
 addAccountBtn.addEventListener("click", openAccountModal);
 closeAccModalBtn.addEventListener("click", closeAccountModal);
+
+//xử lý sự kiện khi click vào nền thì đóng form ( thẻ div có class addaccountform)
 accModal.addEventListener("click", (e) => {
     if (e.target === accModal) {
         closeAccountModal();
     }
 });
 
+// xử lý sự kiện submit tài khoản
 addAccountForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -251,16 +247,16 @@ addAccountForm.addEventListener("submit", (e) => {
     if (username && password) {
         const newAccount = { username, password };
 
-        if (currentAccountEditIndex !== null) {  
-            accountsList["Danh mục"][currentAccountEditIndex] = newAccount;  
-        } else {
-            accountsList["Danh mục"].push(newAccount);
+        if (currentAccountEditIndex !== null) { // nếu đang sửa thì sửa
+            accountsList["Tai khoan"][currentAccountEditIndex] = newAccount; 
+        } else { // nếu đang thêm thì thêm
+            accountsList["Tai khoan"].push(newAccount);
         }
 
         renderAccountsTable();
         closeAccountModal();
         saveAccountsToStorage();
-        currentAccountEditIndex = null;  
+        currentAccountEditIndex = null; 
     } else {
         alert("Please enter your username and password.");
     }
@@ -271,7 +267,7 @@ function renderAccountsTable() {
     tbody.innerHTML = "";
 
     let id = 1;
-    accountsList["Danh mục"].forEach((item, index) => {
+    accountsList["Tai khoan"].forEach((item, index) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
             <td>${id++}</td>
@@ -299,24 +295,10 @@ G                      <path d="M14 11V17" stroke="#000000" stroke-width="2" st
     });
 
 }
-// ===========================================
 
-// === KHỞI TẠO BAN ĐẦU VÀ GÁN SỰ KIỆN ===
 
-// === THAY ĐỔI 5: SỬA PHẦN KHỞI TẠO ===
-// Render các bảng lần đầu khi tải trang
-renderCategorySelector(); // <-- THÊM DÒNG MỚI NÀY
-renderProductTable();
-renderAccountsTable();
-// ====================================
-
-// Đặt tab mặc định
-setActiveTab("market");
-
-// Gán 1 lần duy nhất cho TẤT CẢ các nút Edit/Delete trong bảng sản phẩm
-// === THAY ĐỔI 6: SỬA SỰ KIỆN XÓA ===
+// xử lý sự kiện nút xóa và sửa cho form sản phẩm
 document.querySelector(".product-table tbody").addEventListener("click", (e) => {
-    // Tìm nút edit gần nhất mà người dùng click
     const editBtn = e.target.closest(".edit-btn");
     if (editBtn) {
         const index = editBtn.dataset.index;
@@ -336,10 +318,8 @@ document.querySelector(".product-table tbody").addEventListener("click", (e) => 
         }
     }
 });
-// ======================================
 
-// Gán 1 lần duy nhất cho TẤT CẢ các nút Edit/Delete trong bảng tài khoản
-// (Giữ nguyên không thay đổi)
+// xử lý sự kiện nút xóa và sửa cho form tài khoản
 document.querySelector(".accounts-table tbody").addEventListener("click", (e) => {
     const editBtn = e.target.closest(".edit-btn");
     if (editBtn) {
@@ -351,18 +331,24 @@ document.querySelector(".accounts-table tbody").addEventListener("click", (e) =>
     const deleteBtn = e.target.closest(".delete-btn");
     if (deleteBtn) {
         const index = deleteBtn.dataset.index;
-        const account = accountsList["Danh mục"][index];
+        const account = accountsList["Tai khoan"][index];
 
-        // Thêm bảo vệ, không cho xóa tài khoản admin
+        // không được xóa tài khoản admin
         if (account.username === "admin") {
             alert("Bạn không thể xóa tài khoản 'admin' mặc định!");
             return;
         }
 
         if (confirm(`Bạn có chắc muốn xóa tài khoản '${account.username}'?`)) {
-            accountsList["Danh mục"].splice(index, 1);
+            accountsList["Tai khoan"].splice(index, 1);
             renderAccountsTable();
             saveAccountsToStorage();
         }
     }
 });
+
+//render mac dinh khi load trang
+renderCategorySelector();
+renderProductTable();
+renderAccountsTable();
+setActiveTab("market");
