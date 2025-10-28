@@ -180,7 +180,7 @@ function loadAccountsFromStorage() {
     }
     return {
         "Tai khoan": [
-            { username: "admin", password: "secret123" }
+            { username: "username",password: "123456", email: "user@gmail.com", active: true }
         ]
     };
 }
@@ -209,22 +209,35 @@ function openAccountModal() {
     accModal.querySelector("button[type='submit']").textContent = "Add Account";
 }
 
-// mở form edit tài khoảng
-function openAccountEditModal(index) {
-    const item = accountsList["Tai khoan"][index];
-    document.getElementById("account-username").value = item.username;
-    document.getElementById("account-password").value = item.password;
+const resetbtn= document.querySelector(".reset-btn");
 
-    currentAccountEditIndex = index; 
+//mở form edit tài khoản
+function openEditAccountModal(index) {
+    const account = accountsList["Tai khoan"][index]; 
+    currentAccountEditIndex = index;
+
+    addAccountForm.reset();
+
+    document.getElementById("account-username").value = account.username;
+    document.getElementById("account-password").value = account.password;
+    document.getElementById("account-email").value = account.email;
+
     accModal.classList.add("visible");
-    accModal.querySelector("h2").textContent = "Edit Account";
-    accModal.querySelector("button[type='submit']").textContent = "Save Changes";
+
+    accModal.querySelector("h2").textContent = "Chỉnh sửa tài khoản";
+    accModal.querySelector("button[type='submit']").textContent = "Lưu thay đổi";
 }
 
-//đóng form edit tài khoản
+
+// reset mật khẩu
+//resetbtn.addEventListener("click",)
+
+
+//đóng form tài khoản
 function closeAccountModal() {
     accModal.classList.remove("visible");
 }
+
 
 //xử lý sự kiện cho đóng/mở form
 addAccountBtn.addEventListener("click", openAccountModal);
@@ -242,10 +255,11 @@ addAccountForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const username = document.getElementById("account-username").value;
-    const password = document.getElementById("account-password").value;
+    const password =document.getElementById("account-password").value;
+    const email = document.getElementById("account-email").value;
 
-    if (username && password) {
-        const newAccount = { username, password };
+    if (username && password ) {
+        const newAccount = { username, password ,email };
 
         if (currentAccountEditIndex !== null) { // nếu đang sửa thì sửa
             accountsList["Tai khoan"][currentAccountEditIndex] = newAccount; 
@@ -258,7 +272,7 @@ addAccountForm.addEventListener("submit", (e) => {
         saveAccountsToStorage();
         currentAccountEditIndex = null; 
     } else {
-        alert("Please enter your username and password.");
+        alert("Please enter your username and email.");
     }
 });
 
@@ -273,7 +287,16 @@ function renderAccountsTable() {
             <td>${id++}</td>
             <td>${item.username}</td>
             <td>${item.password}</td>
+            <td>${item.email}</td>
+            <td>${item.active ? "Mở" : "Khóa"}</td>
             <td>
+                <button class="reset-btn" title="Reset" data-index="${index}">
+                <svg fill="#000000" width="18px" height="18px" viewBox="0 0 512.00 512.00" data-name="Layer 1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M64,256H34A222,222,0,0,1,430,118.15V85h30V190H355V160h67.27A192.21,192.21,0,0,0,256,64C150.13,64,64,150.13,64,256Zm384,0c0,105.87-86.13,192-192,192A192.21,192.21,0,0,1,89.73,352H157V322H52V427H82V393.85A222,222,0,0,0,478,256Z"></path></g></svg>
+                </button>
+                <button class="status-btn ${item.active ? 'on' : 'off'}" 
+                        data-index="${index}">
+                    ${item.active ? '<svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C15.9474 10 16.5286 10 17 10.0288M7 10.0288C6.41168 10.0647 5.99429 10.1455 5.63803 10.327C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673C6.27976 21 7.11984 21 8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327C18.0057 10.1455 17.5883 10.0647 17 10.0288M7 10.0288V8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8V10.0288" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>' : '<svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.584 6C15.8124 4.2341 14.0503 3 12 3C9.23858 3 7 5.23858 7 8V10.0288M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C16.8802 10 17.7202 10 18.362 10.327C18.9265 10.6146 19.3854 11.0735 19.673 11.638C20 12.2798 20 13.1198 20 14.8V16.2C20 17.8802 20 18.7202 19.673 19.362C19.3854 19.9265 18.9265 20.3854 18.362 20.673C17.7202 21 16.8802 21 15.2 21H8.8C7.11984 21 6.27976 21 5.63803 20.673C5.07354 20.3854 4.6146 19.9265 4.32698 19.362C4 18.7202 4 17.8802 4 16.2V14.8C4 13.1198 4 12.2798 4.32698 11.638C4.6146 11.0735 5.07354 10.6146 5.63803 10.327C5.99429 10.1455 6.41168 10.0647 7 10.0288Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>'}
+                </button>
                 <button class="edit-btn" title="Edit" data-index="${index}"> 
                     <svg width="18px" height="18px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M13 0L16 3L9 10H6V7L13 0Z" fill="#000000"></path>
@@ -283,7 +306,7 @@ function renderAccountsTable() {
                 <button class="delete-btn" title="Delete" data-index="${index}">
                     <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 11V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-G                      <path d="M14 11V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M14 11V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                         <path d="M4 7H20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                         <path d="M6 7H18V18C18 19.66 16.66 21 15 21H9C7.34 21 6 19.66 6 18V7Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                         <path d="M9 5C9 3.9 9.9 3 11 3H13C14.1 3 15 3.9 15 5V7H9V5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -293,7 +316,25 @@ G                      <path d="M14 11V17" stroke="#000000" stroke-width="2" st
         `;
         tbody.appendChild(tr);
     });
+    // xử lý sự kiện cho nút reset
+    document.querySelectorAll(".reset-btn").forEach(btn=>{
+        btn.addEventListener("click",()=>{
+            const index=btn.dataset.index;
+            accountsList["Tai khoan"][index].password="123456";
+            alert(`Đã reset mật khẩu của tài khoản "${accountsList["Tai khoan"][index].username}" về 123456`)
+            renderAccountsTable();
+        })
+    })
 
+    // Thêm sự kiện cho nút trạng thái
+    document.querySelectorAll(".status-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const index = btn.dataset.index;
+            const user = accountsList["Tai khoan"][index];
+            user.active = !user.active; 
+            renderAccountsTable();
+        });
+    });
 }
 
 
@@ -324,7 +365,7 @@ document.querySelector(".accounts-table tbody").addEventListener("click", (e) =>
     const editBtn = e.target.closest(".edit-btn");
     if (editBtn) {
         const index = editBtn.dataset.index;
-        openAccountEditModal(index);
+        openEditAccountModal(index);
         return;
     }
 
