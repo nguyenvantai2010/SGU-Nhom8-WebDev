@@ -1,8 +1,8 @@
-import {
-    market as defaultMarketItems
-} from './marketController.js';
-
-// Đổi tab market và accounts
+import{
+    marketItems
+} from './marketController.js'
+document.getElementById("market-tab").addEventListener("click", () => setActiveTab("market"));
+document.getElementById("accounts-tab").addEventListener("click", () => setActiveTab("accounts"));
 
 function setActiveTab(tab) {
     document.querySelectorAll(".admin-category-bar li").forEach(li => li.classList.remove("active"));
@@ -11,7 +11,7 @@ function setActiveTab(tab) {
     const marketPanel = document.getElementById("market");
     const accountsPanel = document.getElementById("accounts");
 
-    if (tab === "market") {
+    if(tab === "market") {
         marketPanel.style.display = "block";
         accountsPanel.style.display = "none";
     } else {
@@ -20,129 +20,96 @@ function setActiveTab(tab) {
     }
 }
 
-//xử lý sự kiện khi chuyển tab
-document.getElementById("market-tab").addEventListener("click", () => setActiveTab("market"));
-document.getElementById("accounts-tab").addEventListener("click", () => setActiveTab("accounts"));
+setActiveTab("market");
 
-// load sản phẩm đã lưu nếu không có thì load mặc định
+
 function loadProductsFromStorage() {
     const dataString = localStorage.getItem("adminProducts");
-    if (dataString) {
-        return JSON.parse(dataString);// chuyển từ string sang object
+    if (dataString) { 
+        return JSON.parse(dataString); 
     }
-    return JSON.parse(JSON.stringify(defaultMarketItems));
+    return marketItems;
 }
 
-//hàm lưu sản phẩm
 function saveProductsToStorage() {
-    const dataString = JSON.stringify(marketItems);// chuyển từ object sang string
+    const dataString = JSON.stringify(marketItems);
     localStorage.setItem("adminProducts", dataString);
 }
 
 let marketItems = loadProductsFromStorage();
+let currentEditIndex = null; 
 
 
-let currentCategory = Object.keys(marketItems)[0]; // chọn danh mục hiện tại là mặc định
-let currentProductEditIndex = null; 
-const categorySelect = document.getElementById("category-select");
-
-//hàm render bảng dang mục
-function renderCategorySelector() {
-    // Thêm kiểm tra null phòng trường hợp không tìm thấy thẻ
-    if (!categorySelect) return; 
-    categorySelect.innerHTML = ""; // Xóa các option cũ
-    Object.keys(marketItems).forEach(categoryName => {
-        const option = document.createElement("option");
-        option.value = categoryName;
-        option.textContent = categoryName;
-        if (categoryName === currentCategory) {
-            option.selected = true; // Chọn đúng mục đang active
-        }
-        categorySelect.appendChild(option);
-    });
-}
-
-// xử lý sự kiện làm xuất hiện các danh mục
-if (categorySelect) {
-    categorySelect.addEventListener("change", (e) => {
-        currentCategory = e.target.value; 
-        renderProductTable(); 
-    });
-}
-
-const modal = document.getElementById("addform");
-const addProductForm = document.getElementById("add-pr-frm");
+const modal = document.getElementById("addform"); 
+const addProductForm = document.getElementById("add-pr-frm"); // lay id cua form them 
 const addProductBtn = document.querySelector(".add-product-bt");
-const closePrModalBtn = document.getElementById("close-pr-frm-btn");
+const closePrModalBtn = document.getElementById("close-pr-frm-btn"); // Đã sửa
 
-// Mở form thêm sản phẩm
+//hien thi form them san pham
 function openModal() {
     addProductForm.reset();
-    currentProductEditIndex = null; 
+    currentEditIndex = null;
     modal.classList.add("visible");
     modal.querySelector("h2").textContent = "Add New Product";
     modal.querySelector("button[type='submit']").textContent = "Add Product";
 }
 
-// Mở form sửa sản phẩm
+//hien thi form sua san pham
 function openEditModal(index) {
-   const item = marketItems[currentCategory][index]; 
-
+    const item = marketItems["Default"][index];
     document.getElementById("product-name").value = item.name;
     document.getElementById("product-price").value = item.price.replace('$', '');
     document.getElementById("product-image").value = item.image;
-
-    currentProductEditIndex = index; 
+    
+    currentEditIndex = index;
     modal.classList.add("visible");
     modal.querySelector("h2").textContent = "Edit Product";
     modal.querySelector("button[type='submit']").textContent = "Save Changes";
 }
-// =========================================
 
-// Đóng form
+//dong form
 function closeModal() {
     modal.classList.remove("visible");
 }
 
-// Xử lý sự kiện đóng/mở form sản phẩm
+//xu ly su kien dong mo form them san pham
 addProductBtn.addEventListener("click", openModal);
 closePrModalBtn.addEventListener("click", closeModal);
-
-//đóng form khi click vào nền ( thẻ div có class là addform)
 modal.addEventListener("click", (e) => {
     if (e.target === modal) closeModal();
 });
 
-// Xử lý sự kiện khi nộp form sản phẩm
+//form them san pham
 addProductForm.addEventListener("submit", (e) => {
-
+    e.preventDefault();
+    
     const name = document.getElementById("product-name").value;
     const priceValue = parseFloat(document.getElementById("product-price").value) || 0;
     const price = "$" + priceValue;
     const image = document.getElementById("product-image").value;
     const newItem = { name, price, image };
 
-    if (currentProductEditIndex !== null) {// nếu đang sửa thì thay đổi thông tin sản phẩm
-        marketItems[currentCategory][currentProductEditIndex] = newItem; 
+    if (currentEditIndex !== null) {
+        
+        marketItems["Default"][currentEditIndex] = newItem;
     } else {
-        marketItems[currentCategory].push(newItem);// nếu đang thêm thì thêm sản phẩm mới vào
+        
+        marketItems["Default"].push(newItem);
     }
 
-    renderProductTable();
+    renderProductTable(); 
     closeModal();
-    currentProductEditIndex = null; 
+    currentEditIndex = null; 
     saveProductsToStorage();
 });
 
-// Render bảng sản phẩm
+// tao bang san pham
 function renderProductTable() {
     const tbody = document.querySelector(".product-table tbody");
     tbody.innerHTML = "";
 
     let id = 1;
-    const itemsToRender = marketItems[currentCategory] || []; 
-
-    itemsToRender.forEach((item, index) => { // Sửa ở đây
+    marketItems["Default"].forEach((item, index) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
             <td>${id++}</td>
@@ -165,146 +132,136 @@ function renderProductTable() {
                         <path d="M9 5C9 3.9 9.9 3 11 3H13C14.1 3 15 3.9 15 5V7H9V5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                     </svg>
                 </button>
-                <button class="hidden-btn ${item.active ? 'on' : 'off'}" 
-                        data-index="${index}">
-                    ${item.active ? "Ẩn":"Hiện"}
-                </button>
+            </td>
         `;
         tbody.appendChild(tr);
     });
-    document.querySelectorAll(".hidden-btn").forEach(btn=>{
-        btn.addEventListener("click",()=>{
-            const index=btn.dataset.index;
-            const product=marketItems[currentCategory][index];
-            product.active=!product.active;
-            renderProductTable();
-        })
-    })
+
+
+    document.querySelectorAll(".product-table .delete-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const index = btn.dataset.index; 
+            marketItems["Default"].splice(index, 1);
+            renderProductTable(); 
+            saveProductsToStorage();
+        });
+    });
+
+    document.querySelectorAll(".product-table .edit-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const index = btn.dataset.index; 
+            openEditModal(index); 
+        });
+    });
 }
 
-
-//load tài khoản đã lưu
-//function loadAccountsFromStorage() {
-//    const dataString = localStorage.getItem("users");
-//    if (dataString) {
-//        return JSON.parse(dataString);
-//    }
-//    return  { username: "username",password: "123456", email: "user@gmail.com", active: true }
-//}
-
-//lưu tài khoản
-function saveAccountsToStorage() {
+//load tai khoan da luu 
+function loadAccountsFromStorage() {
+    const dataString = localStorage.getItem("adminAccounts");
+    if(dataString){ 
+        return JSON.parse(dataString);
+    }
+    return {
+        "Default":[
+            { username: "admin", password:"secret123" }
+        ]
+    };
+}
+//luu tai khoan
+function saveAccountsToStorage(){
     const dataString = JSON.stringify(accountsList);
-    localStorage.setItem("users", dataString);
+    localStorage.setItem("adminAccounts",dataString);
 }
 
-//khởi tạo danh sách ban đầu
-const accountsList = JSON.parse(localStorage.getItem("users")) || [];
-let currentAccountEditIndex = null; 
+let accountsList = loadAccountsFromStorage();
 
 const accModal = document.getElementById("addAccountForm");
 const addAccountForm = document.getElementById("add-acc-frm");
 const addAccountBtn = document.querySelector(".add-accounts-bt");
 const closeAccModalBtn = document.getElementById("close-acc-frm-btn");
 
-// mở form tài khoản
+//hien thi form them tai khoan
 function openAccountModal() {
     addAccountForm.reset();
-    currentAccountEditIndex = null;  
+    currentEditIndex = null; 
     accModal.classList.add("visible");
+    
     accModal.querySelector("h2").textContent = "Add New Account";
     accModal.querySelector("button[type='submit']").textContent = "Add Account";
 }
 
-const resetbtn= document.querySelector(".reset-btn");
+//hien thi form chinh sua tai khoan
+function openAccountEditModal(index) {
+    const item = accountsList["Default"][index];
 
-//mở form edit tài khoản
-function openEditAccountModal(index) {
-    const account =  accountsList[index]; 
-    currentAccountEditIndex = index;
+    document.getElementById("account-username").value = item.username;
+    document.getElementById("account-password").value = item.password;
 
-    addAccountForm.reset();
-
-    document.getElementById("account-username").value = account.username;
-    document.getElementById("account-password").value = account.password;
-    document.getElementById("account-email").value = account.email;
+    currentEditIndex = index;
 
     accModal.classList.add("visible");
-
-    accModal.querySelector("h2").textContent = "Chỉnh sửa tài khoản";
-    accModal.querySelector("button[type='submit']").textContent = "Lưu thay đổi";
+    accModal.querySelector("h2").textContent = "Edit Account";
+    accModal.querySelector("button[type='submit']").textContent = "Save Changes";
 }
 
-
-// reset mật khẩu
-//resetbtn.addEventListener("click",)
-
-
-//đóng form tài khoản
+//dong form them tai khoan
 function closeAccountModal() {
     accModal.classList.remove("visible");
 }
 
 
-//xử lý sự kiện cho đóng/mở form
 addAccountBtn.addEventListener("click", openAccountModal);
 closeAccModalBtn.addEventListener("click", closeAccountModal);
 
-//xử lý sự kiện khi click vào nền thì đóng form ( thẻ div có class addaccountform)
+
 accModal.addEventListener("click", (e) => {
     if (e.target === accModal) {
         closeAccountModal();
     }
 });
 
-// xử lý sự kiện submit tài khoản
+
 addAccountForm.addEventListener("submit", (e) => {
     e.preventDefault();
-
+    
     const username = document.getElementById("account-username").value;
-    const password =document.getElementById("account-password").value;
-    const email = document.getElementById("account-email").value;
+    const password = document.getElementById("account-password").value;
+    
+    if (username && password) {
+        const newAccount = { username, password };
 
-    if (username && password ) {
-        const newAccount = { username, password ,email };
+      
+        if (currentEditIndex !== null) {
 
-        if (currentAccountEditIndex !== null) { // nếu đang sửa thì sửa
-            accountsList [currentAccountEditIndex] = newAccount; 
-        } else { // nếu đang thêm thì thêm
-            accountsList .push(newAccount);
+            accountsList["Default"][currentEditIndex] = newAccount;
+        } else {
+
+            accountsList["Default"].push(newAccount);
         }
-
+        
         renderAccountsTable();
         closeAccountModal();
         saveAccountsToStorage();
-        currentAccountEditIndex = null; 
+        currentEditIndex = null; 
+
     } else {
-        alert("Please enter your username and email.");
+        alert("Please enter your username and password.");
     }
 });
 
+//render bang tai khoan
 function renderAccountsTable() {
     const tbody = document.querySelector(".accounts-table tbody");
     tbody.innerHTML = "";
 
     let id = 1;
-    console.log(accountsList);
-    accountsList.forEach((user, index) => {
+    accountsList["Default"].forEach((item, index) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
             <td>${id++}</td>
-            <td>${user.username}</td>
-            <td>${user.password}</td>
-            <td>${user.email}</td>
-            <td>${user.active ? "Mở" : "Khóa"}</td>
+            <td>${item.username}</td>
+            <td>${item.password}</td>
             <td>
-                <button class="reset-btn" title="Reset" data-index="${index}">
-                <svg fill="#000000" width="18px" height="18px" viewBox="0 0 512.00 512.00" data-name="Layer 1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M64,256H34A222,222,0,0,1,430,118.15V85h30V190H355V160h67.27A192.21,192.21,0,0,0,256,64C150.13,64,64,150.13,64,256Zm384,0c0,105.87-86.13,192-192,192A192.21,192.21,0,0,1,89.73,352H157V322H52V427H82V393.85A222,222,0,0,0,478,256Z"></path></g></svg>
-                </button>
-                <button class="status-btn ${user.active ? 'on' : 'off'}" 
-                        data-index="${index}">
-                    ${user.active ? '<svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C15.9474 10 16.5286 10 17 10.0288M7 10.0288C6.41168 10.0647 5.99429 10.1455 5.63803 10.327C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673C6.27976 21 7.11984 21 8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327C18.0057 10.1455 17.5883 10.0647 17 10.0288M7 10.0288V8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8V10.0288" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>' : '<svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.584 6C15.8124 4.2341 14.0503 3 12 3C9.23858 3 7 5.23858 7 8V10.0288M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C16.8802 10 17.7202 10 18.362 10.327C18.9265 10.6146 19.3854 11.0735 19.673 11.638C20 12.2798 20 13.1198 20 14.8V16.2C20 17.8802 20 18.7202 19.673 19.362C19.3854 19.9265 18.9265 20.3854 18.362 20.673C17.7202 21 16.8802 21 15.2 21H8.8C7.11984 21 6.27976 21 5.63803 20.673C5.07354 20.3854 4.6146 19.9265 4.32698 19.362C4 18.7202 4 17.8802 4 16.2V14.8C4 13.1198 4 12.2798 4.32698 11.638C4.6146 11.0735 5.07354 10.6146 5.63803 10.327C5.99429 10.1455 6.41168 10.0647 7 10.0288Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>'}
-                </button>
                 <button class="edit-btn" title="Edit" data-index="${index}"> 
                     <svg width="18px" height="18px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M13 0L16 3L9 10H6V7L13 0Z" fill="#000000"></path>
@@ -324,81 +281,23 @@ function renderAccountsTable() {
         `;
         tbody.appendChild(tr);
     });
-    // xử lý sự kiện cho nút reset
-    document.querySelectorAll(".reset-btn").forEach(btn=>{
-        btn.addEventListener("click",()=>{
-            const index=btn.dataset.index;
-             accountsList[index].password="123456";
-            alert(`Đã reset mật khẩu của tài khoản "${ accountsList[index].username}" về 123456`)
-            renderAccountsTable();
-        })
-    })
 
-    // Thêm sự kiện cho nút trạng thái
-    document.querySelectorAll(".status-btn").forEach(btn => {
+    document.querySelectorAll(".accounts-table .delete-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
             const index = btn.dataset.index;
-            const user =  accountsList[index];
-            user.active = !user.active; 
+            accountsList["Default"].splice(index, 1);
+            renderAccountsTable(); 
             saveAccountsToStorage();
-            renderAccountsTable();
+        });
+    });
+
+ 
+    document.querySelectorAll(".accounts-table .edit-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const index = btn.dataset.index;
+            openAccountEditModal(index); 
         });
     });
 }
-
-
-// xử lý sự kiện nút xóa và sửa cho form sản phẩm
-document.querySelector(".product-table tbody").addEventListener("click", (e) => {
-    const editBtn = e.target.closest(".edit-btn");
-    if (editBtn) {
-        const index = editBtn.dataset.index;
-        openEditModal(index);
-        return;
-    }
-
-    // Tìm nút delete gần nhất mà người dùng click
-    const deleteBtn = e.target.closest(".delete-btn");
-    if (deleteBtn) {
-        if (confirm("Bạn có chắc muốn xóa sản phẩm này?")) {
-            const index = deleteBtn.dataset.index;
-            // Sửa ở đây: Dùng currentCategory
-            marketItems[currentCategory].splice(index, 1);
-            renderProductTable();
-            saveProductsToStorage();
-        }
-    }
-});
-
-// xử lý sự kiện nút xóa và sửa cho form tài khoản
-document.querySelector(".accounts-table tbody").addEventListener("click", (e) => {
-    const editBtn = e.target.closest(".edit-btn");
-    if (editBtn) {
-        const index = editBtn.dataset.index;
-        openEditAccountModal(index);
-        return;
-    }
-
-    const deleteBtn = e.target.closest(".delete-btn");
-    if (deleteBtn) {
-        const index = deleteBtn.dataset.index;
-        const account =  accountsList[index];
-
-        // không được xóa tài khoản admin
-        if (account.username === "admin") {
-            alert("Bạn không thể xóa tài khoản 'admin' mặc định!");
-            return;
-        }
-
-        if (confirm(`Bạn có chắc muốn xóa tài khoản '${account.username}'?`)) {
-            accountsList .splice(index, 1);
-            renderAccountsTable();
-            saveAccountsToStorage();
-        }
-    }
-});
-
-//render mac dinh khi load trang
-renderCategorySelector();
 renderProductTable();
 renderAccountsTable();
-setActiveTab("market");

@@ -1,28 +1,33 @@
-export const market = {
-  "Danh mục": [
-    { name: "Toán", price: "$45", image: "https://toanmath.com/wp-content/uploads/2024/02/sach-giao-khoa-toan-12-tap-1-ket-noi-tri-thuc-voi-cuoc-song.png", active: true },
-    { name: "Giải tích 1", price: "$85", image: "../assets/images/vantai.png", active: true },
-    { name: "Xác xuất thống kê", price: "$30", image: "../assets/images/nguyenvantaingu.png", active: true },
-    { name: "Lý thuyết đồ thị", price: "$45", image: "../assets/images/ltđt.png", active: true },
-    { name: "Triết học", price: "$85", image: "../assets/images/triet.png", active: true },
-    { name: "Pháp luật đại cương", price: "$30", image: "../assets/images/pldc.png", active: true },
-    { name: "Toán rời rạc", price: "$45", image: "../assets/images/toanroirac.png", active: true },
-    { name: "Cờ tướng", price: "$30", image: "../assets/images/vodichthu.png", active: true },
-    { name: "Kinh tế chính trị", price: "$45", image: "../assets/images/ktct.png", active: true },
-  ],
-  "Danh mục 1": [
-    { name: "Cơ sở dữ liệu", price: "$90", image: "../assets/images/rickRoll.png", active: true },
-    { name: "Cấu trúc dữ liệu và giải thuật", price: "$40", image: "../assets/icons/jokerBentre.jpg", active: true },
-    { name: "Kỹ thuật lập trình", price: "$15", image: "../assets/images/rickRoll.png", active: true },
-  ],
-  "Danh mục 2": [
-    { name: "Java", price: "$45", image: "../assets/icons/jokerBentre.jpg", active: true },
-    { name: "Lập trình hướng đối tượng", price: "$85", image: "../assets/images/rickRoll.png", active: true },
-    { name: "JavaScript", price: "$30", image: "../assets/images/rickRoll.png", active: true },
-    { name: "C++", price: "$45", image: "../assets/icons/jokerBentre.jpg", active: true },
-    { name: "Python", price: "$85", image: "../assets/images/rickRoll.png", active: true },
-    { name: "C#", price: "$30", image: "../assets/images/rickRoll.png", active: true },
-  ],
+const marketItems = {
+	"Danh mục": [
+		{ name: "Toán", price: "$45", image: "https://toanmath.com/wp-content/uploads/2024/02/sach-giao-khoa-toan-12-tap-1-ket-noi-tri-thuc-voi-cuoc-song.png" },
+		{ name: "Giải tích 1", price: "$85", image: "../assets/images/vantai.png" },
+		{ name: "Xác xuất thống kê", price: "$30", image: "../assets/images/nguyenvantaingu.png" },
+		{ name: "Lý thuyết đồ thị", price: "$45", image: "../assets/images/ltđt.png" },
+		{ name: "Triết học", price: "$85", image: "../assets/images/triet.png" },
+		{ name: "Pháp luật đại cương", price: "$30", image: "../assets/images/pldc.png" },
+		{ name: "Toán rời rạc", price: "$45", image: "../assets/images/toanroirac.png" },
+		{ name: "Cờ tướng", price: "$30", image: "../assets/images/vodichthu.png" },
+		{ name: "Kinh tế chính trị", price: "$45", image: "../assets/images/ktct.png" },
+		
+		// ... other Category 1 items
+	],
+	"Danh mục 1": [
+		{ name: "Cơ sở dữ liệu", price: "$90", image: "../assets/images/rickRoll.png" },
+		{ name: "Cấu trúc dữ liệu và giải thuật", price: "$40", image: "../assets/icons/jokerBentre.jpg" },
+		{ name: "kỹ thuật lập trình", price: "$15", image: "../assets/images/rickRoll.png" },
+		// ... other Category 2 items
+	],
+    "Danh mục 2": [
+		{ name: "java", price: "$45", image: "../assets/icons/jokerBentre.jpg" },
+		{ name: "lập trình hướng đối tượng", price: "$85", image: "../assets/images/rickRoll.png" },
+		{ name: "java script", price: "$30", image: "../assets/images/rickRoll.png" },
+		{ name: "c++", price: "$45", image: "../assets/icons/jokerBentre.jpg" },
+		{ name: "python", price: "$85", image: "../assets/images/rickRoll.png" },
+		{ name: "C#", price: "$30", image: "../assets/images/rickRoll.png" },
+
+		// ... other Category 1 items
+	],
 };
 let searchQuery = "";
 let itemsPerPage = 10;
@@ -102,33 +107,33 @@ function renderPagination(totalItems, currentPage, itemsPerPage) {
 
 // Hiện thị thanh danh mục(category)
 function renderCategoryBar() {
-  const categoryBar = document.getElementById("categoryBar");
-  if (!categoryBar) return;
+	const categoryBar = document.getElementById("categoryBar");
+	if (!categoryBar) return;
 
-  categoryBar.innerHTML = "";
+	categoryBar.innerHTML = "";
 
-  // Add "All" option => Hiện thị tất cả item
-  const allBtn = document.createElement("div");
-  allBtn.textContent = "All";
-  allBtn.classList.add("category-btn");
-  allBtn.addEventListener("click", () => {
-    selectedCategory = null;
-    renderMarketItems(1);
-  });
-  categoryBar.appendChild(allBtn);
+	// Add "All" option => Hiện thị tất cả item
+	const allBtn = document.createElement("div");
+	allBtn.textContent = "All";
+	allBtn.classList.add("category-btn");
+	allBtn.addEventListener("click", () => {
+		selectedCategory = null;
+		renderMarketItems(1);
+	});
+	categoryBar.appendChild(allBtn);
 
-  // Add Danh mục(categories) từ marketItems 
-  Object.keys(marketItems).forEach(category => {
-    const li = document.createElement("div");
-    li.textContent = category;
-    li.classList.add("category-btn");
-    li.addEventListener("click", () => {
-    selectedCategory = category;
-    renderMarketItems(1);
-    });
-    categoryBar.appendChild(li);
-  });
-}
+	// Add Danh mục(categories) từ marketItems 
+	Object.keys(marketItems).forEach(category => {
+		const li = document.createElement("div");
+		li.textContent = category;
+		li.classList.add("category-btn");
+		li.addEventListener("click", () => {
+		selectedCategory = category;
+		renderMarketItems(1);
+		});
+		categoryBar.appendChild(li);
+	});
+}		
 
 // Đối với admin thì sử dụng hàm này để thêm item vào marketItems
 function addItemToCategory(item, category) {
@@ -172,3 +177,7 @@ document.querySelectorAll(".category-bar li").forEach(li => {
     renderMarketItems(1);
   });
 });
+function saveProductsToStorage() {
+    const dataString = JSON.stringify(marketItems);
+    localStorage.setItem("adminProducts", dataString);
+}
