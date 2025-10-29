@@ -1,7 +1,7 @@
-// Navigation Bar Authentication
+
 let currentUser = null;
 
-// Sidebar code hiện tại của bạn
+
 const openButton = document.getElementById('open-sidebar-button')
 const navbar = document.getElementById('navbar')
 const media = window.matchMedia("(width < 700px)")

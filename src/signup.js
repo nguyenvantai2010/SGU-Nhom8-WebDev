@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const password = document.getElementById("password");
   const confirmPassword = document.getElementById("confirmPassword");
   const message = document.getElementById("signupMessage");
-  const active=true;
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -46,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     localStorage.setItem("users", JSON.stringify(users));
-    
+
     message.style.color = "green";
     message.textContent = "Sign up successful! Redirecting to login page...";
 
