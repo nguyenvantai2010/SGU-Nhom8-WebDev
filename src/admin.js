@@ -288,7 +288,6 @@ function renderAccountsTable() {
     tbody.innerHTML = "";
 
     let id = 1;
-    console.log(accountsList);
     accountsList.forEach((user, index) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
