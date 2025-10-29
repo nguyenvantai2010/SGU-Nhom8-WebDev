@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="../css/admin.css">
     <script src="../src/navbar.js" defer></script>
     <script type="module" src="../src/admin.js" defer></script>
-    <script src="../src/storage.js" defer></script>
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -43,7 +42,7 @@
                 Market
             </a>
         </li>
-        <li><a class="accent-link" href="../pages/login.html">Login</a></li>
+        <li><div class="adminlog">Admin</div></li>
         </ul>
     </nav>
     
@@ -63,10 +62,20 @@
             <p>Welcome to Market Control.</p></div>
             <div class="admin-market" id="market">
                 <div class="top-list">
-                    <h2>List of products</h2>
-                        </div>
-                        <button class="add-product-bt">Add product</button>
-                        <table class="product-table">
+                <h2>List of products</h2>
+                <br>
+            </div>
+            <label for="category-select" style="margin-right: 10px;">Chọn danh mục:</label>
+        <select id="category-select" style="padding: 5px;"></select>
+        <div class="category-actions">
+        <input type="text" id="new-category-name" placeholder="Nhập tên danh mục mới">
+        <button id="add-category-btn">Thêm danh mục</button>
+        <button id="delete-cat-btn">Xóa danh mục</button>
+        <button id="edit-cat-btn">Sửa danh mục</button>
+        
+        </div>
+        <button class="add-product-bt">Add product</button>
+        <table class="product-table">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -82,13 +91,13 @@
                     </div>
             <div class="admin-accounts" id="accounts">
                 <div class="top-list"><h2>List of accounts</h2></div>
-                <button class="add-accounts-bt">Add accounts</button>
                 <table class="accounts-table">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Username</th>
-                            <th>Password</th>
+                            <th>Email</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -116,18 +125,18 @@
         </form>
         </div>
     </div>
-    <div id="addAccountForm" class="frm">
+    <div id="AccountForm" class="frm">
         <div class="close-frm">
             <button id="close-acc-frm-btn" class="closef" aria-label="close form">&times;</button>
             <h2>Add new Account</h2>
-            <form id="add-acc-frm">
+            <form id="acc-frm">
                 <div class="form-group">
                     <label for="account-username">Username</label>
                     <input type="text" id="account-username" required>   
                 </div>
                 <div class="form-group">
-                    <label for="account-password">Password</label>
-                    <input type="text" id="account-password" required> 
+                    <label for="account-email">Email</label>
+                    <input type="text" id="account-email" > 
                 </div>
                 <button type="submit" class="submit-btn">Add account</button>
             </form>
