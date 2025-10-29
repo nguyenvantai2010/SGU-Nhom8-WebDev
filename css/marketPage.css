@@ -1,245 +1,240 @@
+/* ============================
+   🌟 Full CSS - Market Page
+============================ */
+
+/* Reset cơ bản */
+/*marketPage.css*/
 html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #25f11e; /* nền chính */
+    color: #333;
 }
 
+/* ============================
+   🌿 Layout tổng thể
+============================ */
 .market-layout {
-  display: flex;
-  flex-direction: row;
-  height: 100vh;
-  overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    overflow: hidden;
 }
 
+/* ============================
+   🟦 Sidebar
+============================ */
 .left-side-bar {
-	width: 300px;
-	height: 100vh;
-	background-color: #f0f0f0;
-	padding: 10px;
-	box-sizing: border-box;
-	overflow-y: auto;
-	flex-shrink: 0;
-	border: 1px solid red;
+    width: 280px;
+    height: 100vh;
+    background-color: #0dc6d3;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    flex-shrink: 0;
+    border-radius: 0 10px 10px 0;
+    color: #fff;
 }
 
 .search-bar {
-  padding: 20px;
-  background-color: #f0f0f0;
-  border-bottom: 1px solid #ccc;
-  text-align: center;
+    position: sticky;
+    top: 0;
+    background-color: #0dc6d3; /* trùng màu sidebar */
+    z-index: 10;
+    padding-bottom: 10px;
 }
+
 
 .search-bar input {
-  width: 100%;
-  max-width: 400px;
-  padding: 10px 14px;
-  font-size: 16px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+	
 }
 
-/* 📂 Category Bar */
 .category-bar {
-	width: 100%;
-	height: auto;
-	background-color: #f0f0f0;
-	padding: 20px;
-	box-sizing: border-box;
-	overflow-y: auto;
-	flex-shrink: 0;
-	border: 1px solid red;
+    width: 100%;
 }
 
 .category-bar ul {
-	list-style: none;
-	margin: 0;
-	display: flex;
-	flex-direction: column;
-	border: 1px solid red;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .category-bar div {
-  padding: 10px;
-  margin: 10px 0px 10px 0px;
-  background-color: #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+    padding: 12px;
+    margin: 8px 0;
+    background-color: #e21009;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
 }
 
-.category-bar li:hover {
-  background-color: #ccc;
+.category-bar div:hover {
+    background-color: #ee10c9;
 }
 
-/* 🛒 Main Content */
+/* ============================
+   🛒 Main Content
+============================ */
 .market-content {
-	flex-grow: 1;
-	display: flex;
-	flex-direction: column;
-	height: 100vh;
-	overflow-y: auto;
-	box-sizing: border-box;
-	border: 1px solid red;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
 }
+
 .item-container-wraper {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: rgb(255, 255, 255);
-	height: 90vh;
-	width: auto;
+    display: flex;
+    justify-content: flex-start;  /* canh trái */
+    align-items: flex-start;       /* canh trên */
+    width: 100%;
+    flex-grow: 1;
 }
 
-/* 🧱 Item Container */
+
 .item-container {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: left;
-	height: 94%;
-	width: 94.5%;
-	gap: 10px;
-	padding: 10px;
-	box-sizing: border-box;
-	overflow: auto;
-	background-color: #ffffff;
-	border: 1px solid red;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 15px;
+    width: 100%;
+    max-width: 1200px;
 }
 
-/* 🧱 Fixed-size Item */
+/* ============================
+   🧱 Market Items
+============================ */
 .market-item {
-	width: 216px;
-	height: 280px;
-	border: 1px solid #ddd;
-	border-radius: 10px;
-	background-color: #fff;
-	box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-	transition: transform 0.2s ease, box-shadow 0.2s ease;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	overflow: hidden;
+    width: 220px;
+    height: 280px;
+    border-radius: 12px;
+    background-color: #eb840f;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    cursor: pointer;
 }
 
 .market-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
 .item-image {
-  margin-top: 5%;
-  width: 90%;
-  height: 70%;
-  object-fit: cover;
-  border-radius: 6px;
-  border: 1px solid red;
+    margin-top: 10px;
+    width: 90%;
+    height: 70%;
+    object-fit: cover;
+    border-radius: 8px;
 }
 
 .item-info {
-  padding: 8px;
-  text-align: center;
+    padding: 8px;
+    text-align: center;
 }
 
 .item-name {
-  font-size: 16px;
-  margin: 5px 0;
-  color: #000;
-  font-weight: 600;
+    font-size: 16px;
+    margin: 6px 0;
+    font-weight: 600;
+    color: #222;
 }
 
 .item-price {
-  font-size: 14px;
-  color: #555;
+    font-size: 14px;
+    color: #555;
 }
 
-/* 📄 Pagination (scrolls with content) */
+/* ============================
+   📄 Pagination
+============================ */
 .pagination {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 8px;
-	height: 10vh;
-	padding: 20px;
-	flex-wrap: wrap;
-	border-top: 1px solid #ddd;
-	background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    flex-wrap: wrap;
 }
 
-/* Pagination buttons */
 .page-btn {
-  padding: 6px 12px;
-  border: none;
-  background-color: #eee;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
+padding: 6px 12px;
+    border: none;
+    background-color: #3399ff;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.page-btn:hover {
+    background-color: #66b3ff;
 }
 
 .page-btn.active {
-  background-color: #333;
-  color: white;
+    background-color: #004080;
 }
 
 .page-btn:disabled {
-  opacity: 0.5;
-  cursor: default;
+    opacity: 0.5;
+    cursor: default;
 }
 
 .dots {
-  font-size: 14px;
-  padding: 0 4px;
+    font-size: 14px;
+    padding: 0 4px;
+    color: white;
 }
 
-@media screen and (max-width: 700px) {
-	.market-layout {
-		flex-direction: column;
-		height: auto;
-		width: 100%;
-		overflow-x: hidden; /* ✅ Prevent horizontal scroll */
-	}
+/* ============================
+   🌐 Responsive
+============================ */
+@media screen and (max-width: 100%) {
+    .market-layout {
+        flex-direction: column;
+        height: auto;
+    }
 
-	.left-side-bar {
-		width: 100%;         /* ✅ Fill screen width */
-		height: auto;        /* ✅ Let it grow with content */
-		padding: 20px;
-		background-color: #f0f0f0;
-		box-sizing: border-box;
-		position: relative;  /* ✅ Remove sticky or fixed behavior */
-		overflow: visible;
-		flex-shrink: 1;      /* ✅ Allow it to shrink if needed */
-	}
+    .left-side-bar {
+        width: 100%;
+        height: auto;
+        border-radius: 0;
+        margin-bottom: 15px;
+    }
 
-  .market-content {
-    width: 100%;
-    flex-grow: 1;
-    overflow-y: visible;
-  }
-
-	.item-container {
-		justify-content: center;
-		/* height: 1200px; */
+    .market-content {
+        width: 100%;
+        padding: 15px;
 		
-		scrollbar-width: thin;
-		padding: 10px;
-	}
+    }
 
-	.item-container-wraper {
-		overflow: auto;
-	}
+    .item-container {
+        justify-content: center;
+    }
 
-  .market-item {
-    flex: 0 0 calc(54% - 30px); 
-  }
- 
- 	.pagination {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		gap: 8px;
-		height: auto;
-		flex-wrap: wrap;
-		border-top: 1px solid #ff0000;
-		background-color: #fff;
-	}
+    .market-item {
+        flex: 0 0 calc(48% - 20px);
+        margin-bottom: 15px;
+    }
+}
 
+@media screen and (max-width: 500px) {
+    .market-item {
+        flex: 0 0 100%;
+    }
 }
