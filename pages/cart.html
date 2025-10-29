@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="../css/cart.css">
+    <script src="../src/cart.js"></script>
+
+</head>
+<body>
+    <div class="cart-container">
+        <h1>Giỏ hàng</h1>
+        
+        <div class="cart-items">
+            <!-- Example cart item -->
+            <div class="cart-item">
+                <img src="../assets/images/cnxhkh.png" alt="Product" class="item-image">
+                <div class="item-details">
+                    <h3>Product Name</h3>
+                    <p>Description of the product</p>
+                    <div class="quantity-controls">
+                        <button onclick="decreaseQuantity(1)">-</button>
+                        <span>1</span>
+                        <button onclick="increaseQuantity(1)">+</button>
+                    </div>
+                </div>
+                <div class="item-price">$99.99</div>
+                <button onclick="removeItem(1)">Remove</button>
+            </div>
+
+            <!-- More cart items can be added here -->
+        </div>
+
+        <div class="cart-total">
+            Total: 100.000 VND
+        </div>
+
+        <button onclick="checkout()">Tiến hành thanh toán</button>
+    </div>
+</body>
+</html>

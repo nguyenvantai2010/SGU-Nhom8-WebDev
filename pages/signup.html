@@ -3,12 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Login</title>
+	<title>Signup </title>
 	<link rel="stylesheet" href="../css/globalStyle.css">
 	<link rel="icon" type="image/x-icon" href="../assets/icons/jokerBentre.jpg">
-	<link rel="stylesheet" href="../css/loginPage.css">
+    <link rel="stylesheet" href="../css/signup.css">
 	<script src="../src/navbar.js" defer></script>
-	<script src="../src/login.js" defer></script>
+    <script src="../src/signup.js" defer></script>
 </head>
 <body>
 
@@ -47,15 +47,17 @@
 		</ul>
 	</nav>
 	
-	<div class="login-container">
-		<h2>Login</h2>
-		<form id="loginForm">
+	<div class="signup-container">
+		<h2>Sign up new account</h2>
+		<form id="SignupForm">
 		<input type="text" id="username" placeholder="Username" required />
+        <input type="email" id="email" placeholder="Email" required />
 		<input type="password" id="password" placeholder="Password" required />
-		<button type="submit">Login</button>
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+		<button type="submit">Sign Up</button>
 		</form>
-		<p id="loginMessage"></p>
-		<p>Don't have an account? <a href="signup.html" id="signup">Register here</a></p>
+		<p id="signupMessage"></p>
+        <p> Already have an account? <a href="login.html" id="login">Login here</a></p>
  	</div>
 
 
