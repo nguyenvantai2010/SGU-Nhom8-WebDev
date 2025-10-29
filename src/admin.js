@@ -69,6 +69,73 @@ if (categorySelect) {
         renderProductTable(); 
     });
 }
+// Xử lý thêm danh mục mới
+document.getElementById("add-category-btn").addEventListener("click", () => {
+    const newCategory = document.getElementById("new-category-name").value.trim();
+    if (!newCategory) {
+        alert("Vui lòng nhập tên danh mục!");
+        return;
+    }
+
+    if (marketItems[newCategory]) {
+        alert("Danh mục này đã tồn tại!");
+        return;
+    }
+
+    marketItems[newCategory] = { hidden: false, items: [] }; // tạo danh mục mới rỗng // tạo danh mục mới rỗng
+    currentCategory = newCategory;
+    saveProductsToStorage();
+    renderCategorySelector();
+    renderProductTable();
+    document.getElementById("new-category-name").value = ""; // clear input
+});
+
+//Xóa danh mục
+document.getElementById("delete-cat-btn").addEventListener("click", () => {
+    const category = document.getElementById("category-select").value;
+    if (!category) {
+        alert("Không có danh mục nào được chọn!");
+        return;
+    }
+
+    if (confirm(`Bạn có chắc muốn xóa danh mục "${category}" không?`)) {
+        delete marketItems[category];
+        currentCategory = Object.keys(marketItems)[0] || null;
+        saveProductsToStorage();
+        renderCategorySelector();
+        renderProductTable();
+        alert(`Đã xóa danh mục "${category}"`);
+    }
+});
+
+//Sửa danh mục
+document.getElementById("edit-cat-btn").addEventListener("click", () => {
+    const oldCategory = document.getElementById("category-select").value;
+    if (!oldCategory) {
+        alert("Không có danh mục nào được chọn!");
+        return;
+    }
+
+    const newName = prompt("Nhập tên danh mục mới:", oldCategory);
+    if (!newName || newName.trim() === "") {
+        alert("Tên danh mục không hợp lệ!");
+        return;
+    }
+
+    if (marketItems[newName] && newName !== oldCategory) {
+        alert("Tên danh mục này đã tồn tại!");
+        return;
+    }
+
+    // Gán lại dữ liệu danh mục cũ sang danh mục mới
+    marketItems[newName] = marketItems[oldCategory];
+    delete marketItems[oldCategory];
+    currentCategory = newName;
+    saveProductsToStorage();
+    renderCategorySelector();
+    renderProductTable();
+    alert(`Đã đổi tên "${oldCategory}" thành "${newName}"`);
+});
 
 const modal = document.getElementById("addform");
 const addProductForm = document.getElementById("add-pr-frm");
@@ -86,7 +153,7 @@ function openModal() {
 
 // Mở form sửa sản phẩm
 function openEditModal(index) {
-   const item = marketItems[currentCategory][index]; 
+   const item = marketItems[currentCategory].items[index]; 
 
     document.getElementById("product-name").value = item.name;
     document.getElementById("product-price").value = item.price.replace('$', '');
@@ -123,9 +190,9 @@ addProductForm.addEventListener("submit", (e) => {
     const newItem = { name, price, image };
 
     if (currentProductEditIndex !== null) {// nếu đang sửa thì thay đổi thông tin sản phẩm
-        marketItems[currentCategory][currentProductEditIndex] = newItem; 
+        marketItems[currentCategory].items[currentProductEditIndex] = newItem; 
     } else {
-        marketItems[currentCategory].push(newItem);// nếu đang thêm thì thêm sản phẩm mới vào
+        marketItems[currentCategory].items.push(newItem);// nếu đang thêm thì thêm sản phẩm mới vào
     }
 
     renderProductTable();
@@ -140,7 +207,7 @@ function renderProductTable() {
     tbody.innerHTML = "";
 
     let id = 1;
-    const itemsToRender = marketItems[currentCategory] || []; 
+    const itemsToRender = marketItems[currentCategory]?.items || []; 
 
     itemsToRender.forEach((item, index) => { // Sửa ở đây
         const tr = document.createElement("tr");
@@ -167,7 +234,7 @@ function renderProductTable() {
                 </button>
                 <button class="hidden-btn ${item.active ? 'on' : 'off'}" 
                         data-index="${index}">
-                    ${item.active ? "Ẩn":"Hiện"}
+                    ${item.active ? '<svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.3307 7.16929C13.5873 7.05887 12.806 7 12 7C7.02944 7 3 9.23858 3 12C3 13.4401 4.09589 14.738 5.84963 15.6504L8.21192 13.2881C8.07452 12.8839 8 12.4506 8 12C8 9.79086 9.79086 8 12 8C12.4506 8 12.8839 8.07452 13.2881 8.21192L14.3307 7.16929Z" fill="#000000"></path> <path d="M11.2308 15.9261C11.4797 15.9746 11.7369 16 12 16C14.2091 16 16 14.2091 16 12C16 11.7369 15.9746 11.4797 15.9261 11.2308L18.5726 8.58427C20.0782 9.47809 21 10.6792 21 12C21 14.7614 16.9706 17 12 17C11.4016 17 10.8169 16.9676 10.2512 16.9057L11.2308 15.9261Z" fill="#000000"></path> <path d="M17.7929 5.20711C18.1834 4.81658 18.8166 4.81658 19.2071 5.20711C19.5976 5.59763 19.5976 6.2308 19.2071 6.62132L6.47919 19.3492C6.08866 19.7398 5.4555 19.7398 5.06497 19.3492C4.67445 18.9587 4.67445 18.3256 5.06497 17.935L17.7929 5.20711Z" fill="#000000"></path> </g></svg>':'<svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3.27489 15.2957C2.42496 14.1915 2 13.6394 2 12C2 10.3606 2.42496 9.80853 3.27489 8.70433C4.97196 6.49956 7.81811 4 12 4C16.1819 4 19.028 6.49956 20.7251 8.70433C21.575 9.80853 22 10.3606 22 12C22 13.6394 21.575 14.1915 20.7251 15.2957C19.028 17.5004 16.1819 20 12 20C7.81811 20 4.97196 17.5004 3.27489 15.2957Z" stroke="#1C274C" stroke-width="1.5"></path> <path d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z" stroke="#1C274C" stroke-width="1.5"></path> </g></svg>'}
                 </button>
         `;
         tbody.appendChild(tr);
@@ -175,8 +242,9 @@ function renderProductTable() {
     document.querySelectorAll(".hidden-btn").forEach(btn=>{
         btn.addEventListener("click",()=>{
             const index=btn.dataset.index;
-            const product=marketItems[currentCategory][index];
+            const product=marketItems[currentCategory].items[index];
             product.active=!product.active;
+            saveProductsToStorage();
             renderProductTable();
         })
     })
@@ -202,31 +270,19 @@ function saveAccountsToStorage() {
 const accountsList = JSON.parse(localStorage.getItem("users")) || [];
 let currentAccountEditIndex = null; 
 
-const accModal = document.getElementById("addAccountForm");
-const addAccountForm = document.getElementById("add-acc-frm");
-const addAccountBtn = document.querySelector(".add-accounts-bt");
+const accModal = document.getElementById("AccountForm");
+const AccountForm = document.getElementById("acc-frm");
 const closeAccModalBtn = document.getElementById("close-acc-frm-btn");
 
-// mở form tài khoản
-function openAccountModal() {
-    addAccountForm.reset();
-    currentAccountEditIndex = null;  
-    accModal.classList.add("visible");
-    accModal.querySelector("h2").textContent = "Add New Account";
-    accModal.querySelector("button[type='submit']").textContent = "Add Account";
-}
-
-const resetbtn= document.querySelector(".reset-btn");
 
 //mở form edit tài khoản
 function openEditAccountModal(index) {
     const account =  accountsList[index]; 
     currentAccountEditIndex = index;
 
-    addAccountForm.reset();
+    AccountForm.reset();
 
     document.getElementById("account-username").value = account.username;
-    document.getElementById("account-password").value = account.password;
     document.getElementById("account-email").value = account.email;
 
     accModal.classList.add("visible");
@@ -236,10 +292,6 @@ function openEditAccountModal(index) {
 }
 
 
-// reset mật khẩu
-//resetbtn.addEventListener("click",)
-
-
 //đóng form tài khoản
 function closeAccountModal() {
     accModal.classList.remove("visible");
@@ -247,10 +299,9 @@ function closeAccountModal() {
 
 
 //xử lý sự kiện cho đóng/mở form
-addAccountBtn.addEventListener("click", openAccountModal);
 closeAccModalBtn.addEventListener("click", closeAccountModal);
 
-//xử lý sự kiện khi click vào nền thì đóng form ( thẻ div có class addaccountform)
+//xử lý sự kiện khi click vào nền thì đóng form ( thẻ div có classAccountForm)
 accModal.addEventListener("click", (e) => {
     if (e.target === accModal) {
         closeAccountModal();
@@ -258,7 +309,7 @@ accModal.addEventListener("click", (e) => {
 });
 
 // xử lý sự kiện submit tài khoản
-addAccountForm.addEventListener("submit", (e) => {
+AccountForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const username = document.getElementById("account-username").value;
@@ -288,13 +339,11 @@ function renderAccountsTable() {
     tbody.innerHTML = "";
 
     let id = 1;
-    console.log(accountsList);
     accountsList.forEach((user, index) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
             <td>${id++}</td>
             <td>${user.username}</td>
-            <td>${user.password}</td>
             <td>${user.email}</td>
             <td>${user.active ? "Mở" : "Khóa"}</td>
             <td>
@@ -362,7 +411,7 @@ document.querySelector(".product-table tbody").addEventListener("click", (e) => 
         if (confirm("Bạn có chắc muốn xóa sản phẩm này?")) {
             const index = deleteBtn.dataset.index;
             // Sửa ở đây: Dùng currentCategory
-            marketItems[currentCategory].splice(index, 1);
+            marketItems[currentCategory].items.splice(index, 1);
             renderProductTable();
             saveProductsToStorage();
         }
