@@ -41,8 +41,6 @@ let itemsPerPage = 10;
 let selectedCategory = null;
 let currentPage = 1;
 
-const dataString = localStorage.getItem("adminProducts");
-const marketItems = dataString?JSON.parse(dataString):market;
 // Hiện thị item trong item-container
 function renderMarketItems(page = 1) {
   const container = document.querySelector(".item-container");
@@ -82,33 +80,33 @@ function renderMarketItems(page = 1) {
 
 // Hiện thị thanh trang
 function renderPagination(totalItems, currentPage, itemsPerPage) {
-  const totalPages = Math.ceil(totalItems / itemsPerPage); // Tổng số trang trong category đã chọn
-  const paginationContainer = document.querySelector(".pagination");
-  paginationContainer.innerHTML = "";
+	const totalPages = Math.ceil(totalItems / itemsPerPage); // Tổng số trang trong category đã chọn
+	const paginationContainer = document.querySelector(".pagination");
+	paginationContainer.innerHTML = "";
 
-  // Tạo nút chuyển trang
-  const createButton = (label, page, disabled = false) => {
-    const btn = document.createElement("button");
-    btn.textContent = label;
-    btn.disabled = disabled;
-    btn.classList.add("page-btn");
-    if (page === currentPage) btn.classList.add("active");
-    btn.addEventListener("click", () => {
-    renderMarketItems(page);
-    });
-    return btn;
-  };
+	// Tạo nút chuyển trang
+	const createButton = (label, page, disabled = false) => {
+		const btn = document.createElement("button");
+		btn.textContent = label;
+		btn.disabled = disabled;
+		btn.classList.add("page-btn");
+		if (page === currentPage) btn.classList.add("active");
+		btn.addEventListener("click", () => {
+		renderMarketItems(page);
+		});
+		return btn;
+	};
 
-  // Tạo nút quay lại
-  paginationContainer.appendChild(createButton("Previous", currentPage - 1, currentPage === 1));
+	// Tạo nút quay lại
+	paginationContainer.appendChild(createButton("Previous", currentPage - 1, currentPage === 1));
 
-  // Insert các nút còn lại vào thanh trang
-  for (let i = 1; i <= totalPages; i++) {
-    paginationContainer.appendChild(createButton(i, i));
-  }
+	// Insert các nút còn lại vào thanh trang
+	for (let i = 1; i <= totalPages; i++) {
+		paginationContainer.appendChild(createButton(i, i));
+	}
 
-  // Tạo nút chuyển trang tiếp theo 
-  paginationContainer.appendChild(createButton("Next", currentPage + 1, currentPage === totalPages));
+	// Tạo nút chuyển trang tiếp theo 
+	paginationContainer.appendChild(createButton("Next", currentPage + 1, currentPage === totalPages));
 }
 
 // Hiện thị thanh danh mục(category)
@@ -143,43 +141,43 @@ function renderCategoryBar() {
 
 // Đối với admin thì sử dụng hàm này để thêm item vào marketItems
 function addItemToCategory(item, category) {
-  if (!marketItems[category]) {
-    marketItems[category] = [];
-  }
-  marketItems[category].push(item);
+	if (!marketItems[category]) {
+		marketItems[category] = [];
+	}
+	marketItems[category].push(item);
 }
 
 // Đối với admin thì sử dụng hàm này để xóa item khỏi marketItems
 function removeItemFromCategory(itemName, category) {
-  if (!marketItems[category]) return;
-  marketItems[category] = marketItems[category].filter(item => item.name !== itemName);
+	if (!marketItems[category]) return;
+	marketItems[category] = marketItems[category].filter(item => item.name !== itemName);
 }
 
 // Tìm kiếm item
-// Tìm kiếm item
-const searchInput = document.getElementById("searchInput");
-if (searchInput) { // <-- THÊM DÒNG NÀY
-  searchInput.addEventListener("input", e => {
-   searchQuery = e.target.value.trim();
-   renderMarketItems(1);
-  });
-} // <-- VÀ DÒNG NÀY
+document.getElementById("searchInput").addEventListener("input", e => {
+  searchQuery = e.target.value.trim();
+  renderMarketItems(1);
+});
 
 // Thay đổi các hiện thị khi window bị thay đổi khích thước
 window.addEventListener("resize", () => {
-   renderMarketItems(1); // Re-render on resize
+ 	 renderMarketItems(1); // Re-render on resize
 });
 
 // Load lại trang
 document.addEventListener("DOMContentLoaded", () => {
-  renderCategoryBar();
-  renderMarketItems(1);
+	renderCategoryBar();
+	renderMarketItems(1);
 });
 
 // Click danh mục
 document.querySelectorAll(".category-bar li").forEach(li => {
-  li.addEventListener("click", () => {
-    selectedCategory = li.textContent.trim();
-    renderMarketItems(1);
-  });
+	li.addEventListener("click", () => {
+		selectedCategory = li.textContent.trim();
+		renderMarketItems(1);
+	});
 });
+function saveProductsToStorage() {
+    const dataString = JSON.stringify(marketItems);
+    localStorage.setItem("adminProducts", dataString);
+}
