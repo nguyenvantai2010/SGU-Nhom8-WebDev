@@ -121,6 +121,103 @@
 		<p>Welcome SUGER to our website</p>
 	</main>
 
-</body>
 
+
+
+	<!-- Fullscreen viewer for outer frames -->
+	<div id="viewer-overlay" aria-hidden="true">
+		<div class="viewer-bg" id="viewerBg"></div>
+		<div class="viewer-content" role="dialog" aria-modal="true">
+			<button id="viewerClose" aria-label="Close viewer">×</button>
+			<img id="viewerImage" src="" alt="Full view">
+		</div>
+	</div>
+
+	<script>
+		// open overlay when clicking outer-frame images (left and right)
+		const viewerOverlay = document.getElementById('viewer-overlay');
+		const viewerImage = document.getElementById('viewerImage');
+		const viewerClose = document.getElementById('viewerClose');
+
+		function openViewer(src, alt) {
+			viewerImage.src = src;
+			viewerImage.alt = alt || 'Full view';
+			viewerOverlay.style.display = 'block';
+			viewerOverlay.setAttribute('aria-hidden', 'false');
+			document.body.style.overflow = 'hidden';
+		}
+
+		function closeViewer() {
+			viewerOverlay.style.display = 'none';
+			viewerOverlay.setAttribute('aria-hidden', 'true');
+			viewerImage.src = '';
+			document.body.style.overflow = '';
+		}
+
+		// Attach click handlers to left and right images
+		document.querySelectorAll('.left-frame .frame-inner img, .right-frame .frame-inner img').forEach(img => {
+			img.style.cursor = 'zoom-in';
+			img.addEventListener('click', () => openViewer(img.src, img.alt));
+		});
+
+		viewerClose.addEventListener('click', closeViewer);
+		// close when clicking background
+		document.getElementById('viewerBg').addEventListener('click', closeViewer);
+		// close on ESC
+		document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeViewer(); });
+
+		// --- Rotate outer images (left + right) every 3 seconds ---
+		(function setupOuterImageRotation(){
+			const leftImg = document.querySelector('.left-frame .frame-inner img');
+			const rightImg = document.querySelector('.right-frame .frame-inner img');
+			if (!leftImg || !rightImg) return; // nothing to do
+
+			const leftImages = [
+				'assets/images/pldc.png',
+				'assets/images/ltđt.png',
+				'assets/images/cnxhkh.png',
+				'assets/images/csdl.png'
+			];
+			const rightImages = [
+				'assets/images/nguyenvantaingu.png',
+				'assets/images/vodichthu.png',
+				'assets/images/toanroirac.png',
+				'assets/images/ktct.png'
+			];
+
+			let li = leftImages.indexOf(leftImg.src.split('/').slice(-1)[0]) >= 0 ? leftImages.indexOf(leftImg.src.split('/').slice(-1)[0]) : 0;
+			let ri = rightImages.indexOf(rightImg.src.split('/').slice(-1)[0]) >= 0 ? rightImages.indexOf(rightImg.src.split('/').slice(-1)[0]) : 0;
+
+			// Normalize indexes by filename (in case src is absolute)
+			function filename(src){ return src ? src.split('/').pop() : '' }
+			li = leftImages.findIndex(p => filename(leftImg.src) === filename(p)); if (li < 0) li = 0;
+			ri = rightImages.findIndex(p => filename(rightImg.src) === filename(p)); if (ri < 0) ri = 0;
+
+			function preload(src){ const i = new Image(); i.src = src; }
+
+			function rotateOnce(){
+				li = (li + 1) % leftImages.length;
+				ri = (ri + 1) % rightImages.length;
+				// preload then swap to reduce flicker
+				preload(leftImages[li]);
+				preload(rightImages[ri]);
+				leftImg.src = leftImages[li];
+				rightImg.src = rightImages[ri];
+			}
+
+			// start rotation every 3 seconds
+			const rotateInterval = 3000;
+			let rotTimer = setInterval(rotateOnce, rotateInterval);
+
+			// pause rotation while viewer is open to avoid sudden swaps
+			const observer = new MutationObserver(() => {
+				const open = viewerOverlay && viewerOverlay.getAttribute('aria-hidden') === 'false';
+				if (open) { clearInterval(rotTimer); rotTimer = null; }
+				else if (!rotTimer) { rotTimer = setInterval(rotateOnce, rotateInterval); }
+			});
+			observer.observe(viewerOverlay, { attributes: true, attributeFilter: ['aria-hidden'] });
+		})();
+	</script>
+	
+</body>
 </html>
