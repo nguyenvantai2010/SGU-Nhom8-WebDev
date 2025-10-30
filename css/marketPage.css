@@ -84,12 +84,11 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 24px;
-  padding: 30px 20px 80px;
+  gap: 10px;
+  padding: 60px 20px 100px;
   background: linear-gradient(180deg, #25f11e, #a8ff9e);
-  min-height: 100vh;
+  height: auto; /* ✅ tự co theo nội dung */
 }
-
 
 
 
