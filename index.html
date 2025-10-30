@@ -116,12 +116,23 @@
 
 	<div id="overlay" onclick="closeSidebar()" aria-hidden="true"></div>
 
-	<main>
-		<h1>Home</h1>
-		<p>Welcome SUGER to our website</p>
-	</main>
-
-
+	<main id="main-content">
+		<!-- Home layout: left (20%), center (60% with 2 stacked frames), right (20%) -->	
+		<div class="home-layout">
+			<aside class="left-frame">
+				<div class="frame-inner"><img src="assets/images/pldc.png" alt="Left frame" loading="lazy"></div>
+			</aside>
+			<section class="center-column">
+				<div class="center-top frame-inner">
+					<div class="welcome-text">Chào mừng đến với web bán giáo trình</div>
+				</div>
+				<div class="center-bottom frame-inner"><img src="https://www.nxbctqg.org.vn/img_data/images/botailieu.jpg" alt="Center bottom" loading="lazy"></div>
+			</section>
+			<aside class="right-frame">
+				<div class="frame-inner"><img src="assets/images/nguyenvantaingu.png" alt="Right frame" loading="lazy"></div>
+			</aside>
+		</div>
+	</main>	
 
 
 	<!-- Fullscreen viewer for outer frames -->
@@ -221,3 +232,4 @@
 	
 </body>
 </html>
+
