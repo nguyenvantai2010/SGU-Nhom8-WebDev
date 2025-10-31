@@ -112,6 +112,10 @@ nav a.accent-link{
 	#open-sidebar-button{
 		background-color: var(--primary-color);
 	}
+	body {
+		background-color: var(--primary-color);
+	}
+
 	nav{
 		position: fixed;
 		top: 0;
