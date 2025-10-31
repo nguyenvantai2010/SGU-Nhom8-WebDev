@@ -10,20 +10,28 @@ function setActiveTab(tab) {
 
     const marketPanel = document.getElementById("market");
     const accountsPanel = document.getElementById("accounts");
+    const importPanel =document.getElementById("imports");
 
     if (tab === "market") {
         marketPanel.style.display = "block";
         accountsPanel.style.display = "none";
-    } else {
+        importPanel.style.display="none";
+    } else if(tab === "accounts" ) {
         marketPanel.style.display = "none";
         accountsPanel.style.display = "block";
+        importPanel.style.display="none";
+    }
+    else {
+        marketPanel.style.display = "none";
+        accountsPanel.style.display = "none";
+        importPanel.style.display="block";
     }
 }
 
 //xử lý sự kiện khi chuyển tab
 document.getElementById("market-tab").addEventListener("click", () => setActiveTab("market"));
 document.getElementById("accounts-tab").addEventListener("click", () => setActiveTab("accounts"));
-
+document.getElementById("import-tab").addEventListener("click",()=>setActiveTab("import"));
 // load sản phẩm đã lưu nếu không có thì load mặc định
 function loadProductsFromStorage() {
     const dataString = localStorage.getItem("adminProducts");
@@ -480,6 +488,72 @@ document.querySelector(".accounts-table tbody").addEventListener("click", (e) =>
     }
 });
 
+
+function setupLogin() {
+    // Các phần tử cũ
+    const loginContainer = document.getElementById("login-container");
+    const adminWrapper = document.getElementById("admin-wrapper");
+    const loginForm = document.getElementById("loginForm");
+    const loginMessage = document.getElementById("loginMessage");
+    
+    // Các phần tử MỚI ở navbar
+    const navLoginLink = document.getElementById("login-btn");
+    const navLogoutBtn = document.getElementById("logout-btn");
+
+    // Hàm để cập nhật UI (giao diện)
+    function updateUI(isLoggedIn) {
+        if (isLoggedIn) {
+            // Đã đăng nhập
+            if (loginContainer) loginContainer.classList.add("hidden");
+            if (adminWrapper) adminWrapper.classList.remove("hidden");
+            if (navLoginLink) navLoginLink.style.display = "none";
+            if (navLogoutBtn) navLogoutBtn.style.display = "list-item";
+        } else {
+            // Chưa đăng nhập
+            if (loginContainer) loginContainer.classList.remove("hidden");
+            if (adminWrapper) adminWrapper.classList.add("hidden");
+            if (navLoginLink) navLoginLink.style.display = "list-item";
+            if (navLogoutBtn) navLogoutBtn.style.display = "none";
+        }
+    }
+
+    // 1. Kiểm tra trạng thái khi tải trang
+    const isAdmin = (localStorage.getItem("isAdmin") === "true");
+    updateUI(isAdmin);
+
+    // 2. Xử lý khi bấm nút Login
+    if (loginForm) {
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            if (username === "admin" && password === "secret123") {
+                localStorage.setItem("isAdmin", "true");
+                updateUI(true); // Cập nhật UI sang "đã đăng nhập"
+            } else {
+                if (loginMessage) {
+                    loginMessage.textContent = "Sai tên đăng nhập hoặc mật khẩu!";
+                }
+            }
+        });
+    }
+
+    // 3. Xử lý khi bấm nút Logout (nút mới ở navbar)
+    if (navLogoutBtn) {
+        navLogoutBtn.addEventListener("click", () => {
+            localStorage.removeItem("isAdmin");
+            // Cập nhật UI sang "chưa đăng nhập"
+            // location.reload() cũng được, nhưng cách này nhanh hơn
+            updateUI(false); 
+        });
+    }
+}
+
+// Gọi hàm này (như code cũ của bạn)
+setupLogin();
+// Gọi hàm này để chạy code
+setupLogin();
 //render mac dinh khi load trang
 renderCategorySelector();
 renderProductTable();
