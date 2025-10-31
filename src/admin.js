@@ -47,14 +47,21 @@ let currentProductEditIndex = null;
 const categorySelect = document.getElementById("category-select");
 
 //hàm render bảng dang mục
+//hàm render bảng dang mục
 function renderCategorySelector() {
     // Thêm kiểm tra null phòng trường hợp không tìm thấy thẻ
     if (!categorySelect) return; 
     categorySelect.innerHTML = ""; // Xóa các option cũ
+    
     Object.keys(marketItems).forEach(categoryName => {
+        const categoryData = marketItems[categoryName]; // Lấy cả object
         const option = document.createElement("option");
         option.value = categoryName;
-        option.textContent = categoryName;
+
+        // === NÂNG CẤP: Thêm (Đang ẩn) nếu danh mục bị ẩn ===
+        option.textContent = categoryName + (categoryData.hidden ? " (Đang ẩn)" : "");
+        // ===================================================
+
         if (categoryName === currentCategory) {
             option.selected = true; // Chọn đúng mục đang active
         }
@@ -137,6 +144,33 @@ document.getElementById("edit-cat-btn").addEventListener("click", () => {
     alert(`Đã đổi tên "${oldCategory}" thành "${newName}"`);
 });
 
+//ẩn/hiện  danh mục
+document.getElementById("toggle-category-btn").addEventListener("click", () => {
+    const categoryName = categorySelect.value;
+    if (!categoryName) {
+        alert("Không có danh mục nào được chọn!");
+        return;
+    }
+
+    // Lấy đối tượng danh mục
+    const categoryData = marketItems[categoryName];
+    if (!categoryData) {
+        alert("Lỗi: Không tìm thấy dữ liệu danh mục.");
+        return;
+    }
+
+    // Đảo ngược trạng thái 'hidden'
+    // (Nếu 'hidden' chưa tồn tại, !undefined sẽ là true)
+    categoryData.hidden = !categoryData.hidden;
+
+    // Lưu lại
+    saveProductsToStorage();
+    
+    // Cập nhật lại <select> để hiển thị (Đang ẩn)
+    renderCategorySelector();
+
+    alert(`Đã ${categoryData.hidden ? 'ẩn' : 'hiện'} danh mục "${categoryName}"`);
+});
 const modal = document.getElementById("addform");
 const addProductForm = document.getElementById("add-pr-frm");
 const addProductBtn = document.querySelector(".add-product-bt");

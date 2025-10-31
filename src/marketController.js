@@ -48,11 +48,24 @@ function renderMarketItems(page = 1) {
   const container = document.querySelector(".item-container");
   if (!container) return;
   container.innerHTML = "";
-
-  const allItems = Object.values(marketItems).map(cat => cat.items).flat(); // Lấy mảng items bên trong rồi gộp lại
-
-    const filteredItems = selectedCategory? (marketItems[selectedCategory]?.items || []): allItems; 
-  const nameFiltered = filteredItems.filter(item =>
+  let itemsToFilter="";
+  if (selectedCategory) {
+        // 1. Nếu đang chọn 1 danh mục
+        // Chỉ lấy item NẾU danh mục đó tồn tại VÀ không bị ẩn
+        if (marketItems[selectedCategory] && marketItems[selectedCategory].hidden !== true) {
+            itemsToFilter = marketItems[selectedCategory].items || [];
+        }
+        // (Nếu danh mục bị ẩn, itemsToFilter sẽ là mảng rỗng -> không hiển thị gì)
+    } else {
+        // 2. Nếu đang chọn "All"
+        // Lọc và gộp item từ TẤT CẢ các danh mục KHÔNG BỊ ẨN
+        itemsToFilter = Object.values(marketItems)
+                            .filter(cat => cat.hidden !== true) // <-- LỌC BỎ DANH MỤC ẨN
+                            .map(cat => cat.items)
+                            .flat();
+    }
+  
+  const nameFiltered = itemsToFilter.filter(item =>
     item.active && item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -130,6 +143,10 @@ function renderCategoryBar() {
 
   // Add Danh mục(categories) từ marketItems 
   Object.keys(marketItems).forEach(category => {
+    const categoryData = marketItems[category];
+    if (categoryData.hidden === true) {
+        return; // Không hiển thị nút danh mục này
+    }
     const li = document.createElement("div");
     li.textContent = category;
     li.classList.add("category-btn");

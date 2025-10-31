@@ -38,7 +38,7 @@ updateNavbar(media)
 
 // Kiểm tra trạng thái đăng nhập khi tải trang
 function checkLoginStatus() {
-    const savedUser = localStorage.getItem('user');
+    const savedUser = localStorage.getItem('currentUser');
     
     if (savedUser) {
         try {
@@ -99,7 +99,7 @@ function handleLogout(event) {
     event.preventDefault();
     
     // Xóa thông tin user khỏi localStorage
-    localStorage.removeItem('user');
+    localStorage.removeItem('currentUser');
     currentUser = null;
     
     // Đóng dropdown nếu đang mở
