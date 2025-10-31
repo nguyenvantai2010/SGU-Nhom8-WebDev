@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@…,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
-
+@import url('navbar.css');
+@import url('cart.css');
 /* blue theme */
 :root {
 	--primary-color: rgb(2, 27, 26);
@@ -112,10 +113,6 @@ nav a.accent-link{
 	#open-sidebar-button{
 		background-color: var(--primary-color);
 	}
-	body {
-		background-color: var(--primary-color);
-	}
-
 	nav{
 		position: fixed;
 		top: 0;
