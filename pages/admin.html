@@ -95,6 +95,7 @@
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Price</th>
+                                    <th>Quantity</th>
                                     <th>Image</th>
                                     <th>Action</th>
                                 </tr>
@@ -122,9 +123,8 @@
             <div class="admin-imports" id="imports">
             <div class="top-list">
                 <h2>Danh sách phiếu nhập</h2>
-                <input type="text" id="import-search-bar" placeholder="Tìm theo ID hoặc ngày (YYYY-MM-DD)..." style="margin-left: 20px; padding: 5px;">
             </div>
-            <button id="add-import-slip-btn" class="add-product-bt">Thêm phiếu nhập mới</button>
+            <button id="add-import-btn" class="add-product-bt">Thêm phiếu nhập mới</button>
             <table class="imports-table">
                 <thead>
                     <tr>
@@ -142,25 +142,46 @@
         </div>              
     </div> 
         <div id="addform" class="frm">
-        <div class="close-frm"><button id="close-pr-frm-btn" class="closef" aria-label="close form">&times;</button>
-        <h2>Add new Product</h2>
+    <div class="close-frm">
+        <button id="close-pr-frm-btn" class="closef" aria-label="close form">&times;</button>
+        
+        <h2 id="product-form-title">Add new Product</h2>
+        
         <form id="add-pr-frm">
             <div class="form-group">
-                <label>Product name</label>
-                <input type="text" id="product-name" required>  
+                <label for="product-name">Tên sản phẩm</label>
+                <input type="text" id="product-name" required> 
             </div>
+            
             <div class="form-group">
-                <label>Product price</label>
-                <input type="text" id="product-price" required> 
+                <label for="product-price">Giá sản phẩm</label>
+                <input type="number" id="product-price" placeholder="Ví dụ: 45 (Không cần nhập $)" required> 
             </div>
+
             <div class="form-group">
-                    <label for="product-image">Image URL:</label>
-                    <input type="text" id="product-image" value="../assets/images/rickRoll.png" required>
-                </div>
-                <button type="submit" class="submit-btn">Add product</button>
+                <label for="product-description">Mô tả sản phẩm</label>
+                <textarea id="product-description" placeholder="Nhập mô tả sản phẩm..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="product-quantity">Số lượng</label>
+                <input type="number" id="product-quantity" value="0" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="product-release-year">Năm phát hành</label>
+                <input type="number" id="product-release-year" placeholder="Ví dụ: 2024" min="1900">
+            </div>
+
+            <div class="form-group">
+                <label for="product-image">URL hình ảnh:</label>
+                <input type="text" id="product-image" value="../assets/images/rickRoll.png" required>
+            </div>
+
+            <button type="submit" class="submit-btn" id="product-submit-btn">Thêm sản phẩm</button>
         </form>
-        </div>
     </div>
+</div>
     <div id="AccountForm" class="frm">
         <div class="close-frm">
             <button id="close-acc-frm-btn" class="closef" aria-label="close form">&times;</button>
@@ -178,6 +199,80 @@
             </form>
         </div>
     </div>
-    
+    <div id="importForm" class="frm">
+    <div class="close-frm">
+        <button id="close-import-frm-btn" class="closef" aria-label="close form">&times;</button>
+        <h2 id="import-form-title">Thêm Phiếu Nhập Hàng</h2>
+        <form id="import-frm">
+            
+            <div class="form-group">
+                <label for="import-date">Ngày Nhập:</label>
+                <input type="date" id="import-date" required>
+            </div>
+
+            <hr>
+            <h3>Thêm sản phẩm vào phiếu:</h3>
+            <div class="form-group">
+                <label for="import-product-select">Chọn Sản Phẩm:</label>
+                <select id="import-product-select" style="width: 100%; padding: 5px;"></select>
+            </div>
+            
+            <div >
+                <div class="form-group" >
+                    <label for="import-product-quantity">Số Lượng:</label>
+                    <input type="number" id="import-product-quantity" min="1" value="1">
+                </div>
+                <div class="form-group" >
+                    <label for="import-product-price">Giá Nhập (cho 1 sp):</label>
+                    <input type="number" id="import-product-price" min="0" value="0">
+                </div>
+            </div>
+            <button type="button" id="add-product-to-slip-btn" class="submit-btn" >Thêm vào phiếu</button>
+            <hr>
+
+            <h3>Các sản phẩm trong phiếu:</h3>
+            <table class="slip-products-table">
+                <thead>
+                    <tr>
+                        <th>Sản Phẩm</th>
+                        <th>SL</th>
+                        <th>Giá Nhập</th>
+                        <th>Xóa</th>
+                    </tr>
+                </thead>
+                <tbody id="slip-products-tbody">
+                    </tbody>
+            </table>
+            
+            <button type="submit" class="submit-btn" id="save-import-slip-btn">Lưu Phiếu Nhập</button>
+        </form>
+    </div>
+    </div>
+    <div id="viewImportModal" class="modal-overlay">
+    <div class="modal-content">
+        <h2 id="view-imp-title">Chi tiết Phiếu Nhập #...</h2>
+        
+        <div id="view-slip-details" style="margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+            <p><strong>Ngày nhập:</strong> ...</p>
+            <p><strong>Trạng thái:</strong> ...</p>
+        </div>
+
+        <table class="slip-products-table"> <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Danh mục</th>
+                    <th>Số lượng</th>
+                    <th>Giá nhập</th>
+                </tr>
+            </thead>
+            <tbody id="view-slip-products-tbody">
+                </tbody>
+        </table>
+        
+        <div style="text-align: right; margin-top: 20px;">
+            <button type="button" id="close-view-slip-btn-footer" class="cancel-btn">Đóng</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>

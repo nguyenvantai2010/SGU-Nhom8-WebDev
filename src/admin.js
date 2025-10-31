@@ -194,20 +194,27 @@ function openModal() {
 }
 
 // Mở form sửa sản phẩm
+// Thay thế hàm openEditModal cũ
 function openEditModal(index) {
-   const item = marketItems[currentCategory].items[index]; 
+    const item = marketItems[currentCategory].items[index]; 
+    if (!item) return;
 
+    // Điền dữ liệu cũ
     document.getElementById("product-name").value = item.name;
-    document.getElementById("product-price").value = item.price.replace('$', '');
+    document.getElementById("product-price").value = item.price.replace('$', ''); 
     document.getElementById("product-image").value = item.image;
+
+    // Điền dữ liệu MỚI
+    document.getElementById("product-description").value = item.description || ""; 
+    document.getElementById("product-quantity").value = item.quantity || 0;
+    document.getElementById("product-release-year").value = item.releaseYear || 2000;
 
     currentProductEditIndex = index; 
     modal.classList.add("visible");
-    modal.querySelector("h2").textContent = "Edit Product";
-    modal.querySelector("button[type='submit']").textContent = "Save Changes";
+    
+    document.getElementById("product-form-title").textContent = "Edit Product";
+    document.getElementById("product-submit-btn").textContent = "Save Changes";
 }
-// =========================================
-
 // Đóng form
 function closeModal() {
     modal.classList.remove("visible");
@@ -224,22 +231,39 @@ modal.addEventListener("click", (e) => {
 
 // Xử lý sự kiện khi nộp form sản phẩm
 addProductForm.addEventListener("submit", (e) => {
-
+    e.preventDefault(); // Ngăn form reload
+    
     const name = document.getElementById("product-name").value;
     const priceValue = parseFloat(document.getElementById("product-price").value) || 0;
-    const price = "$" + priceValue;
+    const price = "$" + priceValue; 
     const image = document.getElementById("product-image").value;
-    const newItem = { name, price, image };
 
-    if (currentProductEditIndex !== null) {// nếu đang sửa thì thay đổi thông tin sản phẩm
-        marketItems[currentCategory].items[currentProductEditIndex] = newItem; 
+    // Lấy dữ liệu MỚI
+    const description = document.getElementById("product-description").value;
+    const quantity = parseInt(document.getElementById("product-quantity").value) || 0;
+    const releaseYear = parseInt(document.getElementById("product-release-year").value) || new Date().getFullYear();
+
+    const newItem = {
+        name,
+        price,
+        image,
+        active: true, 
+        description,
+        quantity,
+        releaseYear
+    };
+
+    if (currentProductEditIndex !== null) {
+        const oldItem = marketItems[currentCategory].items[currentProductEditIndex];
+        newItem.active = oldItem.active; 
+        
+        marketItems[currentCategory].items[currentProductEditIndex] = newItem;
     } else {
-        marketItems[currentCategory].items.push(newItem);// nếu đang thêm thì thêm sản phẩm mới vào
+        marketItems[currentCategory].items.push(newItem);
     }
 
     renderProductTable();
     closeModal();
-    currentProductEditIndex = null; 
     saveProductsToStorage();
 });
 
@@ -257,6 +281,7 @@ function renderProductTable() {
             <td>${id++}</td>
             <td>${item.name}</td>
             <td>${item.price}</td> 
+            <td>${item.quantity}</td> 
             <td><img src="${item.image}" alt="Product" class="item-image"></td>
             <td>
                 <button class="edit-btn" title="Edit" data-index="${index}"> 
@@ -309,7 +334,14 @@ function saveAccountsToStorage() {
 }
 
 //khởi tạo danh sách ban đầu
-const accountsList = JSON.parse(localStorage.getItem("users")) || [];
+const accountsList = JSON.parse(localStorage.getItem("users")) || [
+    { 
+        username: "user", 
+        password: "123456", 
+        email: "user@gmail.com", 
+        active: true 
+    }
+];
 let currentAccountEditIndex = null; 
 
 const accModal = document.getElementById("AccountForm");
@@ -488,6 +520,405 @@ document.querySelector(".accounts-table tbody").addEventListener("click", (e) =>
     }
 });
 
+// phiếu nhập hàng
+const importModal = document.getElementById("importForm");
+const importForm = document.getElementById("import-frm");
+const addImportSlipBtn = document.getElementById("add-import-btn");
+const closeImportModalBtn = document.getElementById("close-import-frm-btn");
+const importFormTitle = document.getElementById("import-form-title");
+const saveImportSlipBtn = document.getElementById("save-import-slip-btn");
+const importDateEl = document.getElementById("import-date");
+const importProductSelectEl = document.getElementById("import-product-select");
+const importQtyEl = document.getElementById("import-product-quantity");
+const importPriceEl = document.getElementById("import-product-price");
+const addProductToSlipBtn = document.getElementById("add-product-to-slip-btn");
+const slipProductsTbody = document.getElementById("slip-products-tbody");
+const importsTableBody = document.querySelector(".imports-table tbody");
+const viewModal = document.getElementById("viewImportModal");
+const viewModalTitle = document.getElementById("view-imp-title");
+const viewModalDetails = document.getElementById("view-slip-details");
+const viewModalTbody = document.getElementById("view-slip-products-tbody");
+const closeViewModalBtnFooter = document.getElementById("close-view-slip-btn-footer");
+
+// Data
+let importSlips = []; // Danh sách tất cả phiếu nhập
+let currentSlipProducts = []; // Sản phẩm trong phiếu đang mở (tạm thời)
+let currentEditSlipId = null; // ID của phiếu đang sửa
+
+function getNextImportId() {
+    if (importSlips.length === 0) {
+        return 1; // ID đầu tiên là 1
+    }
+    
+    // Lấy tất cả ID, chuyển thành số (ID cũ "PN_..." sẽ thành 0)
+    const allIds = importSlips.map(slip => parseInt(slip.id) || 0);
+    
+    // Tìm ID lớn nhất và + 1
+    const maxId = Math.max(...allIds);
+    return maxId + 1;
+}
+// Tải phiếu nhập từ localStorage
+function loadImportsFromStorage() {
+    const dataString = localStorage.getItem("adminImports");
+    return dataString ? JSON.parse(dataString) : [];
+}
+
+// Lưu phiếu nhập vào localStorage
+function saveImportsToStorage() {
+    localStorage.setItem("adminImports", JSON.stringify(importSlips));
+}
+
+// Render bảng (bên trong modal) chứa các SP tạm thời
+function renderCurrentSlipProducts() {
+    if (!slipProductsTbody) return;
+    slipProductsTbody.innerHTML = "";
+    if (currentSlipProducts.length === 0) {
+        slipProductsTbody.innerHTML = '<tr><td colspan="4">Chưa có sản phẩm</td></tr>';
+        return;
+    }
+
+    currentSlipProducts.forEach((product, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${product.name}</td>
+            <td>${product.quantity}</td>
+            <td>${product.importPrice}</td>
+            <td><button type="button" class="slip-delete-product-btn" data-index="${index}">X</button></td>
+        `;
+        slipProductsTbody.appendChild(tr);
+    });
+}
+
+// Xử lý sự kiện xóa SP khỏi phiếu tạm (trong modal)
+if (slipProductsTbody) {
+    slipProductsTbody.addEventListener('click', (e) => {
+        if (e.target.classList.contains('slip-delete-product-btn')) {
+            const index = parseInt(e.target.dataset.index);
+            currentSlipProducts.splice(index, 1); // Xóa khỏi mảng tạm
+            renderCurrentSlipProducts(); // Render lại bảng trong modal
+        }
+    });
+}
+
+// Render bảng chính (danh sách các phiếu nhập)
+function renderImportsTable(slipsToRender = importSlips) {
+    if (!importsTableBody) return;
+    importsTableBody.innerHTML = "";
+
+    slipsToRender.forEach(slip => {
+        const tr = document.createElement("tr");
+        const isCompleted = slip.status === 'completed';
+        const totalProducts = slip.products.reduce((sum, p) => sum + p.quantity, 0);
+
+        tr.innerHTML = `
+            <td>${slip.id}</td>
+            <td>${slip.importDate}</td>
+            <td style="color: ${isCompleted ? 'green' : 'orange'};">
+                ${isCompleted ? 'Đã hoàn thành' : 'Đang xử lý'}
+            </td>
+            <td>${totalProducts}</td>
+            <td>
+                <button class="view-btn import-view-btn" data-id="${slip.id}" title="Xem chi tiết">
+                    Xem chi tiết
+                </button>
+                <button class="edit-btn import-edit-btn" data-id="${slip.id}" 
+                    ${isCompleted ? 'disabled' : ''} title="Sửa phiếu">
+                    Sửa
+                </button>
+                <button class="complete-btn import-complete-btn" data-id="${slip.id}" 
+                    ${isCompleted ? 'disabled' : ''} title="Hoàn thành phiếu">
+                    Hoàn thành
+                </button>
+            </td>
+        `;
+        importsTableBody.appendChild(tr);
+    });
+}
+
+// (Hàm này dùng marketItems, đảm bảo marketItems đã được load)
+// Điền danh sách sản phẩm vào <select> trong modal
+function populateProductSelect() {
+    if (!importProductSelectEl) return;
+    importProductSelectEl.innerHTML = '<option value="">-- Chọn sản phẩm --</option>';
+    
+    // Lấy marketItems từ code đã có của bạn
+    Object.keys(marketItems).forEach(categoryName => {
+        const optgroup = document.createElement('optgroup');
+        optgroup.label = categoryName;
+        
+        const categoryData = marketItems[categoryName];
+        if (categoryData && categoryData.items) {
+            categoryData.items.forEach(item => {
+                const option = document.createElement('option');
+                // Lưu data (tên và category) vào value
+                option.value = JSON.stringify({ name: item.name, category: categoryName });
+                option.textContent = item.name;
+                optgroup.appendChild(option);
+            });
+        }
+        importProductSelectEl.appendChild(optgroup);
+    });
+}
+
+// Mở modal (Thêm Mới)
+function openAddImportModal() {
+    importForm.reset();
+    currentSlipProducts = []; // Reset mảng sản phẩm tạm
+    currentEditSlipId = null; // Đảm bảo đang là "thêm mới"
+    importFormTitle.textContent = "Thêm Phiếu Nhập Hàng";
+    saveImportSlipBtn.textContent = "Lưu Phiếu Mới";
+    importDateEl.disabled = false;
+    
+    populateProductSelect(); // Luôn load SP mới nhất
+    renderCurrentSlipProducts(); // Render bảng rỗng
+    
+    importModal.classList.add("visible");
+}
+
+// Mở modal (Sửa)
+function openEditImportModal(slipId) {
+    const slip = importSlips.find(s => s.id === slipId);
+    if (!slip) return;
+    
+    // Chỉ sửa nếu "đang xử lý"
+    if (slip.status === 'completed') {
+        alert("Phiếu đã hoàn thành, không thể sửa.");
+        return;
+    }
+
+    importForm.reset();
+    currentEditSlipId = slipId; // Đặt ID đang sửa
+    
+    // Deep copy mảng products để tránh sửa đổi bản gốc khi chưa save
+    currentSlipProducts = JSON.parse(JSON.stringify(slip.products)); 
+    
+    importFormTitle.textContent = "Sửa Phiếu Nhập Hàng";
+    saveImportSlipBtn.textContent = "Lưu Thay Đổi";
+    importDateEl.value = slip.importDate;
+    importDateEl.disabled = false; // Cho phép sửa ngày
+
+    populateProductSelect();
+    renderCurrentSlipProducts();
+    
+    importModal.classList.add("visible");
+}
+
+// Đóng modal
+function closeImportModal() {
+    if (importModal) importModal.classList.remove("visible");
+}
+// === (MỚI) Hàm Mở modal XEM chi tiết phiếu ===
+function openViewImportModal(slipId) {
+    const slip = importSlips.find(s => s.id === slipId);
+    if (!slip) {
+        alert("Không tìm thấy phiếu nhập!");
+        return;
+    }
+
+    // 1. Điền thông tin chung
+    viewModalTitle.textContent = `Chi tiết Phiếu Nhập #${slip.id}`;
+    viewModalDetails.innerHTML = `
+        <p><strong>Ngày nhập:</strong> ${slip.importDate}</p>
+        <p><strong>Trạng thái:</strong> ${slip.status === 'completed' ? 'Đã hoàn thành' : 'Đang xử lý'}</p>
+    `;
+
+    // 2. Điền bảng sản phẩm
+    viewModalTbody.innerHTML = "";
+    if (slip.products.length === 0) {
+        viewModalTbody.innerHTML = '<tr><td colspan="4">Phiếu này không có sản phẩm.</td></tr>';
+    } else {
+        slip.products.forEach(product => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${product.name}</td>
+                <td>${product.category}</td>
+                <td>${product.quantity}</td>
+                <td>${product.importPrice}</td>
+            `;
+            viewModalTbody.appendChild(tr);
+        });
+    }
+    
+    // 3. Hiển thị modal
+    if (viewModal) viewModal.classList.add("visible");
+}
+
+// === (MỚI) Thêm sự kiện đóng modal "Xem" ===
+function closeViewImportModal() {
+    if (viewModal) viewModal.classList.remove("visible");
+}
+if (closeViewModalBtnFooter) closeViewModalBtnFooter.addEventListener("click", closeViewImportModal);
+
+// Đóng khi click ra ngoài
+if (viewModal) {
+    viewModal.addEventListener("click", (e) => {
+        if (e.target === viewModal) {
+            closeViewImportModal();
+        }
+    });
+}
+
+// Gắn sự kiện cho các nút đóng/mở
+if (addImportSlipBtn) addImportSlipBtn.addEventListener("click", openAddImportModal);
+if (closeImportModalBtn) closeImportModalBtn.addEventListener("click", closeImportModal);
+
+// Nút "Thêm vào phiếu" (bên trong modal)
+if (addProductToSlipBtn) {
+    addProductToSlipBtn.addEventListener("click", () => {
+        const rawProductData = importProductSelectEl.value;
+        const quantity = parseInt(importQtyEl.value);
+        const importPrice = parseFloat(importPriceEl.value);
+
+        if (!rawProductData || quantity <= 0 || importPrice < 0) {
+            alert("Vui lòng chọn sản phẩm, nhập số lượng và giá nhập hợp lệ.");
+            return;
+        }
+
+        const productData = JSON.parse(rawProductData); // { name: "...", category: "..." }
+
+        // Kiểm tra xem SP đã tồn tại trong phiếu tạm chưa
+        const existingProduct = currentSlipProducts.find(p => p.name === productData.name && p.category === productData.category);
+
+        if (existingProduct) {
+            // Nếu tồn tại, chỉ cập nhật
+            existingProduct.quantity = quantity;
+            existingProduct.importPrice = importPrice;
+            alert(`Đã cập nhật "${productData.name}"`);
+        } else {
+            // Nếu chưa, thêm mới
+            currentSlipProducts.push({
+                category: productData.category,
+                name: productData.name,
+                quantity: quantity,
+                importPrice: importPrice
+            });
+        }
+        
+        renderCurrentSlipProducts(); // Render lại bảng trong modal
+
+        // Reset ô chọn để chuẩn bị thêm SP tiếp
+        importProductSelectEl.value = "";
+        importQtyEl.value = 1;
+        importPriceEl.value = 0;
+    });
+}
+
+// Xử lý Submit Form (Lưu Phiếu Mới hoặc Lưu Thay Đổi)
+if (importForm) {
+    importForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        
+        const importDate = importDateEl.value;
+        if (!importDate || currentSlipProducts.length === 0) {
+            alert("Ngày nhập và ít nhất 1 sản phẩm là bắt buộc.");
+            return;
+        }
+
+        if (currentEditSlipId) {
+            // Cập nhật phiếu cũ
+            const slipIndex = importSlips.findIndex(s => s.id === currentEditSlipId);
+            if (slipIndex > -1) {
+                importSlips[slipIndex].importDate = importDate;
+                importSlips[slipIndex].products = currentSlipProducts; // Gán mảng đã sửa
+            }
+        } else {
+            // Tạo phiếu mới
+            const newSlip = {
+                id: getNextImportId(), // ID đơn giản
+                importDate: importDate,
+                status: "processing", // Mặc định là "đang xử lý"
+                products: currentSlipProducts
+            };
+            importSlips.push(newSlip);
+        }
+
+        saveImportsToStorage();
+        renderImportsTable(); // Render lại bảng chính
+        closeImportModal();
+    });
+}
+
+// Xử lý sự kiện cho các nút trên bảng chính (Sửa, Hoàn thành)
+// Xử lý sự kiện cho các nút trên bảng chính (Sửa, Hoàn thành)
+if (importsTableBody) {
+    importsTableBody.addEventListener("click", (e) => {
+        const viewBtn = e.target.closest(".import-view-btn");
+        if (viewBtn) {
+            openViewImportModal(parseInt(viewBtn.dataset.id));
+            return; // Dừng lại ngay
+        }
+        const editBtn = e.target.closest(".import-edit-btn");
+        if (editBtn) {
+            openEditImportModal(parseInt(editBtn.dataset.id));
+            return;
+        }
+        
+        const completeBtn = e.target.closest(".import-complete-btn");
+        if (completeBtn) {
+            const slipId = parseInt(completeBtn.dataset.id);
+            if (confirm(`Bạn có chắc muốn hoàn thành phiếu nhập "${slipId}"? \n\nSỐ LƯỢNG SẼ ĐƯỢC CẬP NHẬT VÀO KHO.`)) {
+                
+                const slipIndex = importSlips.findIndex(s => s.id === slipId);
+                if (slipIndex > -1) {
+                    const slip = importSlips[slipIndex];
+
+                    // === 1. BẮT ĐẦU CẬP NHẬT KHO CHÍNH ===
+                    let allProductsFound = true;
+                    
+                    slip.products.forEach(slipProduct => {
+                        // 2. Tìm sản phẩm trong kho chính (marketItems)
+                        if (marketItems[slipProduct.category] && marketItems[slipProduct.category].items) {
+                            
+                            const productInStock = marketItems[slipProduct.category].items.find(
+                                item => item.name === slipProduct.name
+                            );
+                            
+                            // 3. Nếu tìm thấy, cộng dồn số lượng
+                            if (productInStock) {
+                                // Đảm bảo quantity là số
+                                productInStock.quantity = (parseInt(productInStock.quantity) || 0) + (parseInt(slipProduct.quantity) || 0);
+                            } else {
+                                // Cảnh báo nếu sản phẩm trong phiếu không còn tồn tại trong kho
+                                alert(`Lỗi: Sản phẩm "${slipProduct.name}" trong phiếu nhập không còn tồn tại trong danh mục "${slipProduct.category}".`);
+                                allProductsFound = false;
+                            }
+                        } else {
+                            alert(`Lỗi: Danh mục "${slipProduct.category}" không tồn tại.`);
+                            allProductsFound = false;
+                        }
+                    });
+
+                    // 4. Nếu có lỗi (SP bị xóa...) thì không hoàn thành phiếu
+                    if (!allProductsFound) {
+                        alert("Hoàn thành phiếu thất bại. Vui lòng kiểm tra lại sản phẩm trong phiếu.");
+                        return;
+                    }
+
+                    // 5. Lưu lại KHO CHÍNH (rất quan trọng!)
+                    saveProductsToStorage();
+                    // === KẾT THÚC CẬP NHẬT KHO CHÍNH ===
+
+
+                    // 6. Cập nhật trạng thái phiếu và lưu phiếu
+                    slip.status = "completed";
+                    saveImportsToStorage();
+                    
+                    // 7. Render lại cả hai bảng
+                    renderImportsTable(); // Cập nhật bảng phiếu nhập
+                    renderProductTable(); // Cập nhật bảng sản phẩm (để thấy SL mới)
+                    
+                    alert(`Đã hoàn thành phiếu ${slipId} và cập nhật số lượng vào kho.`);
+                }
+            }
+            return;
+        }
+    });
+}
+
+
+// Load dữ liệu khi trang tải
+importSlips = loadImportsFromStorage();
+
 
 function setupLogin() {
     // Các phần tử cũ
@@ -517,11 +948,10 @@ function setupLogin() {
         }
     }
 
-    // 1. Kiểm tra trạng thái khi tải trang
+   
     const isAdmin = (localStorage.getItem("isAdmin") === "true");
     updateUI(isAdmin);
 
-    // 2. Xử lý khi bấm nút Login
     if (loginForm) {
         loginForm.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -539,12 +969,9 @@ function setupLogin() {
         });
     }
 
-    // 3. Xử lý khi bấm nút Logout (nút mới ở navbar)
     if (navLogoutBtn) {
         navLogoutBtn.addEventListener("click", () => {
             localStorage.removeItem("isAdmin");
-            // Cập nhật UI sang "chưa đăng nhập"
-            // location.reload() cũng được, nhưng cách này nhanh hơn
             updateUI(false); 
         });
     }
@@ -558,4 +985,5 @@ setupLogin();
 renderCategorySelector();
 renderProductTable();
 renderAccountsTable();
+renderImportsTable();
 setActiveTab("market");
