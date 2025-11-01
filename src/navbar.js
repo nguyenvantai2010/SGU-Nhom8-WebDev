@@ -47,6 +47,7 @@ updateNavbar(media);
 // Kiểm tra trạng thái đăng nhập khi tải trang
 function checkLoginStatus() {
     const savedUser = localStorage.getItem('currentUser');
+    
     if (savedUser) {
         try {
             const user = JSON.parse(savedUser);
