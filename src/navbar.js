@@ -1,38 +1,46 @@
+// Đọc thông tin người dùng từ localStorage ngay khi load script
+let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 
-let currentUser = null;
+// Khi DOM đã sẵn sàng, hiển thị đúng trạng thái đăng nhập
+document.addEventListener('DOMContentLoaded', () => {
+    checkLoginStatus();
+    updateCartBadge(); // THÊM: Cập nhật badge ngay khi load
+});
 
 
-const openButton = document.getElementById('open-sidebar-button')
-const navbar = document.getElementById('navbar')
-const media = window.matchMedia("(width < 700px)")
+// ===== SIDEBAR CONTROL =====
 
-media.addEventListener('change', (e) => updateNavbar(e))
+const openButton = document.getElementById('open-sidebar-button');
+const navbar = document.getElementById('navbar');
+const media = window.matchMedia("(width < 700px)");
 
-function updateNavbar(e){
-  const isMobile = e.matches
-  console.log(isMobile)
-  if(isMobile){
-    navbar.setAttribute('inert', '')
-  }
-  else{
-    // desktop device
-    navbar.removeAttribute('inert')
-  }
+media.addEventListener('change', (e) => updateNavbar(e));
+
+function updateNavbar(e) {
+    const isMobile = e.matches;
+    console.log(isMobile);
+    if (isMobile) {
+        navbar.setAttribute('inert', '');
+    } else {
+        // desktop device
+        navbar.removeAttribute('inert');
+    }
 }
 
-function openSidebar(){
-  navbar.classList.add('show')
-  openButton.setAttribute('aria-expanded', 'true')
-  navbar.removeAttribute('inert')
+function openSidebar() {
+    navbar.classList.add('show');
+    openButton.setAttribute('aria-expanded', 'true');
+    navbar.removeAttribute('inert');
 }
 
-function closeSidebar(){
-  navbar.classList.remove('show')
-  openButton.setAttribute('aria-expanded', 'false')
-  navbar.setAttribute('inert', '')
+function closeSidebar() {
+    navbar.classList.remove('show');
+    openButton.setAttribute('aria-expanded', 'false');
+    navbar.setAttribute('inert', '');
 }
 
-updateNavbar(media)
+updateNavbar(media);
+
 
 // ===== AUTHENTICATION CODE =====
 
@@ -58,18 +66,22 @@ function checkLoginStatus() {
 function showLoginButton() {
     const loginLi = document.getElementById('loginLi');
     const accountLi = document.getElementById('accountLi');
+    const cartLi = document.getElementById('cartLi');
     
     if (loginLi) loginLi.style.display = 'block';
     if (accountLi) accountLi.style.display = 'none';
+    if (cartLi) cartLi.style.display = 'none';
 }
 
 // Hiển thị dropdown Account
 function showAccountDropdown(user) {
     const loginLi = document.getElementById('loginLi');
     const accountLi = document.getElementById('accountLi');
+    const cartLi = document.getElementById('cartLi');
     
     if (loginLi) loginLi.style.display = 'none';
     if (accountLi) accountLi.style.display = 'block';
+    if (cartLi) cartLi.style.display = 'block';
     
     // Cập nhật thông tin user
     const userName = document.getElementById('userName');
@@ -90,8 +102,16 @@ function handleLogin(event) {
         closeSidebar();
     }
     
-    // Chuyển đến trang login
-    window.location.href = 'pages/login.html';
+    // KIỂM TRA xem đang ở trang nào
+    const currentPath = window.location.pathname;
+    
+    if (currentPath.includes('/pages/')) {
+        // Đang ở trong thư mục pages (about, market, cart)
+        window.location.href = 'login.html';
+    } else {
+        // Đang ở index.html (thư mục gốc)
+        window.location.href = 'pages/login.html';
+    }
 }
 
 // Xử lý đăng xuất
@@ -114,8 +134,16 @@ function handleLogout(event) {
     // Hiển thị lại nút Login
     showLoginButton();
     
-    // Chuyển về trang chủ
-    window.location.href = 'index.html';
+    // KIỂM TRA xem đang ở trang nào
+    const currentPath = window.location.pathname;
+    
+    if (currentPath.includes('/pages/')) {
+        // Đang ở trong thư mục pages
+        window.location.href = '../index.html';
+    } else {
+        // Đang ở index.html
+        window.location.href = 'index.html';
+    }
 }
 
 // Toggle dropdown menu
@@ -132,7 +160,6 @@ window.addEventListener('click', function(e) {
     const accountLink = document.querySelector('.account-link');
     const dropdown = document.getElementById('dropdownMenu');
     
-    // Chỉ áp dụng trên desktop
     if (!media.matches && accountLink && dropdown) {
         if (!accountLink.contains(e.target) && !dropdown.contains(e.target)) {
             dropdown.classList.remove('show');
@@ -144,7 +171,6 @@ window.addEventListener('click', function(e) {
 const dropdownLinks = document.querySelectorAll('.dropdown-menu a');
 dropdownLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-        // Không đóng nếu click vào link toggle dropdown hoặc logout
         if (!link.classList.contains('account-link') && !link.classList.contains('logout-link')) {
             if (media.matches) {
                 closeSidebar();
@@ -153,5 +179,35 @@ dropdownLinks.forEach(link => {
     });
 });
 
-// Kiểm tra trạng thái khi tải trang
-document.addEventListener('DOMContentLoaded', checkLoginStatus);
+
+// ===== CART BADGE - CHẠY Ở TẤT CẢ TRANG =====
+
+// Cập nhật số lượng badge giỏ hàng
+function updateCartBadge() {
+    const cartBadge = document.getElementById('cartBadge');
+    if (cartBadge) {
+        // Lấy số lượng từ localStorage
+        const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+        const totalItems = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        
+        // Cập nhật text
+        cartBadge.textContent = totalItems;
+        
+        // Thêm/xóa class 'empty'
+        if (totalItems === 0) {
+            cartBadge.classList.add('empty');
+        } else {
+            cartBadge.classList.remove('empty');
+        }
+    }
+}
+
+// Lắng nghe thay đổi giỏ hàng từ các tab khác
+window.addEventListener('storage', function(e) {
+    if (e.key === 'cart') {
+        updateCartBadge();
+    }
+});
+
+// Export để cart.js và các file khác có thể gọi
+window.updateCartBadge = updateCartBadge;
