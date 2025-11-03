@@ -1,8 +1,3 @@
-// Hàm tạo ID duy nhất cho sản phẩm
-function generateId(name) {
-    return name.toLowerCase().replace(/[^a-z0-9]/g, '-');
-}
-
 export const market = {
   "Danh mục": {
     hidden: false,
