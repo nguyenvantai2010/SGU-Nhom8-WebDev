@@ -1,3 +1,4 @@
+
 document.getElementById("loginForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -9,14 +10,8 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
   message.style.color = "red";
 
 
-  if (username === "admin" && password === "secret123") {
-    window.location.href = "../pages/admin.html";
-    console.log("Welcome admin");
-    return;
-  }
-
   const users = JSON.parse(localStorage.getItem("users")) || [];
-  const foundUser = users.find(u => u.username === username && u.password === password);
+  const foundUser = users.find(u => u.username === username && u.password === password && u.active);
 
   if (foundUser) {
     message.style.color = "green";
