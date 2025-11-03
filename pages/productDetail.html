@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết sản phẩm</title>
+    <link rel="stylesheet" href="../css/globalStyle.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/productDetail.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <div class="nav-left">
+                <a href="../index.html" class="brand">Home</a>
+            </div>
+
+            <div class="nav-right">
+                <a href="about.html">About</a>
+                <a href="market.html">Market</a>
+                <a href="cart.html">Cart</a>
+                <a href="login.html" class="login-btn">Login</a>
+            </div>
+        </div>
+
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="product-container">
+        <div class="product-image">
+            <img id="product-image" src="" alt="Product Image" onerror="this.src='../assets/images/placeholder.png'">
+        </div>
+        <div class="product-info">
+            <h1 id="product-name"></h1>
+            <p class="price">Giá: <span id="product-price"></span></p>
+            <p class="stock">Còn lại: <span id="product-quantity"></span> sản phẩm</p>
+            <p class="year">Năm xuất bản: <span id="product-year"></span></p>
+            <p class="description" id="product-description"></p>
+
+            <div class="quantity-control">
+                <label for="quantity">Số lượng:</label>
+                <div class="quantity-wrapper">
+                    <button class="quantity-btn minus" onclick="decreaseQuantity()">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <input type="number" id="quantity" value="1" min="1" onchange="validateQuantity(this)">
+                    <button class="quantity-btn plus" onclick="increaseQuantity()">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button class="add-to-cart-btn" onclick="addToCart()">
+                <i class="fas fa-shopping-cart"></i>
+                Thêm vào giỏ hàng
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../src/navbar.js"></script>
+    <script type="module" src="../src/cart.js"></script>
+
+    <script>
+        // 🔹 Định dạng giá tiền VND
+        function formatPrice(price) {
+            if (typeof price === 'string') {
+                price = parseInt(price.replace(/[^\d]/g, ''), 10);
+            }
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(price);
+        }
+
+        // 🔹 Giảm số lượng
+        function decreaseQuantity() {
+            const quantityInput = document.getElementById('quantity');
+            const currentValue = parseInt(quantityInput.value);
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+            }
+            validateQuantity(quantityInput);
+        }
+
+        // 🔹 Tăng số lượng
+        function increaseQuantity() {
+            const quantityInput = document.getElementById('quantity');
+            const maxQuantity = parseInt(quantityInput.getAttribute('max'));
+            const currentValue = parseInt(quantityInput.value);
+            
+            if (currentValue < maxQuantity) {
+                quantityInput.value = currentValue + 1;
+            } else {
+                alert(`Chỉ còn ${maxQuantity} sản phẩm trong kho!`);
+            }
+            validateQuantity(quantityInput);
+        }
+
+        // 🔹 Kiểm tra giá trị nhập vào
+        function validateQuantity(input) {
+            let value = parseInt(input.value);
+            const max = parseInt(input.getAttribute('max'));
+            
+            if (isNaN(value) || value < 1) {
+                value = 1;
+                input.value = value;
+            } else if (max && value > max) {
+                value = max;
+                input.value = value;
+                alert(`Chỉ còn ${max} sản phẩm trong kho!`);
+            }
+        }
+
+        // 🔹 Khởi tạo trang chi tiết
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const productId = urlParams.get('id');
+                
+                if (!productId) throw new Error('Missing product ID');
+
+                const marketItems = JSON.parse(localStorage.getItem('marketItems')) || {};
+                let product = null;
+
+                for (const category of Object.values(marketItems)) {
+                    if (category.items) {
+                        product = category.items.find(item => item.id === productId);
+                        if (product) break;
+                    }
+                }
+
+                if (!product) throw new Error('Product not found');
+
+                document.getElementById('product-image').src = product.image;
+                document.getElementById('product-name').textContent = product.name;
+                document.getElementById('product-price').textContent = formatPrice(product.price);
+                document.getElementById('product-quantity').textContent = product.quantity;
+                document.getElementById('product-year').textContent = product.releaseYear || 'Không xác định';
+                document.getElementById('product-description').textContent = product.description || 'Không có mô tả';
+
+                const quantityInput = document.getElementById('quantity');
+                quantityInput.max = product.quantity;
+                quantityInput.value = 1;
+                quantityInput.addEventListener('input', function() {
+                    validateQuantity(this);
+                });
+
+            } catch (error) {
+                console.error('Error loading product:', error);
+                alert('Không tìm thấy thông tin sản phẩm!');
+                window.location.href = 'market.html';
+            }
+        });
+    </script>
+</body>
+</html>

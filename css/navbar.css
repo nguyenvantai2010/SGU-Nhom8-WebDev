@@ -1,0 +1,107 @@
+/* ===== Thanh điều hướng chính ===== */
+.navbar {
+  background-color: #004d40; /* Màu xanh đậm */
+  padding: 12px 40px;
+  display: flex;
+  justify-content: space-between; /* Căn trái - phải */
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Bên trong navbar (để dễ căn giữa nội dung) */
+.navbar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* ===== Bên trái: Trang chủ ===== */
+.nav-left a {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 20px;
+  transition: color 0.3s ease;
+}
+
+.nav-left a:hover {
+  color: #ffd700; /* Màu vàng khi hover */
+}
+
+/* ===== Bên phải: Liên kết ===== */
+.nav-right {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-right a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.nav-right a:hover {
+  color: #ffd700; /* Hiệu ứng hover màu vàng */
+}
+
+/* ===== Nút đăng nhập ===== */
+.login-btn {
+
+  padding: 16px 16px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+ 
+  color: #fff;
+}
+
+/* ===== Menu di động (icon 3 gạch) ===== */
+.burger {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.burger div {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+/* ===== Responsive cho màn hình nhỏ ===== */
+@media (max-width: 768px) {
+  .nav-right {
+    display: none;
+    flex-direction: column;
+    background-color: #004d40;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 180px;
+    padding: 15px 0;
+    border-radius: 0 0 0 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  }
+
+  .nav-right.show {
+    display: flex;
+  }
+
+  .nav-right a {
+    padding: 10px 20px;
+  }
+
+  .burger {
+    display: flex;
+  }
+}
