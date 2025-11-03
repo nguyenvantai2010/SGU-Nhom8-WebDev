@@ -1,65 +1,3 @@
-
-/* Reset cơ bản */
-/*marketPage.css*/
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #25f11e; /* nền chính */
-    color: #333;
-}
-
-/* ============================
-   🌿 Layout tổng thể
-.market-layout {
-    display: flex;
-    flex-direction: row;
-    height: 100vh;
-    overflow: hidden;
-}
-
-/* ============================
-   🟦 Sidebar
-.left-side-bar {
-    width: 280px;
-    height: 100vh;
-    background-color: #0dc6d3;
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    flex-shrink: 0;
-    border-radius: 0 10px 10px 0;
-    color: #fff;
-}
-
-.search-bar {
-    position: sticky;
-    top: 0;
-    background-color: #0dc6d3; /* trùng màu sidebar */
-    z-index: 10;
-    padding-bottom: 10px;
-}
-
-
-.search-bar input {
-    width: 100%;
-    padding: 10px 14px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    outline: none;
-	
-}
-
-.category-bar {
-    width: 100%;
-}
-
-.category-bar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
 /* 🌈 Giao diện tổng thể */
 body {
 	margin: 0;
@@ -155,54 +93,9 @@ body {
 	height: auto; /* ✅ tự co theo nội dung */
 }
 
-.category-bar div {
-    padding: 12px;
-    margin: 8px 0;
-    background-color: #e21009;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: center;
-}
-
-.category-bar div:hover {
-    background-color: #ee10c9;
-}
-
-/* ============================
-   🛒 Main Content
-============================ */
-.market-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow-y: auto;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.item-container-wraper {
-    display: flex;
-    justify-content: flex-start;  /* canh trái */
-    align-items: flex-start;       /* canh trên */
-    width: 100%;
-    flex-grow: 1;
-}
 
 
-.item-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 15px;
-    width: 100%;
-    max-width: 1200px;
-}
-
-/* ============================
-   🧱 Market Items
-============================ */
+/* 💎 Card sản phẩm */
 .market-item {
 	flex: 1 1 calc(25% - 28px);
 	max-width: 280px;
@@ -220,81 +113,8 @@ body {
 	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
+/* Ảnh sản phẩm */
 .item-image {
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-}
-
-.page-btn {
-padding: 6px 12px;
-    border: none;
-    background-color: #3399ff;
-    color: white;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background 0.2s ease;
-}
-
-.page-btn:hover {
-    background-color: #66b3ff;
-}
-
-.page-btn.active {
-    background-color: #004080;
-}
-
-.page-btn:disabled {
-    opacity: 0.5;
-    cursor: default;
-}
-
-.dots {
-    font-size: 14px;
-    padding: 0 4px;
-    color: white;
-}
-
-/* ============================
-   🌐 Responsive
-@media screen and (max-width: 100%) {
-    .market-layout {
-        flex-direction: column;
-        height: auto;
-    }
-
-    .left-side-bar {
-        width: 100%;
-        height: auto;
-        border-radius: 0;
-        margin-bottom: 15px;
-    }
-
-    .market-content {
-        width: 100%;
-        padding: 15px;
-		
-    }
-
-    .item-container {
-        justify-content: center;
-    }
-
-    .market-item {
-        flex: 0 0 calc(48% - 20px);
-        margin-bottom: 15px;
-    }
-}
-
-@media screen and (max-width: 500px) {
-    .market-item {
-        flex: 0 0 100%;
-    }
 	width: 100%;
 	height: 220px;
 	object-fit: cover;
