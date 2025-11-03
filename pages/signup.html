@@ -3,11 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Login</title>
+	<title>Sign Up</title>
 	<link rel="stylesheet" href="../css/globalStyle.css">
 	<link rel="icon" type="image/x-icon" href="../assets/icons/jokerBentre.jpg">
-	<link rel="stylesheet" href="../css/loginPage.css">
-	<script src="../src/login.js" defer></script>
+	<link rel="stylesheet" href="../css/signup.css">
+
+	<script src="../src/signup.js" defer></script>
 </head>
 <body>
 
@@ -19,7 +20,7 @@
 		</svg>
 	</button>
 
-
+	
 	<nav id="navbar">
 		<ul>
 			<li>
@@ -30,6 +31,7 @@
 				</button>
 			</li>
 			
+			
 			<li class="home-li">
 				<a href="../index.html">
 					<svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
@@ -39,7 +41,6 @@
 				</a>
 			</li>
 			
-
 			<li>
 				<a href="about.html">
 					<svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
@@ -49,7 +50,6 @@
 				</a>
 			</li>
 			
-
 			<li>
 				<a href="market.html">
 					<svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
@@ -66,16 +66,18 @@
 
 	<div id="overlay" onclick="closeSidebar()" aria-hidden="true"></div>
 	
-	<!-- Login form -->
-	<div class="login-container" id="main-content">
-		<h2>Login</h2>
-		<form id="loginForm">
+	<!-- Signup form -->
+	<div class="signup-container" id="main-content">
+		<h2>Sign up new account</h2>
+		<form id="SignupForm">
 			<input type="text" id="username" placeholder="Username" required />
+			<input type="email" id="email" placeholder="Email" required />
 			<input type="password" id="password" placeholder="Password" required />
-			<button type="submit">Login</button>
+			<input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+			<button type="submit">Sign Up</button>
 		</form>
-		<p id="loginMessage"></p>
-		<p>Don't have an account? <a href="signup.html" id="signup">Register here</a></p>
+		<p id="signupMessage"></p>
+		<p>Already have an account? <a href="login.html" id="login">Login here</a></p>
 	</div>
 
 </body>
