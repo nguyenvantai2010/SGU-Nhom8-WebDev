@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng</title>
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/globalStyle.css">
+    <link rel="stylesheet" href="../css/cart.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+  <div class="nav-left">
+    <a href="../index.html">Home</a>
+  </div>
+  <div class="nav-right">
+    <a href="about.html">About</a>
+    <a href="market.html">Market</a>
+    <a href="cart.html" class="cart-link">
+    <i class="fas fa-shopping-cart"></i>
+    Cart (<span id="cart-count">0</span>)
+</a>
+
+    <a href="login.html">Login</a>
+  </div>
+</nav>
+
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+
+    <div class="cart-container">
+        <div class="cart-header">
+            <div class="cart-title">
+                <i class="fas fa-shopping-cart"></i>
+                <h1>Giỏ hàng của bạn</h1>
+            </div>
+            <div class="cart-total">
+                <span class="total-label">Tổng tiền:</span>
+                <span id="total-amount">0 VNĐ</span>
+            </div>
+        </div>
+        
+        <div class="cart-main">
+            <div class="cart-items">
+                <!-- Cart items will be inserted here by JavaScript -->
+            </div>
+            <div class="cart-summary">
+                <button id="checkout-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Thanh toán</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../src/navbar.js"></script>
+    <script type="module" src="../src/cart.js"></script>
+</body>
+</html>
