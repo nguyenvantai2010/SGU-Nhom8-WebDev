@@ -3,6 +3,7 @@ export const market = {
     hidden: false,
     items: [
       {
+        id: "item-001",
         name: "Toán",
         price: "$45",
         image: "https://toanmath.com/wp-content/uploads/2024/02/sach-giao-khoa-toan-12-tap-1-ket-noi-tri-thuc-voi-cuoc-song.png",
@@ -10,9 +11,10 @@ export const market = {
         description: "Giáo trình Toán lớp 12 giúp học sinh nắm vững kiến thức nền tảng.",
         quantity: 18,
         releaseYear: 2024,
-        cost_price: 36  
+        cost_price: 36
       },
       {
+        id: "item-002",
         name: "Giải tích 1",
         price: "$85",
         image: "../assets/images/vantai.png",
@@ -20,9 +22,10 @@ export const market = {
         description: "Khám phá các khái niệm giới hạn, đạo hàm và tích phân.",
         quantity: 10,
         releaseYear: 2023,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: "item-003",
         name: "Xác suất thống kê",
         price: "$30",
         image: "../assets/images/nguyenvantaingu.png",
@@ -30,9 +33,10 @@ export const market = {
         description: "Tài liệu cơ bản về xác suất và thống kê ứng dụng.",
         quantity: 22,
         releaseYear: 2022,
-        cost_price: 24  
+        cost_price: 24
       },
       {
+        id: "item-004",
         name: "Lý thuyết đồ thị",
         price: "$45",
         image: "../assets/images/ltđt.png",
@@ -40,9 +44,10 @@ export const market = {
         description: "Giới thiệu các khái niệm và thuật toán trong đồ thị.",
         quantity: 15,
         releaseYear: 2021,
-        cost_price: 36  
+        cost_price: 36
       },
       {
+        id: "item-005",
         name: "Triết học",
         price: "$85",
         image: "../assets/images/triet.png",
@@ -50,9 +55,10 @@ export const market = {
         description: "Tổng quan các trường phái triết học phương Tây và phương Đông.",
         quantity: 8,
         releaseYear: 2020,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: "item-006",
         name: "Pháp luật đại cương",
         price: "$30",
         image: "../assets/images/pldc.png",
@@ -60,9 +66,10 @@ export const market = {
         description: "Cẩm nang pháp luật cơ bản dành cho sinh viên.",
         quantity: 20,
         releaseYear: 2023,
-        cost_price: 24  
+        cost_price: 24
       },
       {
+        id: "item-007",
         name: "Toán rời rạc",
         price: "$45",
         image: "../assets/images/toanroirac.png",
@@ -70,9 +77,10 @@ export const market = {
         description: "Phân tích các cấu trúc toán học không liên tục.",
         quantity: 12,
         releaseYear: 2022,
-        cost_price: 36  
+        cost_price: 36
       },
       {
+        id: "item-008",
         name: "Cờ tướng",
         price: "$30",
         image: "../assets/images/vodichthu.png",
@@ -80,9 +88,10 @@ export const market = {
         description: "Chiến thuật và kỹ năng chơi cờ tướng chuyên sâu.",
         quantity: 30,
         releaseYear: 2021,
-        cost_price: 24  
+        cost_price: 24
       },
       {
+        id: "item-009",
         name: "Kinh tế chính trị",
         price: "$45",
         image: "../assets/images/ktct.png",
@@ -90,7 +99,7 @@ export const market = {
         description: "Phân tích các học thuyết kinh tế và chính trị hiện đại.",
         quantity: 14,
         releaseYear: 2024,
-        cost_price: 36  
+        cost_price: 36
       }
     ]
   },
@@ -99,6 +108,7 @@ export const market = {
     hidden: false,
     items: [
       {
+        id: "item-010",
         name: "Cơ sở dữ liệu",
         price: "$90",
         image: "../assets/images/rickRoll.png",
@@ -106,9 +116,10 @@ export const market = {
         description: "Hướng dẫn thiết kế và quản lý hệ thống cơ sở dữ liệu.",
         quantity: 7,
         releaseYear: 2022,
-        cost_price: 72  
+        cost_price: 72
       },
       {
+        id: "item-011",
         name: "Cấu trúc dữ liệu và giải thuật",
         price: "$40",
         image: "../assets/icons/jokerBentre.jpg",
@@ -116,9 +127,10 @@ export const market = {
         description: "Tài liệu chuyên sâu về cấu trúc dữ liệu và thuật toán.",
         quantity: 16,
         releaseYear: 2023,
-        cost_price: 32  
+        cost_price: 32
       },
       {
+        id: "item-012",
         name: "Kỹ thuật lập trình",
         price: "$15",
         image: "../assets/images/rickRoll.png",
@@ -126,7 +138,7 @@ export const market = {
         description: "Giáo trình nhập môn lập trình với các ví dụ thực tế.",
         quantity: 25,
         releaseYear: 2025,
-        cost_price: 12  
+        cost_price: 12
       }
     ]
   },
@@ -135,6 +147,7 @@ export const market = {
     hidden: false,
     items: [
       {
+        id: "item-013",
         name: "Java",
         price: "$45",
         image: "../assets/icons/jokerBentre.jpg",
@@ -142,9 +155,10 @@ export const market = {
         description: "Học lập trình Java từ cơ bản đến nâng cao.",
         quantity: 14,
         releaseYear: 2021,
-        cost_price: 36  
+        cost_price: 36
       },
       {
+        id: "item-014",
         name: "Lập trình hướng đối tượng",
         price: "$85",
         image: "../assets/images/rickRoll.png",
@@ -152,9 +166,10 @@ export const market = {
         description: "Giáo trình OOP với ví dụ minh họa bằng Java và C++.",
         quantity: 11,
         releaseYear: 2023,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: "item-015",
         name: "JavaScript",
         price: "$30",
         image: "../assets/images/rickRoll.png",
@@ -162,9 +177,10 @@ export const market = {
         description: "Tài liệu học JavaScript cho phát triển web hiện đại.",
         quantity: 19,
         releaseYear: 2024,
-        cost_price: 24  
+        cost_price: 24
       },
       {
+        id: "item-016",
         name: "C++",
         price: "$45",
         image: "../assets/icons/jokerBentre.jpg",
@@ -172,9 +188,10 @@ export const market = {
         description: "Giáo trình C++ với các bài tập thực hành nâng cao.",
         quantity: 13,
         releaseYear: 2022,
-        cost_price: 36  
+        cost_price: 36
       },
       {
+        id: "item-017",
         name: "Python",
         price: "$85",
         image: "../assets/images/rickRoll.png",
@@ -182,9 +199,10 @@ export const market = {
         description: "Giáo trình Python dành cho phân tích dữ liệu và AI.",
         quantity: 9,
         releaseYear: 2024,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: "item-018",
         name: "C#",
         price: "$30",
         image: "../assets/images/rickRoll.png",
@@ -192,7 +210,7 @@ export const market = {
         description: "Hướng dẫn lập trình C# với ứng dụng thực tế.",
         quantity: 17,
         releaseYear: 2021,
-        cost_price: 24  
+        cost_price: 24
       }
     ]
   }

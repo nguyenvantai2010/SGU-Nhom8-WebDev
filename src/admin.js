@@ -285,13 +285,12 @@ function renderProductTable() {
     const tbody = document.querySelector(".product-table tbody");
     tbody.innerHTML = "";
 
-    let id = 1;
     const itemsToRender = marketItems[currentCategory]?.items || []; 
 
     itemsToRender.forEach((item, index) => { // Sửa ở đây
         const tr = document.createElement("tr");
         tr.innerHTML = `
-            <td>${id++}</td>
+            <td>${item.id}</td>
             <td>${item.name}</td>
             <td>${item.price}</td> 
             <td>${item.quantity}</td> 
@@ -412,6 +411,7 @@ AccountForm.addEventListener("submit", (e) => {
     }
 });
 
+//render bảng tài khoản
 function renderAccountsTable() {
     const tbody = document.querySelector(".accounts-table tbody");
     tbody.innerHTML = "";
@@ -485,7 +485,7 @@ document.querySelector(".product-table tbody").addEventListener("click", (e) => 
 
     // Tìm nút delete gần nhất mà người dùng click
     const deleteBtn = e.target.closest(".delete-btn");
-    if (deleteBtn) {
+    if (deleteBtn) { // tìm đc thì hỏi xem có xóa sản phẩm ko
         if (confirm("Bạn có chắc muốn xóa sản phẩm này?")) {
             const index = deleteBtn.dataset.index;
             // Sửa ở đây: Dùng currentCategory

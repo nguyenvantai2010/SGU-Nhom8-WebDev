@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
       message.textContent = "Username already taken!";
       return;
     }
-
+    
     users.push({
       username: username.value,
       email: email.value,
