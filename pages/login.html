@@ -1,82 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Login</title>
-	<link rel="stylesheet" href="../css/globalStyle.css">
-	<link rel="icon" type="image/x-icon" href="../assets/icons/jokerBentre.jpg">
-	<link rel="stylesheet" href="../css/loginPage.css">
-	<script src="../src/login.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login & Signup</title>
+  <link rel="stylesheet" href="../css/globalStyle.css" />
+  <link rel="stylesheet" href="../css/loginPage.css" />
+  <link rel="icon" type="image/x-icon" href="../assets/icons/jokerBentre.jpg" />
+  <script src="../src/login.js" defer></script>
 </head>
 <body>
 
-	<a href="#main-content" class="skip-link">Skip to main content</a>
+  <!-- Sidebar toggle -->
+  <button id="open-sidebar-button" onclick="openSidebar()" aria-label="open sidebar" aria-expanded="false" aria-controls="navbar">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+      <path d="M3 12h18M3 6h18M3 18h18"/>
+    </svg>
+  </button>
 
-	<button id="open-sidebar-button" onclick="openSidebar()" aria-label="open sidebar" aria-expanded="false" aria-controls="navbar">
-		<svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#c9c9c9">
-			<path d="M165.13-254.62q-10.68 0-17.9-7.26-7.23-7.26-7.23-18t7.23-17.86q7.22-7.13 17.9-7.13h629.74q10.68 0 17.9 7.26 7.23 7.26 7.23 18t-7.23 17.87q-7.22 7.12-17.9 7.12H165.13Zm0-200.25q-10.68 0-17.9-7.27-7.23-7.26-7.23-17.99 0-10.74 7.23-17.87 7.22-7.13 17.9-7.13h629.74q10.68 0 17.9 7.27 7.23 7.26 7.23 17.99 0 10.74-7.23 17.87-7.22 7.13-17.9 7.13H165.13Zm0-200.26q-10.68 0-17.9-7.26-7.23-7.26-7.23-18t7.23-17.87q7.22-7.12 17.9-7.12h629.74q10.68 0 17.9 7.26 7.23 7.26 7.23 18t-7.23 17.86q-7.22 7.13-17.9 7.13H165.13Z"/>
-		</svg>
-	</button>
+  <!-- Navigation bar -->
+  <nav id="navbar">
+    <ul>
+      <li>
+        <button id="close-sidebar-button" onclick="closeSidebar()" aria-label="close sidebar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </li>
+      <li class="home-li"><a href="../index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="market.html">Market</a></li>
+    </ul>
+  </nav>
 
+  <div id="overlay" onclick="closeSidebar()" aria-hidden="true"></div>
 
-	<nav id="navbar">
-		<ul>
-			<li>
-				<button id="close-sidebar-button" onclick="closeSidebar()" aria-label="close sidebar">
-					<svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#c9c9c9">
-						<path d="m480-444.62-209.69 209.7q-7.23 7.23-17.5 7.42-10.27.19-17.89-7.42-7.61-7.62-7.61-17.7 0-10.07 7.61-17.69L444.62-480l-209.7-209.69q-7.23-7.23-7.42-17.5-.19-10.27 7.42-17.89 7.62-7.61 17.7-7.61 10.07 0 17.69 7.61L480-515.38l209.69-209.7q7.23-7.23 17.5-7.42 10.27-.19 17.89 7.42 7.61 7.62 7.61 17.7 0 10.07-7.61 17.69L515.38-480l209.7 209.69q7.23 7.23 7.42 17.5.19 10.27-7.42 17.89-7.62 7.61-17.7 7.61-10.07 0-17.69-7.61L480-444.62Z"/>
-					</svg>
-				</button>
-			</li>
-			
-			<li class="home-li">
-				<a href="../index.html">
-					<svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
-						<path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/>
-					</svg>
-					Home
-				</a>
-			</li>
-			
+  <!-- Auth container -->
+  <div class="auth-wrapper">
+    <div class="container" id="authContainer">
+      
+      <!-- Login Panel -->
+      <div class="form-panel" id="login-panel">
+        <h2>Sign In</h2>
+        <form id="loginForm">
+          <input type="text" id="loginUsername" placeholder="Username" required />
+          <input type="password" id="loginPassword" placeholder="Password" required />
+          <button type="submit">Login</button>
+        </form>
+        <p class="message" id="loginMessage"></p>
+      </div>
 
-			<li>
-				<a href="about.html">
-					<svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
-						<path d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z"/>
-					</svg>
-					About
-				</a>
-			</li>
-			
+      <!-- Signup Panel -->
+      <div class="form-panel" id="signup-panel">
+        <h2>Create Account</h2>
+        <form id="signupForm">
+          <input type="text" id="signupUsername" placeholder="Username" required />
+          <input type="email" id="signupEmail" placeholder="Email" required />
+          <input type="password" id="signupPassword" placeholder="Password" required />
+          <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+          <button type="submit">Sign Up</button>
+        </form>
+        <p class="message" id="signupMessage"></p>
+      </div>
 
-			<li>
-				<a href="market.html">
-					<svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
-						<path d="M160-720v-80h640v80H160Zm0 560v-240h-40v-80l40-200h640l40 200v80h-40v240h-80v-240H560v240H160Zm80-80h240v-160H240v160Zm-38-240h556-556Zm0 0h556l-24-120H226l-24 120Z"/>
-					</svg>
-					Market
-				</a>
-			</li>
-			
+      <!-- Overlay Panel -->
+      <div class="overlay-panel">
+        <div class="overlay-content">
+          <h2>Welcome!</h2>
+          <p>To keep connected, please sign in or create an account</p>
+          <button class="toggle-btn" id="signupBtn" onclick="toggleForm('signup')">Sign Up</button>
+          <button class="toggle-btn" id="signinBtn" onclick="toggleForm('login')" style="display: none;">Sign In</button>
+        </div>
+      </div>
 
-		</ul>
-	</nav>
-	
-
-	<div id="overlay" onclick="closeSidebar()" aria-hidden="true"></div>
-	
-	<!-- Login form -->
-	<div class="login-container" id="main-content">
-		<h2>Login</h2>
-		<form id="loginForm">
-			<input type="text" id="username" placeholder="Username" required />
-			<input type="password" id="password" placeholder="Password" required />
-			<button type="submit">Login</button>
-		</form>
-		<p id="loginMessage"></p>
-		<p>Don't have an account? <a href="signup.html" id="signup">Register here</a></p>
-	</div>
+    </div>
+  </div>
 
 </body>
 </html>
