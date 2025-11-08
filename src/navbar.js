@@ -107,10 +107,10 @@ function handleLogin(event) {
     
     if (currentPath.includes('/pages/')) {
         // Đang ở trong thư mục pages (about, market, cart)
-        window.location.href = 'login.html';
+        window.location.href = 'auth.html';
     } else {
         // Đang ở index.html (thư mục gốc)
-        window.location.href = 'pages/login.html';
+        window.location.href = 'pages/auth.html';
     }
 }
 

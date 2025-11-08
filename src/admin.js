@@ -200,6 +200,8 @@ const closePrModalBtn = document.getElementById("close-pr-frm-btn");
 function openModal() {
     addProductForm.reset();
     currentProductEditIndex = null; 
+    document.getElementById("product-id").disabled = false;
+    document.getElementById("product-id").value = "";
     modal.classList.add("visible");
     modal.querySelector("h2").textContent = "Add New Product";
     modal.querySelector("button[type='submit']").textContent = "Add Product";
@@ -212,7 +214,8 @@ function openEditModal(index) {
     if (!item) return;
 
     // Điền dữ liệu cũ
-    document.getElementById("product-name").value = item.name;
+    document.getElementById("product-id").value = item.id;
+    document.getElementById("product-id").disabled = true;
     document.getElementById("product-price").value = item.price.replace('$', ''); 
     document.getElementById("product-image").value = item.image;
 
@@ -245,6 +248,7 @@ modal.addEventListener("click", (e) => {
 addProductForm.addEventListener("submit", (e) => {
     e.preventDefault(); // Ngăn form reload
     
+    const id=document.getElementById("product-id").value.trim();
     const name = document.getElementById("product-name").value;
     const priceValue = parseFloat(document.getElementById("product-price").value) || 0;
     const price = "$" + priceValue; 
@@ -267,13 +271,36 @@ addProductForm.addEventListener("submit", (e) => {
 
     if (currentProductEditIndex !== null) {
         const oldItem = marketItems[currentCategory].items[currentProductEditIndex];
+        newItem.id=oldItem.id;
         newItem.active = oldItem.active; 
         newItem.cost_price = oldItem.cost_price || 0;
         
         marketItems[currentCategory].items[currentProductEditIndex] = newItem;
     } else {
+        // ĐANG THÊM MỚI
+        
+        // === SỬA 2: Kiểm tra ID bạn nhập ===
+        if (!id) {
+            alert("Vui lòng nhập ID sản phẩm!");
+            return; // Dừng lại nếu ID rỗng
+        }
+        
+        // Kiểm tra xem ID đã tồn tại chưa
+        const idExists = Object.values(marketItems).some(cat => 
+            cat.items.some(item => item.id === id)
+        );
+
+        if (idExists) {
+            alert("Lỗi: ID sản phẩm này đã tồn tại!");
+            return; // Dừng lại nếu ID trùng
+        }
+        
+        // Gán ID bạn đã nhập vào sản phẩm mới
+        newItem.id = id; 
+        // ==================================
+
         marketItems[currentCategory].items.push(newItem);
-    }
+       }
 
     renderProductTable();
     closeModal();
@@ -289,7 +316,9 @@ function renderProductTable() {
 
     itemsToRender.forEach(item => {
         const tr = document.createElement("tr");
+
         tr.dataset.itemId=item.id;
+
         tr.innerHTML = `
             <td>${item.id}</td>
             <td>${item.name}</td>
@@ -297,13 +326,13 @@ function renderProductTable() {
             <td>${item.quantity}</td> 
             <td><img src="${item.image}" alt="Product" class="item-image"></td>
             <td>
-                <button class="edit-btn" title="Edit" data-id="${index}"> 
+                <button class="edit-btn" title="Edit" data-id="${item.id}"> 
                     <svg width="18px" height="18px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M13 0L16 3L9 10H6V7L13 0Z" fill="#000000"></path>
                         <path d="M1 1V15H15V9H13V13H3V3H7V1H1Z" fill="#000000"></path>
                     </svg>
                 </button>
-                <button class="delete-btn" title="Delete" data-id="${index}">
+                <button class="delete-btn" title="Delete" data-id="${item.id}">
                     <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 11V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                         <path d="M14 11V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -313,23 +342,45 @@ function renderProductTable() {
                     </svg>
                 </button>
                 <button class="hidden-btn ${item.active ? 'on' : 'off'}" 
-                        data-id="${index}">
+                        data-id="${item.id}">
                     ${item.active ? '<svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.3307 7.16929C13.5873 7.05887 12.806 7 12 7C7.02944 7 3 9.23858 3 12C3 13.4401 4.09589 14.738 5.84963 15.6504L8.21192 13.2881C8.07452 12.8839 8 12.4506 8 12C8 9.79086 9.79086 8 12 8C12.4506 8 12.8839 8.07452 13.2881 8.21192L14.3307 7.16929Z" fill="#000000"></path> <path d="M11.2308 15.9261C11.4797 15.9746 11.7369 16 12 16C14.2091 16 16 14.2091 16 12C16 11.7369 15.9746 11.4797 15.9261 11.2308L18.5726 8.58427C20.0782 9.47809 21 10.6792 21 12C21 14.7614 16.9706 17 12 17C11.4016 17 10.8169 16.9676 10.2512 16.9057L11.2308 15.9261Z" fill="#000000"></path> <path d="M17.7929 5.20711C18.1834 4.81658 18.8166 4.81658 19.2071 5.20711C19.5976 5.59763 19.5976 6.2308 19.2071 6.62132L6.47919 19.3492C6.08866 19.7398 5.4555 19.7398 5.06497 19.3492C4.67445 18.9587 4.67445 18.3256 5.06497 17.935L17.7929 5.20711Z" fill="#000000"></path> </g></svg>':'<svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3.27489 15.2957C2.42496 14.1915 2 13.6394 2 12C2 10.3606 2.42496 9.80853 3.27489 8.70433C4.97196 6.49956 7.81811 4 12 4C16.1819 4 19.028 6.49956 20.7251 8.70433C21.575 9.80853 22 10.3606 22 12C22 13.6394 21.575 14.1915 20.7251 15.2957C19.028 17.5004 16.1819 20 12 20C7.81811 20 4.97196 17.5004 3.27489 15.2957Z" stroke="#1C274C" stroke-width="1.5"></path> <path d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z" stroke="#1C274C" stroke-width="1.5"></path> </g></svg>'}
                 </button>
         `;
         tbody.appendChild(tr);
     });
-    document.querySelectorAll(".hidden-btn").forEach(btn=>{
-        btn.addEventListener("click",()=>{
-            const index=btn.dataset.index;
-            const product=marketItems[currentCategory].items[index];
-            product.active=!product.active;
-            saveProductsToStorage();
-            renderProductTable();
-        })
-    })
 }
 
+document.querySelector(".product-table tbody").addEventListener("click",(e)=>{
+    const btn=e.target.closest("button[data-id]");
+    if(!btn) return;
+
+    const id=btn.dataset.id;
+
+    const index=marketItems[currentCategory].items.findIndex(item =>item.id === id);
+    if(index===-1) return;
+
+    if (btn.classList.contains("edit-btn")) {
+        openEditModal(index); // Mở modal với index đúng
+        return;
+    }
+
+    if (btn.classList.contains("delete-btn")) {
+        if (confirm("Bạn có chắc muốn xóa sản phẩm này?")) {
+            marketItems[currentCategory].items.splice(index, 1); // Xóa bằng index đúng
+            renderProductTable();
+            saveProductsToStorage();
+        }
+        return;
+    }
+
+    if (btn.classList.contains("hidden-btn")) {
+        const product = marketItems[currentCategory].items[index];
+        product.active = !product.active;
+        saveProductsToStorage();
+        renderProductTable(); // Render lại để cập nhật nút
+        return;
+    }
+})
 
 //lưu tài khoản
 function saveAccountsToStorage() {
@@ -452,28 +503,55 @@ function renderAccountsTable() {
         `;
         tbody.appendChild(tr);
     });
-    // xử lý sự kiện cho nút reset
-    document.querySelectorAll(".reset-btn").forEach(btn=>{
-        btn.addEventListener("click",()=>{
-            const index=btn.dataset.index;
-             accountsList[index].password="123456";
-            alert(`Đã reset mật khẩu của tài khoản "${ accountsList[index].username}" về 123456`)
-            renderAccountsTable();
-        })
-    })
-
-    // Thêm sự kiện cho nút trạng thái
-    document.querySelectorAll(".status-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const index = btn.dataset.index;
-            const user =  accountsList[index];
-            user.active = !user.active; 
-            saveAccountsToStorage();
-            renderAccountsTable();
-        });
-    });
+   
 }
 
+// HÀM LISTENER CHO BẢNG TÀI KHOẢN (ĐÃ TỐI ƯU)
+document.querySelector(".accounts-table tbody").addEventListener("click", (e) => {
+    
+    // Code Sửa (Edit) của bạn (đã đúng)
+    const editBtn = e.target.closest(".edit-btn");
+    if (editBtn) {
+        const index = editBtn.dataset.id;
+        openEditAccountModal(index);
+        return;
+    }
+
+    // Code Xóa (Delete) của bạn (đã đúng)
+    const deleteBtn = e.target.closest(".delete-btn");
+    if (deleteBtn) {
+        // ... (toàn bộ logic xóa tài khoản của bạn)
+        return;
+    }
+
+    // === THÊM LOGIC 2 NÚT CÒN LẠI VÀO ĐÂY ===
+
+    // 1. Logic cho nút Reset (chuyển từ renderAccountsTable ra đây)
+    const resetBtn = e.target.closest(".reset-btn");
+    if (resetBtn) {
+        const index = resetBtn.dataset.id;
+        const user = accountsList[index];
+        if (user) {
+            user.password = "123456";
+            alert(`Đã reset mật khẩu của tài khoản "${user.username}" về 123456`);
+            saveAccountsToStorage(); // Chỉ cần lưu, không cần render lại
+        }
+        return;
+    }
+
+    // 2. Logic cho nút Status (chuyển từ renderAccountsTable ra đây)
+    const statusBtn = e.target.closest(".status-btn");
+    if (statusBtn) {
+        const index = statusBtn.dataset.id;
+        const user = accountsList[index];
+        if (user) {
+            user.active = !user.active; 
+            saveAccountsToStorage();
+            renderAccountsTable(); // Phải render lại để đổi chữ "Mở"/"Khóa"
+        }
+        return;
+    }
+});
 
 // xử lý sự kiện nút xóa và sửa cho form sản phẩm
 document.querySelector(".product-table tbody").addEventListener("click", (e) => {
@@ -1137,8 +1215,6 @@ function setupLogin() {
     }
 }
 
-
-setupLogin();
 setupLogin();
 //render mac dinh khi load trang
 renderCategorySelector();
