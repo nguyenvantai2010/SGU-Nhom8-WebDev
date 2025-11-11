@@ -141,7 +141,49 @@ export const market = {
         quantity: 17,
         releaseYear: 2021,
         cost_price: 24  
-      }
+      },
+      {
+        name: "Kiến trúc máy tính",
+        price: "30",
+        image: "../assets/images/ktmt.png",
+        active: true,
+        description: "Nguyên cứu về bên trong máy tính",
+        quantity: 17,
+        releaseYear: 2021,
+        cost_price: 24  
+      },
+      {
+        name: "Mạng máy tính",
+        price: "30",
+        image: "../assets/images/mmmt.png",
+        active: true,
+        description: "Nguyên cứu về hệ thống mạng máy tính",
+        quantity: 17,
+        releaseYear: 2021,
+        cost_price: 24  
+      },
+      {
+        name: "Phát triển ứng dụng",
+        price: "30",
+        image: "../assets/images/ppungdung.png",
+        active: true,
+        description: "Nguyên cứu về cách tạo ứng dụng",
+        quantity: 17,
+        releaseYear: 2021,
+        cost_price: 24  
+      },
+      {
+        name: "Hợp ngữ",
+        price: "30",
+        image: "../assets/images/hopngu.png",
+        active: true,
+        description: "Tổng quan về hợp ngữ",
+        quantity: 17,
+        releaseYear: 2021,
+        cost_price: 24  
+      },
+
+
     ]
   },
 
@@ -197,6 +239,36 @@ export const market = {
         quantity: 14,
         releaseYear: 2024,
         cost_price: 36  
+      },
+      {
+        name: "Lịch sử đảng",
+        price: "85",
+        image: "../assets/images/lichsudang.png",
+        active: true,
+        description: "Lịch sử đảng cộng sản việt nam",
+        quantity: 8,
+        releaseYear: 2020,
+        cost_price: 68  
+      },
+      {
+        name: "Nguyên lý chủ nghĩa mac-lênin",
+        price: "85",
+        image: "../assets/images/nguyenlycnmln.png",
+        active: true,
+        description: "Nguyên lý chủ nghĩa mac-lênin",
+        quantity: 8,
+        releaseYear: 2020,
+        cost_price: 68  
+      },
+      {
+        name: "Đường lối cách mạng Việt Nam",
+        price: "85",
+        image: "../assets/images/duongloicachmang.png",
+        active: true,
+        description: "Phân tích về đường lối cách mạng Việt Nam",
+        quantity: 8,
+        releaseYear: 2020,
+        cost_price: 68  
       },
 
       
@@ -282,6 +354,36 @@ export const market = {
         image: "../assets/images/learnkorean.png",
         active: true,
         description: "Học tiếng hàn",
+        quantity: 8,
+        releaseYear: 2012,
+        cost_price: 68  
+      },
+      {
+        name: "Học tiếng việt",
+        price: "85",
+        image: "../assets/images/learnvn.png",
+        active: true,
+        description: "Học tiếng việt",
+        quantity: 8,
+        releaseYear: 2012,
+        cost_price: 68  
+      },
+      {
+        name: "Học tiếng pháp",
+        price: "85",
+        image: "../assets/images/learnfrench.png",
+        active: true,
+        description: "Học tiếng pháp",
+        quantity: 8,
+        releaseYear: 2012,
+        cost_price: 68  
+      },
+      {
+        name: "Học tiếng đức",
+        price: "85",
+        image: "../assets/images/learngerman.png",
+        active: true,
+        description: "Học tiếng đức",
         quantity: 8,
         releaseYear: 2012,
         cost_price: 68  
