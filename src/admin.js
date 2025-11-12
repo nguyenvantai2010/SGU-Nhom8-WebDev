@@ -217,7 +217,7 @@ function openEditModal(pageIndex) {
     //Lọc dựa trên từ khóa hoặc id
     const filteredItems = (marketItems[currentCategory]?.items || []).filter(item => 
         item.name.toLowerCase().includes(searchTerm) ||
-        item.id.toLowerCase().includes(searchTerm)
+        String(item.id).toLowerCase().includes(searchTerm)
     );
     
     // Lấy item được click dựa trên (trang * số item) + index trên trang
@@ -356,7 +356,7 @@ function renderPagination(containerId, totalItems, currentPage, itemsPerPage, cl
         span.classList.add("pagination-ellipsis"); 
         return span;
     };
---
+
 
     // Nút "First"
     paginationContainer.appendChild(createButton("First", 1, currentPage === 1));
