@@ -647,23 +647,39 @@ function renderCategoryBar() {
 	});
 }
 
+// Lưu tất cả item lên local storage
+function saveMarketToLocalStorage() {
+  localStorage.setItem("adminProducts", JSON.stringify(market));
+}
+
+// nếu có item trong local storage thì load vào marketItem
+function loadMarketFromLocalStorage() {
+  const dataString = localStorage.getItem("adminProducts");
+  if (dataString) {
+    const parsed = JSON.parse(dataString);
+    Object.keys(parsed).forEach(key => {
+      marketItems[key] = parsed[key];
+    });
+  }
+}
+
 // Đối với admin thì sử dụng hàm này để thêm item vào marketItems
 function addItemToCategory(item, category) {
-	if (!marketItems[category]) {
-		marketItems[category] = { hidden: false, items: [] };
-	}
-	marketItems[category].items.push({
-		...item,
-		description: item.description || "",
-		quantity: item.quantity ?? 0
-	});
+  if (!marketItems[category]) {
+    marketItems[category] = { hidden: false, items: [] };
+  }
+  marketItems[category].items.push(item);
+  saveMarketToLocalStorage(); // Save after adding
 }
+
 
 // Đối với admin thì sử dụng hàm này để xóa item khỏi marketItems
 function removeItemFromCategory(itemName, category) {
-	if (!marketItems[category]) return;
-	marketItems[category] = marketItems[category].filter(item => item.name !== itemName);
+  if (!marketItems[category]) return;
+  marketItems[category].items = marketItems[category].items.filter(item => item.name !== itemName);
+  saveMarketToLocalStorage(); // Save after removing
 }
+
 
 // Tìm kiếm theo giá
 const minPriceInput = document.getElementById("minPriceBar");
@@ -708,6 +724,8 @@ window.addEventListener("resize", () => {
 
 // Load lại trang
 document.addEventListener("DOMContentLoaded", () => {
+  loadMarketFromLocalStorage(); // Load saved data
+  saveMarketToLocalStorage(); // save initial data
 	renderCategoryBar();
 	renderMarketItems(1);
 });
