@@ -415,7 +415,7 @@ function renderProductTable(page = 1) {
     //  Lọc
     const filteredItems = (marketItems[currentCategory]?.items || []).filter(item => 
         item.name.toLowerCase().includes(searchTerm) ||
-        item.id.toLowerCase().includes(searchTerm)
+        String(item.id).toLowerCase().includes(searchTerm)
     );
 
     //  Tính toán trang
