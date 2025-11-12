@@ -486,7 +486,7 @@ document.querySelector(".product-table tbody").addEventListener("click",(e)=>{
     if (!marketItems[currentCategory]) return;
 
     // Tìm index GỐC
-    const originalIndex = marketItems[currentCategory].items.findIndex(item => item.id === id);
+    const originalIndex = marketItems[currentCategory].items.findIndex(item => String(item.id) === id);
     if(originalIndex === -1) return;
 
     if (btn.classList.contains("delete-btn")) {
