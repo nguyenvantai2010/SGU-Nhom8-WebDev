@@ -99,6 +99,10 @@ document.addEventListener("DOMContentLoaded", () => {
       signupMessage.textContent = "Username already taken!";
       return;
     }
+    if(signupUsername.value==="admin"){
+      signupMessage.textContent="Admin user can't be registered!";
+      return;
+    }
 
     users.push({
       username: signupUsername.value,

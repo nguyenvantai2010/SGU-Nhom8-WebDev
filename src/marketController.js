@@ -3,6 +3,7 @@ export const market = {
     hidden: false,
     items: [
       {
+        id: 1,
         name: "Toán",
         price: "45",
         image: "https://toanmath.com/wp-content/uploads/2024/02/sach-giao-khoa-toan-12-tap-1-ket-noi-tri-thuc-voi-cuoc-song.png",
@@ -10,9 +11,10 @@ export const market = {
         description: "Giáo trình Toán lớp 12 giúp học sinh nắm vững kiến thức nền tảng.",
         quantity: 18,
         releaseYear: 2024,
-        cost_price: 36  
+        cost_price: 36
       },
       {
+        id: 2,
         name: "Giải tích 1",
         price: "85",
         image: "../assets/images/vantai.png",
@@ -20,9 +22,10 @@ export const market = {
         description: "Khám phá các khái niệm giới hạn, đạo hàm và tích phân.",
         quantity: 10,
         releaseYear: 2023,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 3,
         name: "Xác suất thống kê",
         price: "30",
         image: "../assets/images/nguyenvantaingu.png",
@@ -30,9 +33,10 @@ export const market = {
         description: "Tài liệu cơ bản về xác suất và thống kê ứng dụng.",
         quantity: 22,
         releaseYear: 2022,
-        cost_price: 24  
+        cost_price: 24
       },
       {
+        id: 4,
         name: "Lý thuyết đồ thị",
         price: "45",
         image: "../assets/images/ltđt.png",
@@ -40,9 +44,10 @@ export const market = {
         description: "Giới thiệu các khái niệm và thuật toán trong đồ thị.",
         quantity: 15,
         releaseYear: 2021,
-        cost_price: 36  
+        cost_price: 36
       },
       {
+        id: 5,
         name: "Toán rời rạc",
         price: "45",
         image: "../assets/images/toanroirac.png",
@@ -50,9 +55,10 @@ export const market = {
         description: "Phân tích các cấu trúc toán học không liên tục.",
         quantity: 12,
         releaseYear: 2022,
-        cost_price: 36  
+        cost_price: 36
       },
       {
+        id: 6,
         name: "Cơ sở dữ liệu",
         price: "90",
         image: "../assets/images/csdl.png",
@@ -60,9 +66,10 @@ export const market = {
         description: "Hướng dẫn thiết kế và quản lý hệ thống cơ sở dữ liệu.",
         quantity: 7,
         releaseYear: 2022,
-        cost_price: 72  
+        cost_price: 72
       },
       {
+        id: 7,
         name: "Cấu trúc dữ liệu và giải thuật",
         price: "40",
         image: "../assets/images/cautrucduulieuvagiaithuat.png",
@@ -70,9 +77,10 @@ export const market = {
         description: "Tài liệu chuyên sâu về cấu trúc dữ liệu và thuật toán.",
         quantity: 16,
         releaseYear: 2023,
-        cost_price: 32  
+        cost_price: 32
       },
       {
+        id: 8,
         name: "Kỹ thuật lập trình C",
         price: "15",
         image: "../assets/images/ktltC.png",
@@ -80,9 +88,10 @@ export const market = {
         description: "Giáo trình nhập môn lập trình với các ví dụ thực tế.",
         quantity: 25,
         releaseYear: 2025,
-        cost_price: 12  
+        cost_price: 12
       },
-            {
+      {
+        id: 9,
         name: "Lập trình Java cơ bản",
         price: "45",
         image: "../assets/images/ltjavacanban.png",
@@ -90,9 +99,10 @@ export const market = {
         description: "Học lập trình Java từ cơ bản.",
         quantity: 14,
         releaseYear: 2021,
-        cost_price: 36  
+        cost_price: 36
       },
       {
+        id: 10,
         name: "Lập trình hướng đối tượng java",
         price: "85",
         image: "../assets/images/lthdtjava.png",
@@ -100,9 +110,10 @@ export const market = {
         description: "Giáo trình OOP với ví dụ minh họa bằng Java và C++.",
         quantity: 11,
         releaseYear: 2023,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 11,
         name: "Bài tập JavaScript",
         price: "30",
         image: "../assets/images/baitapjavascript.png",
@@ -110,9 +121,10 @@ export const market = {
         description: "Tài liệu học JavaScript cho phát triển web hiện đại.",
         quantity: 19,
         releaseYear: 2024,
-        cost_price: 24  
+        cost_price: 24
       },
       {
+        id: 12,
         name: "C++",
         price: "45",
         image: "../assets/images/cpp.png",
@@ -120,9 +132,10 @@ export const market = {
         description: "Giáo trình C++ với các bài tập thực hành nâng cao.",
         quantity: 13,
         releaseYear: 2022,
-        cost_price: 36  
+        cost_price: 36
       },
       {
+        id: 13,
         name: "Python",
         price: "85",
         image: "../assets/images/python.png",
@@ -130,9 +143,10 @@ export const market = {
         description: "Giáo trình Python dành cho phân tích dữ liệu và AI.",
         quantity: 9,
         releaseYear: 2024,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 14,
         name: "C#",
         price: "30",
         image: "../assets/images/cs.png",
@@ -140,9 +154,10 @@ export const market = {
         description: "Hướng dẫn lập trình C# với ứng dụng thực tế.",
         quantity: 17,
         releaseYear: 2021,
-        cost_price: 24  
+        cost_price: 24
       },
       {
+        id: 15,
         name: "Kiến trúc máy tính",
         price: "30",
         image: "../assets/images/ktmt.png",
@@ -150,9 +165,10 @@ export const market = {
         description: "Nguyên cứu về bên trong máy tính",
         quantity: 17,
         releaseYear: 2021,
-        cost_price: 24  
+        cost_price: 24
       },
       {
+        id: 16,
         name: "Mạng máy tính",
         price: "30",
         image: "../assets/images/mmmt.png",
@@ -160,9 +176,10 @@ export const market = {
         description: "Nguyên cứu về hệ thống mạng máy tính",
         quantity: 17,
         releaseYear: 2021,
-        cost_price: 24  
+        cost_price: 24
       },
       {
+        id: 17,
         name: "Phát triển ứng dụng",
         price: "30",
         image: "../assets/images/ppungdung.png",
@@ -170,9 +187,10 @@ export const market = {
         description: "Nguyên cứu về cách tạo ứng dụng",
         quantity: 17,
         releaseYear: 2021,
-        cost_price: 24  
+        cost_price: 24
       },
       {
+        id: 18,
         name: "Hợp ngữ",
         price: "30",
         image: "../assets/images/hopngu.png",
@@ -180,7 +198,7 @@ export const market = {
         description: "Tổng quan về hợp ngữ",
         quantity: 17,
         releaseYear: 2021,
-        cost_price: 24  
+        cost_price: 24
       },
 
 
@@ -191,6 +209,7 @@ export const market = {
     hidden: false,
     items: [
       {
+        id: 19,
         name: "Triết học",
         price: "85",
         image: "../assets/images/triet.png",
@@ -198,9 +217,10 @@ export const market = {
         description: "Tổng quan các trường phái triết học phương Tây và phương Đông.",
         quantity: 8,
         releaseYear: 2020,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 20,
         name: "Pháp luật đại cương",
         price: "30",
         image: "../assets/images/pldc.png",
@@ -208,9 +228,10 @@ export const market = {
         description: "Cẩm nang pháp luật cơ bản dành cho sinh viên.",
         quantity: 20,
         releaseYear: 2023,
-        cost_price: 24  
+        cost_price: 24
       },
-            {
+      {
+        id: 21,
         name: "Cờ tướng",
         price: "30",
         image: "../assets/images/vodichthu.png",
@@ -218,9 +239,10 @@ export const market = {
         description: "Chiến thuật và kỹ năng chơi cờ tướng chuyên sâu.",
         quantity: 30,
         releaseYear: 2021,
-        cost_price: 24  
+        cost_price: 24
       },
       {
+        id: 22,
         name: "Kinh tế chính trị",
         price: "45",
         image: "../assets/images/ktct.png",
@@ -228,9 +250,10 @@ export const market = {
         description: "Phân tích các học thuyết kinh tế và chính trị hiện đại.",
         quantity: 14,
         releaseYear: 2024,
-        cost_price: 36  
+        cost_price: 36
       },
       {
+        id: 23,
         name: "Chủ nghĩa xã hội và khoa học",
         price: "45",
         image: "../assets/images/cnxhvakh.png",
@@ -238,9 +261,10 @@ export const market = {
         description: "Phân tích các học thuyết về chủ nghĩa xã hội",
         quantity: 14,
         releaseYear: 2024,
-        cost_price: 36  
+        cost_price: 36
       },
       {
+        id: 24,
         name: "Lịch sử đảng",
         price: "85",
         image: "../assets/images/lichsudang.png",
@@ -248,9 +272,10 @@ export const market = {
         description: "Lịch sử đảng cộng sản việt nam",
         quantity: 8,
         releaseYear: 2020,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 25,
         name: "Nguyên lý chủ nghĩa mac-lênin",
         price: "85",
         image: "../assets/images/nguyenlycnmln.png",
@@ -258,9 +283,10 @@ export const market = {
         description: "Nguyên lý chủ nghĩa mac-lênin",
         quantity: 8,
         releaseYear: 2020,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 26,
         name: "Đường lối cách mạng Việt Nam",
         price: "85",
         image: "../assets/images/duongloicachmang.png",
@@ -268,10 +294,10 @@ export const market = {
         description: "Phân tích về đường lối cách mạng Việt Nam",
         quantity: 8,
         releaseYear: 2020,
-        cost_price: 68  
+        cost_price: 68
       },
 
-      
+
     ]
   },
 
@@ -279,6 +305,7 @@ export const market = {
     hidden: false,
     items: [
       {
+        id: 27,
         name: "Tiếng anh A1",
         price: "85",
         image: "../assets/images/taa1.png",
@@ -286,9 +313,10 @@ export const market = {
         description: "Dành cho học phần tiếng anh A1",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 28,
         name: "Tiếng anh A2",
         price: "85",
         image: "../assets/images/taa2.png",
@@ -296,9 +324,10 @@ export const market = {
         description: "Dành cho học phần tiếng anh A2",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 29,
         name: "Tiếng anh B1",
         price: "85",
         image: "../assets/images/tab1.png",
@@ -306,9 +335,10 @@ export const market = {
         description: "Dành cho học phần tiếng anh B1",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 30,
         name: "Tiếng anh B2",
         price: "85",
         image: "../assets/images/tab2.png",
@@ -316,9 +346,10 @@ export const market = {
         description: "Dành cho học phần tiếng anh B2",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 31,
         name: "Tiếng anh C1",
         price: "85",
         image: "../assets/images/tac1.png",
@@ -326,9 +357,10 @@ export const market = {
         description: "Dành cho học phần tiếng anh C1",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 32,
         name: "Học tiếng trung",
         price: "85",
         image: "../assets/images/learnchinese.png",
@@ -336,9 +368,10 @@ export const market = {
         description: "Học tiếng trung, bingchiling",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 33,
         name: "Học tiếng nhật",
         price: "85",
         image: "../assets/images/learnjapan.png",
@@ -346,9 +379,10 @@ export const market = {
         description: "Oni-chan baka",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 34,
         name: "Học tiếng hàn",
         price: "85",
         image: "../assets/images/learnkorean.png",
@@ -356,9 +390,10 @@ export const market = {
         description: "Học tiếng hàn",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 35,
         name: "Học tiếng việt",
         price: "85",
         image: "../assets/images/learnvn.png",
@@ -366,9 +401,10 @@ export const market = {
         description: "Học tiếng việt",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 36,
         name: "Học tiếng pháp",
         price: "85",
         image: "../assets/images/learnfrench.png",
@@ -376,9 +412,10 @@ export const market = {
         description: "Học tiếng pháp",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 37,
         name: "Học tiếng đức",
         price: "85",
         image: "../assets/images/learngerman.png",
@@ -386,7 +423,7 @@ export const market = {
         description: "Học tiếng đức",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
     ]
   },
@@ -395,6 +432,7 @@ export const market = {
     hidden: false,
     items: [
       {
+        id: 38,
         name: "Nguyên lý kế toán",
         price: "85",
         image: "../assets/images/nlketoan.png",
@@ -402,9 +440,10 @@ export const market = {
         description: "Nguyên cứu kế toán",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 39,
         name: "Kế toán, tài chính doanh nghiệp",
         price: "85",
         image: "../assets/images/tcdn.png",
@@ -412,9 +451,10 @@ export const market = {
         description: "Nguyên cứu kế toán, tài chính doanh nghiệp",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 40,
         name: "Chính sách thuế",
         price: "85",
         image: "../assets/images/thue.png",
@@ -422,9 +462,10 @@ export const market = {
         description: "Nguyên cứu về thuế doanh nghiệp",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 41,
         name: "Nghiệp vụ ngân hàng",
         price: "85",
         image: "../assets/images/nvnganhang.png",
@@ -432,9 +473,10 @@ export const market = {
         description: "Nguyên cứu về nghiệp vụ ngân hàng",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 42,
         name: "Phân tích chứng khoáng",
         price: "85",
         image: "../assets/images/phantichck.png",
@@ -442,9 +484,10 @@ export const market = {
         description: "Phân tích về chứng khoáng",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 43,
         name: "Tài chính tiền tệ",
         price: "85",
         image: "../assets/images/tctt.png",
@@ -452,9 +495,10 @@ export const market = {
         description: "Phân tích về tài chính và tiền tệ",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 44,
         name: "Kế toán hành chính sự nghiệp",
         price: "85",
         image: "../assets/images/ketoanhcsp.png",
@@ -462,9 +506,10 @@ export const market = {
         description: "Phân tích về kế toán hành chính sự nghiệp",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 45,
         name: "Tài chính doanh nghiệp",
         price: "85",
         image: "../assets/images/taichinhdoanhnghiep.png",
@@ -472,9 +517,10 @@ export const market = {
         description: "Phân tích về tài chính của doanh nghiệp",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 46,
         name: "Tài chính quốc tế",
         price: "85",
         image: "../assets/images/taichinhquocte.png",
@@ -482,9 +528,10 @@ export const market = {
         description: "Phân tích về tài chính quốc tế",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 47,
         name: "Kinh tế phát triển",
         price: "85",
         image: "../assets/images/kinhtephattrien.png",
@@ -492,9 +539,10 @@ export const market = {
         description: "Phân tích về sự phát triển kinh tế",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 48,
         name: "Kiểm toán",
         price: "85",
         image: "../assets/images/kiemtoan.png",
@@ -502,9 +550,10 @@ export const market = {
         description: "Phân tích về kiểm toán",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 49,
         name: "Kinh tế học vĩ mô",
         price: "85",
         image: "../assets/images/kthvimo.png",
@@ -512,9 +561,10 @@ export const market = {
         description: "Phân tích về kinh tế học",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
       {
+        id: 50,
         name: "Tài chính học",
         price: "85",
         image: "../assets/images/taichinhhoc.png",
@@ -522,10 +572,10 @@ export const market = {
         description: "Phân tích về tài chính",
         quantity: 8,
         releaseYear: 2012,
-        cost_price: 68  
+        cost_price: 68
       },
-      
-      
+
+
     ]
   }
 };
