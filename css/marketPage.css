@@ -65,7 +65,7 @@ body {
     font-weight: 600;
     cursor: pointer;
     padding: 10px 22px;
-    border-radius: 25px;
+    border-radius: 25px;    
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(255, 255, 255, 0.3);
     transition: all 0.3s ease;
