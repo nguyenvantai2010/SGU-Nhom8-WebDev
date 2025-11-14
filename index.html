@@ -10,6 +10,7 @@
 	<link rel="icon" type="image/x-icon" href="assets/icons/rickRoll.png">
 	<script src="src/navbar.js" defer></script>
 	<link rel="stylesheet" href="css/navbar.css">
+    <script src="src/homeMarket.js" defer></script>
 </head>
 
 <body> 
@@ -138,68 +139,89 @@
 
 
 <main id="main-content">
-    <div class="center-top-frame-inner">
-        <div class="welcome-text">Chào mừng đến với web bán giáo trình</div>
+    <div class="welcome-section">
+        <div class="welcome-overlay"></div>
+        <div class="welcome-content">
+            <h1 id="title">WELCOME TO UNISHELF!</h1>
+            <h3 id="sub-title">Website bán giáo trình đại học</h3>
+        </div>
     </div>
-
-	<div class="home-layout">
-
-        <div class="slide-container">
-
-            <div class="left-frame">
-			    <div class="frame-inner"><img src="assets/images/pldc.png" alt="Left frame" loading="lazy"></div>
+    
+    <!-- MARKET PREVIEW SECTION -->
+    <section class="market-preview-section">
+        <div class="market-preview-container">
+            <!-- Header -->
+            <div class="market-header">
+                <h2 class="market-title">
+                    Market
+                </h2>
+                <a href="pages/market.html" class="see-all-link">
+                    See all
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                        <path d="m560-240-56-58 142-142H160v-80h486L504-662l56-58 240 240-240 240Z"/>
+                    </svg>
+                </a>
             </div>
 
-            <div class="center-column">
-                <div class="frame-inner"><img src="https://www.nxbctqg.org.vn/img_data/images/botailieu.jpg" alt="Center bottom" loading="lazy"></div>
-            </div>
+            <!-- Products Container -->
+            <div class="market-products-wrapper">
+                <button class="scroll-btn scroll-left" id="scrollLeft" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                        <path d="M73.4 297.4C60.9 309.9 60.9 330.2 73.4 342.7L233.4 502.7C245.9 515.2 266.2 515.2 278.7 502.7C291.2 490.2 291.2 469.9 278.7 457.4L173.3 352L544 352C561.7 352 576 337.7 576 320C576 302.3 561.7 288 544 288L173.3 288L278.7 182.6C291.2 170.1 291.2 149.8 278.7 137.3C266.2 124.8 245.9 124.8 233.4 137.3L73.4 297.3z"/>
+                    </svg>
+                </button>
 
-            <div class="right-frame">
-                <div class="frame-inner"><img src="assets/images/nguyenvantaingu.png" alt="Right frame" loading="lazy"></div>
-            </div>
+                <div class="market-products-container" id="marketProductsContainer">
+                    <!-- Products will be loaded here by JavaScript -->
+                </div>
 
+                <button class="scroll-btn scroll-right" id="scrollRight">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                        <path d="M566.6 342.6C579.1 330.1 579.1 309.8 566.6 297.3L406.6 137.3C394.1 124.8 373.8 124.8 361.3 137.3C348.8 149.8 348.8 170.1 361.3 182.6L466.7 288L96 288C78.3 288 64 302.3 64 320C64 337.7 78.3 352 96 352L466.7 352L361.3 457.4C348.8 469.9 348.8 490.2 361.3 502.7C373.8 515.2 394.1 515.2 406.6 502.7L566.6 342.7z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+    <section class="team-intro-section">
+    <div class="team-header">
+        <h2 class="team-title">Gặp gỡ Đội ngũ Dev của Chúng tôi</h2>
+        <p class="team-motto">Đội ngũ kỹ thuật cốt lõi, xây dựng nền tảng tri thức cho sinh viên.</p>
+    </div>
+    
+    <div class="team-members-container" id="team">
+        
+        <div class="member-card">
+            <h3 class="member-name">Hồ Hoàng Hữu Tài</h3>
+            <p class="member-role">Trưởng dự án</p>
+            <p class="member-id">MSSV: 3124560077</p>
+        </div>
+        
+        <div class="member-card">
+            <h3 class="member-name">Nguyễn Cao Tòng Nhân</h3>
+            <p class="member-role">Thành viên</p>
+            <p class="member-id">MSSV: 3124560064</p>
+        </div>
+        
+        <div class="member-card">
+            <h3 class="member-name">Trần Huỳnh Thiện Nhật</h3>
+            <p class="member-role">Thành viên</p>
+            <p class="member-id">MSSV: 3124560066</p>
         </div>
 
-        <div style="width: 100%;">
-            <table style="width:100%">
-                <tr>
-                    <th>MSSV</th>
-                    <th>Họ tên</th>
-                    <th>Vai trò</th>
-                </tr>
-                <tr>
-                    <td>3124560077</td>
-                    <td>Hồ Hoàng Hữu Tài</td>
-                    <td>Trưởng nhóm</td>
-                </tr>
-                <tr>
-                    <td>3124560078</td>
-                    <td>Nguyễn Văn Tài</td>
-                    <td>Thành viên</td>
-                </tr>
-                <tr>
-                    <td>3124560064</td>
-                    <td>Nguyễn Cao Tòng Nhân</td>
-                    <td>Thành viên</td>
-                </tr>
-                <tr>
-                    <td>3124560083</td>
-                    <td>Nguyễn Minh Thành</td>
-                    <td>Thành viên</td>	
-                </tr>
-                <tr>
-                    <td>3124560060</td>
-                    <td>Nguyễn Hữu Nghĩa</td>
-                    <td>Thành viên</td>
-                </tr>
-                <tr>
-                    <td>3124560066</td>
-                    <td>Trần Huỳnh Thiện Nhật</td>
-                    <td>Thành viên</td>
-                </tr>
-            </table>
-       </div>
-	</div>
+        <div class="member-card member-two-item">
+            <h3 class="member-name">Nguyễn Văn Tài</h3>
+            <p class="member-role">Thành viên</p>
+            <p class="member-id">MSSV: 3124560078</p>
+        </div>
+
+        <div class="member-card member-two-item">
+            <h3 class="member-name">Nguyễn Hữu Nghĩa</h3>
+            <p class="member-role">Thành viên</p>
+            <p class="member-id">MSSV: 3124560060</p>
+        </div>
+    </div>
+    </section>
 </main>
 
 	<!-- Fullscreen viewer for outer frames -->
@@ -210,96 +232,37 @@
 			<img id="viewerImage" src="" alt="Full view">
 		</div>
 	</div>
+    <footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-column">
+            <h3>UNISHELF</h3>
+            <p>Nền tảng trao đổi và mua bán giáo trình đại học.</p>
+            <p>Email: support@unishelf.edu.com</p>
+            <p>Hotline: 0797485654 </p>
+        </div>
 
-	<script>
-		// open overlay when clicking outer-frame images (left and right)
-		const viewerOverlay = document.getElementById('viewer-overlay');
-		const viewerImage = document.getElementById('viewerImage');
-		const viewerClose = document.getElementById('viewerClose');
+        <div class="footer-column">
+            <h4>Liên kết nhanh</h4>
+            <ul>
+                <li><a href="pages/market.html">Marketplace</a></li>
+                <li><a href="#team">Về chúng tôi</a></li>
+                <li><a href="#">Chính sách bảo mật</a></li>
+                <li><a href="#">Điều khoản sử dụng</a></li>
+            </ul>
+        </div>
 
-		function openViewer(src, alt) {
-			viewerImage.src = src;
-			viewerImage.alt = alt || 'Full view';
-			viewerOverlay.style.display = 'block';
-			viewerOverlay.setAttribute('aria-hidden', 'false');
-			document.body.style.overflow = 'hidden';
-		}
-
-		function closeViewer() {
-			viewerOverlay.style.display = 'none';
-			viewerOverlay.setAttribute('aria-hidden', 'true');
-			viewerImage.src = '';
-			document.body.style.overflow = '';
-		}
-
-		// Attach click handlers to left and right images
-		document.querySelectorAll('.left-frame .frame-inner img, .right-frame .frame-inner img').forEach(img => {
-			img.style.cursor = 'zoom-in';
-			img.addEventListener('click', () => openViewer(img.src, img.alt));
-		});
-
-		viewerClose.addEventListener('click', closeViewer);
-		// close when clicking background
-		document.getElementById('viewerBg').addEventListener('click', closeViewer);
-		// close on ESC
-		document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeViewer(); });
-
-		// --- Rotate outer images (left + right) every 3 seconds ---
-		(function setupOuterImageRotation(){
-			const leftImg = document.querySelector('.left-frame .frame-inner img');
-			const rightImg = document.querySelector('.right-frame .frame-inner img');
-			if (!leftImg || !rightImg) return; // nothing to do
-
-			const leftImages = [
-				'assets/images/pldc.png',
-				'assets/images/ltđt.png',
-				'assets/images/cnxhkh.png',
-				'assets/images/csdl.png'
-			];
-			const rightImages = [
-				'assets/images/nguyenvantaingu.png',
-				'assets/images/vodichthu.png',
-				'assets/images/toanroirac.png',
-				'assets/images/ktct.png'
-			];
-
-			let li = leftImages.indexOf(leftImg.src.split('/').slice(-1)[0]) >= 0 ? leftImages.indexOf(leftImg.src.split('/').slice(-1)[0]) : 0;
-			let ri = rightImages.indexOf(rightImg.src.split('/').slice(-1)[0]) >= 0 ? rightImages.indexOf(rightImg.src.split('/').slice(-1)[0]) : 0;
-
-			// Normalize indexes by filename (in case src is absolute)
-			function filename(src){ return src ? src.split('/').pop() : '' }
-			li = leftImages.findIndex(p => filename(leftImg.src) === filename(p)); if (li < 0) li = 0;
-			ri = rightImages.findIndex(p => filename(rightImg.src) === filename(p)); if (ri < 0) ri = 0;
-
-			function preload(src){ const i = new Image(); i.src = src; }
-
-			function rotateOnce(){
-				li = (li + 1) % leftImages.length;
-				ri = (ri + 1) % rightImages.length;
-				// preload then swap to reduce flicker
-				preload(leftImages[li]);
-				preload(rightImages[ri]);
-				leftImg.src = leftImages[li];
-				rightImg.src = rightImages[ri];
-			}
-
-			// start rotation every 3 seconds
-			const rotateInterval = 3000;
-			let rotTimer = setInterval(rotateOnce, rotateInterval);
-
-			// pause rotation while viewer is open to avoid sudden swaps
-			const observer = new MutationObserver(() => {
-				const open = viewerOverlay && viewerOverlay.getAttribute('aria-hidden') === 'false';
-				if (open) { clearInterval(rotTimer); rotTimer = null; }
-				else if (!rotTimer) { rotTimer = setInterval(rotateOnce, rotateInterval); }
-			});
-			observer.observe(viewerOverlay, { attributes: true, attributeFilter: ['aria-hidden'] });
-		})();
-	</script>
-
-
+        <div class="footer-column">
+            <h4>Theo dõi chúng tôi</h4>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 UNISHELF. All rights reserved.</p>
+    </div>
+</footer>
 </body>
 
 </html>
-
-
