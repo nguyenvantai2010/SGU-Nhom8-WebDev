@@ -81,7 +81,7 @@ function updateCartDisplay() {
         <img src="${item.image}" alt="${item.name}" class="cart-item-image">
         <div class="cart-item-details">
           <h3>${item.name}</h3>
-<p>Số lượng: ${item.quantity}</p>
+          <p>Số lượng: ${item.quantity}</p>
           <p>Giá: ${formatK(item.price)}</p>
         </div>
         <button class="remove-item" onclick="removeFromCart(${index})">
@@ -1054,16 +1054,8 @@ function renderMarketItems(page = 1) {
     container.innerHTML = "";
     container.innerHTML = "";
     
-    // Thêm ID cho mỗi sản phẩm và lưu vào localStorage
-    Object.values(marketItems).forEach(category => {
-        category.items.forEach(item => {
-            if (!item.id) {
-                item.id = generateId(item.name);
-            }
-        });
-    });
-    
-    // Lưu toàn bộ dữ liệu sản phẩm vào localStorage
+ 
+// Lưu toàn bộ dữ liệu sản phẩm vào localStorage
 // Lưu toàn bộ dữ liệu sản phẩm vào localStorage
 localStorage.setItem('marketItems', JSON.stringify(marketItems));
     const allItems = Object.values(marketItems).map(cat => cat.items).flat(); // Lấy mảng items bên trong rồi gộp lại // Lấy mảng items bên trong rồi gộp lại
