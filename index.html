@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Home</title>
 	<link rel="stylesheet" href="css/globalStyle.css">
     <link rel="stylesheet" href="css/index.css">
@@ -18,14 +18,17 @@
 
 
 
+<!-- Nút mở sidebar (mobile) -->
 <button id="open-sidebar-button" onclick="openSidebar()" aria-label="open sidebar" aria-expanded="false" aria-controls="navbar">
     <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#c9c9c9">
         <path d="M165.13-254.62q-10.68 0-17.9-7.26-7.23-7.26-7.23-18t7.23-17.86q7.22-7.13 17.9-7.13h629.74q10.68 0 17.9 7.26 7.23 7.26 7.23 18t-7.23 17.87q-7.22 7.12-17.9 7.12H165.13Zm0-200.25q-10.68 0-17.9-7.27-7.23-7.26-7.23-17.99 0-10.74 7.23-17.87 7.22-7.13 17.9-7.13h629.74q10.68 0 17.9 7.27 7.23 7.26 7.23 17.99 0 10.74-7.23 17.87-7.22 7.13-17.9 7.13H165.13Zm0-200.26q-10.68 0-17.9-7.26-7.23-7.26-7.23-18t7.23-17.87q7.22-7.12 17.9-7.12h629.74q10.68 0 17.9 7.26 7.23 7.26 7.23 18t-7.23 17.86q-7.22 7.13-17.9 7.13H165.13Z"/>
     </svg>
 </button>
 
+<!-- Navbar -->
 <nav id="navbar">
     <ul>
+        <!-- Nút đóng sidebar (mobile) -->
         <li>
             <button id="close-sidebar-button" onclick="closeSidebar()" aria-label="close sidebar">
                 <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#c9c9c9">
@@ -34,6 +37,7 @@
             </button>
         </li>
 
+        <!-- Home -->
         <li class="home-li">
             <a href="index.html">
                 <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
@@ -43,6 +47,7 @@
             </a>
         </li>
 
+        <!-- Market -->
         <li>
             <a href="pages/market.html">
                 <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
@@ -52,6 +57,9 @@
             </a>
         </li>
 
+        <!-- ===== PHẦN AUTHENTICATION ===== -->
+        
+        <!-- Nút Login (hiện khi chưa đăng nhập) -->
         <li id="loginLi" style="display: block;">
             <a class="accent-link" href="#" onclick="handleLogin(event)">
                 <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
@@ -61,6 +69,7 @@
             </a>
         </li>
         
+        <!-- Account Dropdown (ẩn mặc định, hiện khi đã đăng nhập) -->
         <li id="accountLi" style="display: none;">
             <a href="#" class="account-link" onclick="toggleDropdown(event)">
                 <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
@@ -70,12 +79,15 @@
                 <span style="font-size: 0.8em;">▼</span>
             </a>
             
+            <!-- Dropdown Menu -->
             <ul class="dropdown-menu" id="dropdownMenu">
+                <!-- Header với thông tin user -->
                 <li class="dropdown-header">
                     <div class="user-name" id="dropdownUserName">User</div>
                     <div class="user-email" id="dropdownUserEmail">user@example.com</div>
                 </li>
                 
+                <!-- Lịch sử mua hàng -->
                 <li>
                     <a href="#purchase-history">
                         <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
@@ -85,6 +97,7 @@
                     </a>
                 </li>
                 
+                <!-- Lịch sử bán hàng -->
                 <li>
                     <a href="#sales-history">
                         <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
@@ -94,6 +107,7 @@
                     </a>
                 </li>
                 
+                <!-- Cài đặt -->
                 <li>
                     <a href="#settings">
                         <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
@@ -102,18 +116,11 @@
                         Cài đặt tài khoản
                     </a>
                 </li>
-
-                <li>
-                    <a href="#change-password">
-                        <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
-                            <path d="M200-120q-33 0-56.5-23.5T120-200v-280q0-33 23.5-56.5T200-560h40v-80q0-83 58.5-141.5T440-840q83 0 141.5 58.5T640-640v80h40q33 0 56.5 23.5T760-480v280q0 33-23.5 56.5T680-120H200Zm0-80h480v-280H200v280Zm240-160q-17 0-28.5-11.5T400-400q0-17 11.5-28.5T440-440q17 0 28.5 11.5T480-400q0 17-11.5 28.5T440-360ZM360-560h160v-80q0-33-23.5-56.5T440-720q-33 0-56.5 23.5T360-640v80Z"/>
-                        </svg>
-                        Đổi mật khẩu
-                    </a>
-                </li>
                 
+                <!-- Divider -->
                 <li class="dropdown-divider"></li>
                 
+                <!-- Logout -->
                 <li>
                     <a href="#" class="logout-link" onclick="handleLogout(event)">
                         <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
@@ -127,6 +134,7 @@
     </ul>
 </nav>
 
+<!-- Overlay cho mobile -->
 <div id="overlay" onclick="closeSidebar()" aria-hidden="true"></div>
 
 
@@ -216,6 +224,7 @@
     </section>
 </main>
 
+	<!-- Fullscreen viewer for outer frames -->
 	<div id="viewer-overlay" aria-hidden="true">
 		<div class="viewer-bg" id="viewerBg"></div>
 		<div class="viewer-content" role="dialog" aria-modal="true">
