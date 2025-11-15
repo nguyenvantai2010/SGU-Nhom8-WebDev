@@ -93,22 +93,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const users = JSON.parse(localStorage.getItem("users")) || [];
+    
+    // (MỚI) Kiểm tra Username trùng
     const existingUser = users.find(u => u.username === signupUsername.value);
-
     if (existingUser) {
       signupMessage.textContent = "Username already taken!";
       return;
     }
+
+    // (MỚI) Kiểm tra Email trùng
+    const existingEmail = users.find(u => u.email === signupEmail.value);
+    if (existingEmail) {
+        signupMessage.textContent = "Email already in use!";
+        return;
+    }
+
     if(signupUsername.value==="admin"){
       signupMessage.textContent="Admin user can't be registered!";
       return;
     }
 
+    // (MỚI) Thêm các trường rỗng cho name, address, phone
     users.push({
       username: signupUsername.value,
       email: signupEmail.value,
       password: signupPassword.value,
-      active: true
+      active: true,
+      name: "",       // (MỚI)
+      address: "",  // (MỚI)
+      phone: ""     // (MỚI)
     });
 
     localStorage.setItem("users", JSON.stringify(users));

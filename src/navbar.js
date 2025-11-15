@@ -5,6 +5,22 @@ let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 document.addEventListener('DOMContentLoaded', () => {
     checkLoginStatus();
     updateCartBadge(); // THÊM: Cập nhật badge ngay khi load
+    setupProfileModalListeners(); // Cài đặt modal "Cài đặt tài khoản"
+    setupPasswordModalListeners(); // Cài đặt modal "Đổi mật khẩu"
+
+    // Listener chung cho Overlay để đóng tất cả các modal
+    const overlay = document.getElementById('profile-overlay');
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.style.display = 'none';
+                const pModal = document.getElementById('profile-modal');
+                const passModal = document.getElementById('password-modal');
+                if (pModal) pModal.style.display = 'none';
+                if (passModal) passModal.style.display = 'none';
+            }
+        });
+    }
 });
 
 
@@ -88,8 +104,11 @@ function showAccountDropdown(user) {
     const dropdownUserName = document.getElementById('dropdownUserName');
     const dropdownUserEmail = document.getElementById('dropdownUserEmail');
     
-    if (userName) userName.textContent = user.name;
-    if (dropdownUserName) dropdownUserName.textContent = user.name;
+    // Ưu tiên "name" (Tên đầy đủ) nếu có, nếu không thì dùng "username"
+    const displayName = user.name || user.username;
+    
+    if (userName) userName.textContent = displayName;
+    if (dropdownUserName) dropdownUserName.textContent = displayName;
     if (dropdownUserEmail) dropdownUserEmail.textContent = user.email;
 }
 
@@ -171,7 +190,12 @@ window.addEventListener('click', function(e) {
 const dropdownLinks = document.querySelectorAll('.dropdown-menu a');
 dropdownLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-        if (!link.classList.contains('account-link') && !link.classList.contains('logout-link')) {
+        // Không đóng sidebar khi click vào "Cài đặt", "Đổi mật khẩu" hoặc "Logout"
+        if (!link.classList.contains('account-link') && 
+            !link.classList.contains('logout-link') && 
+            !link.href.includes('#settings') &&
+            !link.href.includes('#change-password')
+            ) {
             if (media.matches) {
                 closeSidebar();
             }
@@ -211,3 +235,199 @@ window.addEventListener('storage', function(e) {
 
 // Export để cart.js và các file khác có thể gọi
 window.updateCartBadge = updateCartBadge;
+
+
+// ===== PROFILE SETTINGS MODAL =====
+
+function setupProfileModalListeners() {
+    const settingsLink = document.querySelector('a[href="#settings"]');
+    const profileModal = document.getElementById('profile-modal');
+    const profileOverlay = document.getElementById('profile-overlay');
+    const closeBtn = document.getElementById('close-profile-btn');
+    const profileForm = document.getElementById('profile-form');
+    const messageEl = document.getElementById('profile-message'); // (MỚI) Thêm dòng này
+
+    if (!settingsLink || !profileModal || !profileOverlay || !closeBtn || !profileForm || !messageEl) { // (MỚI) Thêm messageEl
+        console.warn("Một số thành phần của Profile Modal không tìm thấy.");
+        return;
+    }
+
+    // Mở Modal
+    settingsLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!currentUser) return; // Không mở nếu chưa đăng nhập
+
+        // Đóng dropdown trước khi mở modal
+        const dropdown = document.getElementById('dropdownMenu');
+        if (dropdown) dropdown.classList.remove('show');
+
+        // Tải dữ liệu hiện tại vào form
+        document.getElementById('profile-name').value = currentUser.name || '';
+        document.getElementById('profile-email').value = currentUser.email || ''; // (MỚI) Thêm dòng này
+        document.getElementById('profile-address').value = currentUser.address || '';
+        document.getElementById('profile-phone').value = currentUser.phone || '';
+        messageEl.textContent = ''; // (MỚI) Xóa thông báo cũ
+
+        // Hiển thị modal
+        profileOverlay.style.display = 'block';
+        profileModal.style.display = 'block';
+    });
+
+    // Đóng Modal (Nút X)
+    const closeProfileModal = () => {
+        profileOverlay.style.display = 'none';
+        profileModal.style.display = 'none';
+        messageEl.textContent = ''; // (MỚI) Xóa thông báo khi đóng
+    };
+
+    closeBtn.addEventListener('click', closeProfileModal);
+
+    // Lưu thông tin
+    profileForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        messageEl.textContent = '';
+        messageEl.style.color = 'red';
+        
+        // 1. Lấy dữ liệu từ form
+        const newName = document.getElementById('profile-name').value;
+        const newEmail = document.getElementById('profile-email').value; // (MỚI) Thêm dòng này
+        const newAddress = document.getElementById('profile-address').value;
+        const newPhone = document.getElementById('profile-phone').value;
+
+        // (MỚI) 2. Kiểm tra Email trùng lặp
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        const emailExists = users.find(u => u.email === newEmail && u.username !== currentUser.username);
+
+        if (emailExists) {
+            messageEl.textContent = 'Email này đã được sử dụng bởi tài khoản khác.';
+            return;
+        }
+
+        // 3. Cập nhật đối tượng 'currentUser' (biến toàn cục)
+        currentUser.name = newName;
+        currentUser.email = newEmail; // (MỚI) Thêm dòng này
+        currentUser.address = newAddress;
+        currentUser.phone = newPhone;
+
+        // 4. Cập nhật 'currentUser' trong localStorage
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+        // 5. CẬP NHẬT danh sách 'users' (quan trọng cho admin và lần đăng nhập sau)
+        try {
+            // (Đã dời `let users` lên trên để check email)
+            const userIndex = users.findIndex(u => u.username === currentUser.username);
+            
+            if (userIndex > -1) {
+                // Cập nhật thông tin của user này trong danh sách
+                users[userIndex].name = newName;
+                users[userIndex].email = newEmail; // (MỚI) Thêm dòng này
+                users[userIndex].address = newAddress;
+                users[userIndex].phone = newPhone;
+                // Lưu lại danh sách 'users'
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+        } catch (err) {
+            console.error("Không thể cập nhật danh sách 'users':", err);
+        }
+
+        // 6. Cập nhật giao diện (tên trên navbar)
+        const displayName = currentUser.name || currentUser.username;
+        document.getElementById('userName').textContent = displayName;
+        document.getElementById('dropdownUserName').textContent = displayName;
+        document.getElementById('dropdownUserEmail').textContent = newEmail; // (MỚI) Thêm dòng này
+
+        // 7. Đóng modal (sau khi báo thành công)
+        messageEl.style.color = 'green';
+        messageEl.textContent = 'Cập nhật thông tin thành công!';
+        
+        setTimeout(closeProfileModal, 1500);
+    });
+}
+
+// ===== CHANGE PASSWORD MODAL =====
+function setupPasswordModalListeners() {
+    const changePasswordLink = document.querySelector('a[href="#change-password"]');
+    const passwordModal = document.getElementById('password-modal');
+    const profileOverlay = document.getElementById('profile-overlay'); // Re-use the same overlay
+    const closeBtn = document.getElementById('close-password-btn');
+    const passwordForm = document.getElementById('password-form');
+    const messageEl = document.getElementById('password-message');
+
+    if (!changePasswordLink || !passwordModal || !profileOverlay || !closeBtn || !passwordForm || !messageEl) {
+        console.warn("Một số thành phần của Password Modal không tìm thấy.");
+        return;
+    }
+
+    // Mở Modal
+    changePasswordLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!currentUser) return;
+
+        const dropdown = document.getElementById('dropdownMenu');
+        if (dropdown) dropdown.classList.remove('show');
+
+        messageEl.textContent = ''; // Xóa thông báo cũ
+        passwordForm.reset(); // Xóa input cũ
+        profileOverlay.style.display = 'block';
+        passwordModal.style.display = 'block';
+    });
+
+    // Đóng Modal
+    const closePasswordModal = () => {
+        profileOverlay.style.display = 'none';
+        passwordModal.style.display = 'none';
+        messageEl.textContent = '';
+        passwordForm.reset();
+    };
+
+    closeBtn.addEventListener('click', closePasswordModal);
+
+    // Lưu Mật Khẩu Mới
+    passwordForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        messageEl.textContent = '';
+        messageEl.style.color = 'red';
+
+        const oldPassword = document.getElementById('old-password').value;
+        const newPassword = document.getElementById('new-password').value;
+        const confirmNewPassword = document.getElementById('confirm-new-password').value;
+
+        // 1. Check mật khẩu cũ
+        if (oldPassword !== currentUser.password) {
+            messageEl.textContent = 'Mật khẩu cũ không đúng.';
+            return;
+        }
+        
+        // 2. Check mật khẩu mới (dài > 6)
+        if (newPassword.length < 6) {
+            messageEl.textContent = 'Mật khẩu mới phải có ít nhất 6 ký tự.';
+            return;
+        }
+
+        // 3. Check mật khẩu mới khớp
+        if (newPassword !== confirmNewPassword) {
+            messageEl.textContent = 'Mật khẩu mới không khớp.';
+            return;
+        }
+
+        // Tất cả đều ổn -> Lưu
+        currentUser.password = newPassword;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+        try {
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            const userIndex = users.findIndex(u => u.username === currentUser.username);
+            if (userIndex > -1) {
+                users[userIndex].password = newPassword;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+        } catch (err) {
+            console.error("Không thể cập nhật mật khẩu trong 'users' list:", err);
+        }
+
+        messageEl.style.color = 'green';
+        messageEl.textContent = 'Đổi mật khẩu thành công!';
+        
+        setTimeout(closePasswordModal, 1500);
+    });
+}

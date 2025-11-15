@@ -9,29 +9,21 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/marketPage.css">
     <script src="../src/navbar.js" defer></script>
-    <link rel="stylesheet" href="../css/cart.css">
-    <link rel="stylesheet" href="../css/productDetail.css">
     <script type="module" src="../src/marketController.js" defer></script>
-    <script type="module" src="../src/cart.js"></script>
     
 </head>
 <body>
 
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- ===== COPY PHẦN NÀY VÀO TẤT CẢ CÁC TRANG ===== -->
-
-<!-- Nút mở sidebar (mobile) -->
-<button id="open-sidebar-button" onclick="openSidebar()" aria-label="open sidebar" aria-expanded="false" aria-controls="navbar">
+    <button id="open-sidebar-button" onclick="openSidebar()" aria-label="open sidebar" aria-expanded="false" aria-controls="navbar">
     <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#c9c9c9">
         <path d="M165.13-254.62q-10.68 0-17.9-7.26-7.23-7.26-7.23-18t7.23-17.86q7.22-7.13 17.9-7.13h629.74q10.68 0 17.9 7.26 7.23 7.26 7.23 18t-7.23 17.87q-7.22 7.12-17.9 7.12H165.13Zm0-200.25q-10.68 0-17.9-7.27-7.23-7.26-7.23-17.99 0-10.74 7.23-17.87 7.22-7.13 17.9-7.13h629.74q10.68 0 17.9 7.27 7.23 7.26 7.23 17.99 0 10.74-7.23 17.87-7.22 7.13-17.9 7.13H165.13Zm0-200.26q-10.68 0-17.9-7.26-7.23-7.26-7.23-18t7.23-17.87q7.22-7.12 17.9-7.12h629.74q10.68 0 17.9 7.26 7.23 7.26 7.23 18t-7.23 17.86q-7.22 7.13-17.9 7.13H165.13Z"/>
     </svg>
 </button>
 
-<!-- Navbar -->
 <nav id="navbar">
     <ul>
-        <!-- Nút đóng sidebar (mobile) -->
         <li>
             <button id="close-sidebar-button" onclick="closeSidebar()" aria-label="close sidebar">
                 <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#c9c9c9">
@@ -40,7 +32,6 @@
             </button>
         </li>
 
-        <!-- Home -->
         <li class="home-li">
             <a href="../index.html">
                 <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
@@ -50,7 +41,6 @@
             </a>
         </li>
 
-        <!-- Market -->
         <li>
             <a href="../pages/market.html">
                 <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
@@ -60,9 +50,6 @@
             </a>
         </li>
 
-        <!-- ===== PHẦN AUTHENTICATION ===== -->
-        
-        <!-- Nút Login (hiện khi chưa đăng nhập) -->
         <li id="loginLi" style="display: block;">
             <a class="accent-link" href="#" onclick="handleLogin(event)">
                 <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
@@ -72,7 +59,6 @@
             </a>
         </li>
         
-        <!-- Account Dropdown (ẩn mặc định, hiện khi đã đăng nhập) -->
         <li id="accountLi" style="display: none;">
             <a href="#" class="account-link" onclick="toggleDropdown(event)">
                 <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
@@ -82,26 +68,13 @@
                 <span style="font-size: 0.8em;">▼</span>
             </a>
             
-            <!-- Dropdown Menu -->
             <ul class="dropdown-menu" id="dropdownMenu">
-                <!-- Header với thông tin user -->
                 <li class="dropdown-header">
                     <div class="user-name" id="dropdownUserName">User</div>
                     <div class="user-email" id="dropdownUserEmail">user@example.com</div>
                 </li>
                 
-                <!-- Thông tin tài khoản -->
-                <li>
-                    <a href="#account-info">
-                        <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
-                            <path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Z"/>
-                        </svg>
-                        Thông tin tài khoản
-                    </a>
-                </li>
-                
-               <!-- Lịch sử mua hàng -->
-<li>
+               <li>
     <a href="http://127.0.0.1:5500/SGU-Nhom8-WebDev-dev2/pages/cart.html">
         <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
             <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Z"/>
@@ -110,7 +83,6 @@
     </a>
 </li>
 
-                <!-- Cài đặt -->
                 <li>
                     <a href="#settings">
                         <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
@@ -120,10 +92,17 @@
                     </a>
                 </li>
                 
-                <!-- Divider -->
+                <li>
+                    <a href="#change-password">
+                        <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                            <path d="M200-120q-33 0-56.5-23.5T120-200v-280q0-33 23.5-56.5T200-560h40v-80q0-83 58.5-141.5T440-840q83 0 141.5 58.5T640-640v80h40q33 0 56.5 23.5T760-480v280q0 33-23.5 56.5T680-120H200Zm0-80h480v-280H200v280Zm240-160q-17 0-28.5-11.5T400-400q0-17 11.5-28.5T440-440q17 0 28.5 11.5T480-400q0 17-11.5 28.5T440-360ZM360-560h160v-80q0-33-23.5-56.5T440-720q-33 0-56.5 23.5T360-640v80Z"/>
+                        </svg>
+                        Đổi mật khẩu
+                    </a>
+                </li>
+
                 <li class="dropdown-divider"></li>
                 
-                <!-- Logout -->
                 <li>
                     <a href="#" class="logout-link" onclick="handleLogout(event)">
                         <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
@@ -140,11 +119,9 @@
     </ul>
 </nav>
 
-<!-- Overlay cho mobile -->
 <div id="overlay" onclick="closeSidebar()" aria-hidden="true"></div>
 
-<!-- ===== HẾT PHẦN NAVBAR ===== -->
-    <div class="market-layout">
+<div class="market-layout">
         <div class="left-side-bar">
             <div class="filter-bars">
 
@@ -181,7 +158,7 @@
 
     <div class="product-container"  id="productDetail">
         <div class="product-image">
-            <img id="product-image" src="" alt="Product Image" onerror="this.src='../assets/images/placeholder.png'">
+            <img id="product-image" alt="Product Image" onerror="this.src='../assets/images/placeholder.png'">
         </div>
         <div class="product-info">
             <p class="product-heading">THÔNG TIN SẢN PHẨM</p>
@@ -224,8 +201,7 @@
         </div>
         
         <div class="cart-items">
-            <!-- Cart items will be inserted here by JavaScript -->
-        </div>
+            </div>
         
         <div class="cart-summary">
             <div class="cart-total">
@@ -238,9 +214,7 @@
             </button>
         </div>
         </div>
-    </div>
 
-    <!-- QR Payment Modal -->
     <div class="qr-modal" id="qrModal" style="display: none;">
         <div class="qr-modal-overlay"></div>
         <div class="qr-modal-content">
@@ -267,6 +241,57 @@
         </div>
     </div>
 
+<div class="profile-overlay" id="profile-overlay"></div>
+<div class="profile-modal" id="profile-modal">
+    
+    <div class="profile-modal-header">
+        <h2>Cài đặt tài khoản</h2>
+        <button id="close-profile-btn" aria-label="Đóng">&times;</button>
+    </div>
+
+    <form id="profile-form">
+        <div class="form-group">
+            <label for="profile-name">Tên hiển thị</label>
+            <input type="text" id="profile-name" placeholder="Tên đầy đủ của bạn">
+        </div>
+        <div class="form-group">
+            <label for="profile-email">Email</label>
+            <input type="email" id="profile-email" placeholder="Email của bạn" required>
+        </div>
+        <div class="form-group">
+            <label for="profile-address">Địa chỉ</label>
+            <input type="text" id="profile-address" placeholder="Địa chỉ nhận hàng">
+        </div>
+        <div class="form-group">
+            <label for="profile-phone">Số điện thoại</label>
+            <input type="tel" id="profile-phone" placeholder="Số điện thoại liên lạc">
+        </div>
+        
+        <p id="profile-message"></p> <button type="submit" id="save-profile-btn">Lưu thay đổi</button>
+    </form>
+
+</div>
+<div class="profile-modal" id="password-modal" style="display: none;">
+    <div class="profile-modal-header">
+        <h2>Đổi mật khẩu</h2>
+        <button id="close-password-btn" aria-label="Đóng">&times;</button>
+    </div>
+    <form id="password-form">
+        <div class="form-group">
+            <label for="old-password">Mật khẩu cũ</label>
+            <input type="password" id="old-password" required>
+        </div>
+        <div class="form-group">
+            <label for="new-password">Mật khẩu mới</label>
+            <input type="password" id="new-password" required>
+        </div>
+        <div class="form-group">
+            <label for="confirm-new-password">Xác nhận mật khẩu mới</label>
+            <input type="password" id="confirm-new-password" required>
+        </div>
+        <p id="password-message"></p>
+        <button type="submit" id="save-password-btn">Lưu mật khẩu</button>
+    </form>
+</div>
 </body>
 </html>
-

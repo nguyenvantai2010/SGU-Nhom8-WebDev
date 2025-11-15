@@ -116,3 +116,111 @@
         padding: 0.6rem 1rem;
     }
 }
+
+/* ===== (MỚI) Profile Settings Modal ===== */
+.profile-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1999;
+}
+
+.profile-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    color: #333;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    z-index: 2000;
+    width: 90%;
+    max-width: 500px;
+    padding: 25px;
+}
+
+.profile-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.profile-modal-header h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #333;
+}
+
+#close-profile-btn,
+#close-password-btn { /* (MỚI) Áp dụng cho cả 2 nút đóng */
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #999;
+    line-height: 1;
+    padding: 0 5px;
+}
+#close-profile-btn:hover,
+#close-password-btn:hover { /* (MỚI) Áp dụng cho cả 2 nút đóng */
+    color: #333;
+}
+
+#profile-form .form-group,
+#password-form .form-group { /* (MỚI) Áp dụng cho cả 2 form */
+    margin-bottom: 15px;
+}
+
+#profile-form .form-group label,
+#password-form .form-group label { /* (MỚI) Áp dụng cho cả 2 form */
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+#profile-form .form-group input,
+#password-form .form-group input { /* (MỚI) Áp dụng cho cả 2 form */
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+#save-profile-btn,
+#save-password-btn { /* (MỚI) Áp dụng cho cả 2 nút lưu */
+    width: 100%;
+    padding: 12px;
+    background: var(--login-button, #08a58e); /* Dùng màu nút login */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+#save-profile-btn:hover,
+#save-password-btn:hover { /* (MỚI) Áp dụng cho cả 2 nút lưu */
+    background: var(--navbar-hover-color, #024c40);
+}
+
+/* (MỚI) Style cho thông báo lỗi/thành công trong modal */
+#password-message {
+    font-size: 0.9em;
+    margin-bottom: 15px; /* Thêm khoảng cách trước nút */
+    text-align: center;
+    color: red; /* Mặc định là màu đỏ */
+}
