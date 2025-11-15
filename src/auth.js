@@ -49,7 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const user = users.find(u => u.username === loginUsername.value && u.password === loginPassword.value);
 
     if (user) {
-      loginMessage.style.color = "green";
+      if(!user.active){
+        loginMessage.textContent="Tài khoản đã bị khóa, vui lòng liên hệ admin để biết thêm chi tiết.";
+      }
+      else {loginMessage.style.color = "green";
       loginMessage.textContent = "Login successful! Redirecting...";
       
       // Lưu trạng thái đăng nhập
@@ -58,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Redirect về trang chủ sau 1.5s
       setTimeout(() => {
         window.location.href = "../index.html";
-      }, 1500);
+      }, 1500);}
     } else {
       loginMessage.textContent = "Invalid username or password!";
     }

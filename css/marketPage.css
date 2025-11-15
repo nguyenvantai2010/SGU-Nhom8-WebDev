@@ -632,6 +632,7 @@ body {
     font-size: 3rem;
     margin-bottom: 15px;
     color: #ccc;
+} /* <--- DẤU } ĐÃ ĐƯỢC THÊM VÀO ĐÂY */
 
 /* ===== Orders / Purchase History Modal ===== */
 .orders-modal {
@@ -878,10 +879,7 @@ body {
     color: #333;
     font-weight: 700;
 }
-    color: #333;
-    font-size: 24px;
-    font-weight: 600;
-}
+
 .cart-item {
     display: flex;
     border: 1px solid rgba(139, 20, 249, 0.1);
