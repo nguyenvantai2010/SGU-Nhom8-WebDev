@@ -1400,3 +1400,39 @@ if (value > maxQuantity) input.value = maxQuantity;
         document.addEventListener('click', closePopup);
     }, 100);
 }
+
+// ===== XỬ LÝ MỞ POPUP TỪ HOME PAGE =====
+document.addEventListener('DOMContentLoaded', () => {
+    // Kiểm tra xem có query parameter "product" không
+    const urlParams = new URLSearchParams(window.location.search);
+    const productName = urlParams.get('product');
+    
+    if (productName) {
+        // Decode tên sản phẩm
+        const decodedName = decodeURIComponent(productName);
+        
+        // Tìm sản phẩm trong marketItems
+        const dataString = localStorage.getItem("adminProducts") || localStorage.getItem("marketItems");
+        if (dataString) {
+            const marketData = JSON.parse(dataString);
+            let foundProduct = null;
+            
+            // Tìm trong tất cả categories
+            Object.values(marketData).forEach(category => {
+                if (category.items) {
+                    const product = category.items.find(item => item.name === decodedName);
+                    if (product) foundProduct = product;
+                }
+            });
+            
+            // Nếu tìm thấy, mở popup sau 500ms (đợi trang load xong)
+            if (foundProduct) {
+                setTimeout(() => {
+                    showProductDetail(foundProduct);
+                    // Xóa query parameter khỏi URL (không reload trang)
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }, 500);
+            }
+        }
+    }
+});
