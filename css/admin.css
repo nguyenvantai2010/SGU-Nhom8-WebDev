@@ -25,6 +25,7 @@
   width: 200px;
   background-color: #2a2a3a; /* Nền sidebar tối */
   border-right: 1px solid #444;
+  height: 100%;
 }
 
 .admin-category-bar {

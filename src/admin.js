@@ -536,9 +536,34 @@ function saveAccountsToStorage() {
     localStorage.setItem("users", dataString);
 }
 //tài khoản mặc định
-const accountsList = JSON.parse(localStorage.getItem("users")) || [
-    { username: "user", password: "123456", email: "user@gmail.com", active: true }
-];
+function generateDefaultUsers(count) {
+    const defaultUsers = [];
+    // Thêm tài khoản user mặc định ban đầu
+    defaultUsers.push({ 
+        username: "user", 
+        password: "123456", 
+        email: "user@gmail.com", 
+        active: true,
+        name: "Người dùng Mặc Định",
+        address: "456 Đường Demo, Quận 1, TP.HCM"
+    });
+    
+    // Tạo 20 tài khoản testuser1 đến testuser20
+    for (let i = 1; i <= count; i++) {
+        defaultUsers.push({
+            username: `testuser${i}`,
+            password: "123456",
+            email: `testuser${i}@unishelf.com`,
+            active: true,
+            name: `Khách hàng ${i}`,
+            address: `123 Đường Thử Nghiệm, Quận ${Math.ceil(i/5)}, TP.HCM`
+        });
+    }
+    return defaultUsers;
+}
+
+// tài khoản mặc định
+const accountsList = JSON.parse(localStorage.getItem("users")) || generateDefaultUsers(20);
 let currentAccountEditIndex = null; 
 const accModal = document.getElementById("AccountForm");
 const AccountForm = document.getElementById("acc-frm");
@@ -1521,13 +1546,13 @@ document.getElementById("imports").style.display = "none";
 document.getElementById("price").style.display = "none";
 
 
-// *** THÊM MỚI ***
 // Lắng nghe sự kiện thay đổi trạng thái đơn hàng
 document.querySelector(".orders-table tbody").addEventListener('change', (e) => {
     if (e.target.classList.contains('order-status-select')) {
         const orderId = e.target.dataset.id;
         const newStatus = e.target.value;
         
+
         const allOrders = loadAllOrdersFromStorage();
         const orderIndex = allOrders.findIndex(o => o.id === orderId);
         
@@ -1535,7 +1560,20 @@ document.querySelector(".orders-table tbody").addEventListener('change', (e) => 
             allOrders[orderIndex].status = newStatus;
             saveAllOrdersToStorage(allOrders);
             
-            // Render lại bảng để cập nhật màu sắc
+            const userOrdersString = localStorage.getItem('orders');
+            if (userOrdersString) {
+                try {
+                    let userOrders = JSON.parse(userOrdersString);
+                    const userOrderIndex = userOrders.findIndex(o => o.id === orderId);
+                    if (userOrderIndex !== -1) {
+                        userOrders[userOrderIndex].status = newStatus;
+                        localStorage.setItem('orders', JSON.stringify(userOrders));
+                    }
+                } catch (e) {
+                    console.error("Lỗi cập nhật đơn hàng cá nhân:", e);
+                }
+            }
+            
             renderOrdersTable(orderCurrentPage);
         }
     }

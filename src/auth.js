@@ -31,6 +31,27 @@ function toggleForm(form) {
     signinBtn.style.display = "none";
   }
 }
+function loadAccountsFromStorage() {
+    const dataString = localStorage.getItem("users");
+    return dataString ? JSON.parse(dataString) : [];
+}
+const accountsList = loadAccountsFromStorage(); 
+
+
+let needsSave = false;
+accountsList.forEach(user => {
+    if (typeof user.active === 'undefined') {
+        user.active = true; 
+        needsSave = true;
+    }
+    if (typeof user.name === 'undefined') { 
+        user.name = user.username || 'N/A';
+        needsSave = true;
+    }
+});
+if (needsSave) {
+    saveAccountsToStorage();
+}
 
 // DOM ready
 document.addEventListener("DOMContentLoaded", () => {

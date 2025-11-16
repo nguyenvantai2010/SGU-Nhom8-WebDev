@@ -47,7 +47,7 @@ window.closeCart = function() {
 };
 
 // Hàm cập nhật hiển thị giỏ hàng
-function updateCartDisplay() {
+window.updateCartDisplay = function() {
     const cartContainer = document.querySelector('.cart-container');
     const cartOverlay = document.querySelector('.cart-overlay');
     const cartItems = document.querySelector('.cart-items');
@@ -78,12 +78,18 @@ function updateCartDisplay() {
         const itemK = parseInt(String(item.price).replace(/[^\d]/g, ''), 10) || 0;
         totalK += itemK * item.quantity;
 
+        // ===== BẮT ĐẦU SỬA: Thêm Nút Tăng/Giảm Số Lượng =====
         return `
           <div class="cart-item">
             <img src="${item.image}" alt="${item.name}" class="cart-item-image">
             <div class="cart-item-details">
               <h3>${item.name}</h3>
-              <p>Số lượng: ${item.quantity}</p>
+              
+              <div class="quantity-controls" style="justify-content: center; gap: 10px; margin: 5px 0;">
+                  <button class="quantity-btn" onclick="decreaseCartItem(${index})">-</button>
+                  <span class="quantity-display" style="min-width: 30px; text-align: center;">${item.quantity}</span>
+                  <button class="quantity-btn" onclick="increaseCartItem(${index})">+</button>
+              </div>
               <p>Giá: ${formatK(item.price)}</p>
             </div>
             <button class="remove-item" onclick="removeFromCart(${index})">
@@ -91,6 +97,8 @@ function updateCartDisplay() {
             </button>
           </div>
         `;
+        // ===== KẾT THÚC SỬA =====
+
     }).join('');
 
     // Hiển thị tổng tiền theo 'k'
@@ -112,6 +120,49 @@ window.removeFromCart = function(index) {
         window.updateCartBadge();
     }
 };
+
+// ===== BẮT ĐẦU THÊM MỚI: Hàm cập nhật số lượng =====
+
+/**
+ * Hàm tăng số lượng của item trong giỏ hàng
+ * @param {number} index - Vị trí của item trong mảng cart
+ */
+window.increaseCartItem = function(index) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cart[index]) {
+        // Bạn có thể thêm logic kiểm tra số lượng tồn kho (quantity) ở đây nếu muốn
+        cart[index].quantity += 1;
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        // Cập nhật lại giao diện
+        updateCartDisplay();
+        if (window.updateCartBadge) window.updateCartBadge();
+    }
+};
+
+/**
+ * Hàm giảm số lượng của item trong giỏ hàng
+ * @param {number} index - Vị trí của item trong mảng cart
+ */
+window.decreaseCartItem = function(index) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cart[index]) {
+        cart[index].quantity -= 1;
+        
+        // Nếu số lượng giảm về 0, xóa item khỏi giỏ hàng
+        if (cart[index].quantity <= 0) {
+            cart.splice(index, 1);
+        }
+        
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        // Cập nhật lại giao diện
+        updateCartDisplay();
+        if (window.updateCartBadge) window.updateCartBadge();
+    }
+};
+
+// ===== KẾT THÚC THÊM MỚI =====
 
 // ===== QR Payment Modal Functions =====
 let countdownInterval = null;
@@ -256,9 +307,12 @@ window.completePayment = function() {
                 return sum + v * (it.quantity || 1);
             }, 0);
 
+            const allOrdersList = JSON.parse(localStorage.getItem('all_orders') || '[]');
+            const newOrderId = `DH-${allOrdersList.length + 1}`;
+
             // Tạo đối tượng đơn hàng
             const order = {
-                id: 'order-' + Date.now(),
+                id: newOrderId,
                 date: new Date().toISOString(),
                 items: cart,
                 total: totalK + 'k',
@@ -267,7 +321,7 @@ window.completePayment = function() {
                     username: currentUser ? currentUser.username : 'Guest',
                     email: currentUser ? currentUser.email : 'N/A'
                 },
-                status: 'pending' // <-- THÊM TRẠNG THÁI MẶC ĐỊNH
+                status: 'Đang xử lý' // <-- THÊM TRẠNG THÁI MẶC ĐỊNH
             };
 
             // 1. Lưu vào lịch sử CÁ NHÂN của người dùng (như cũ)
@@ -361,62 +415,67 @@ window.closeOrderDetails = function() {
   const modal = document.getElementById('orderDetailsModal');
   if (modal) modal.style.display = 'none';
 };
-
 function renderPurchaseHistory() {
-  const container = document.getElementById('ordersList');
-  if (!container) return;
-  const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-  if (!orders || orders.length === 0) {
-    container.innerHTML = '<div class="empty-orders">Bạn chưa có đơn hàng nào.</div>';
-    return;
-  }
+    const container = document.getElementById('ordersList');
+    if (!container) {
+        console.error("Không tìm thấy phần tử #ordersList"); 
+        return; 
+    }
+    
+    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
 
-  container.innerHTML = orders.map(o => {
-    const itemCount = (o.items || []).length;
-    const totalQty = (o.items || []).reduce((sum, it) => sum + (it.quantity || 1), 0);
-    const dateStr = formatDate(o.date);
+    if (!orders || orders.length === 0) {
+        container.innerHTML = '<div class="empty-orders">Bạn chưa có đơn hàng nào.</div>';
+        return;
+    }
 
-    const itemsHtml = (o.items || []).map(it => `
-      <div class="order-item-thumbnail">
-        <img src="${it.image || '../assets/images/nhom.png'}" alt="${it.name}" onerror="this.src='../assets/images/nhom.png'" />
-      </div>
-    `).join('');
+    try {
+        container.innerHTML = orders.map(o => { 
+            if (!o || !o.id) return ''; 
 
-    return `
-      <div class="order-card-centered" onclick="showOrderDetails('${o.id}')" style="cursor:pointer;">
-        <div class="order-card-header">
-          <div class="order-id">${o.id}</div>
-        </div>
-        
-        <div class="order-thumbnails">
-          ${itemsHtml}
-        </div>
-        
-        <div class="order-stats">
-          <div class="stat-item">
-            <span class="stat-label">Ngày mua</span>
-            <span class="stat-value">${dateStr}</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <span class="stat-label">Số lượng</span>
-            <span class="stat-value">${totalQty} sản phẩm</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <span class="stat-label">Tổng tiền</span>
-            <span class="stat-value" style="color:#8b14f9;font-weight:700">${o.total}</span>
-          </div>
-        </div>
-        
-        <div class="order-details-link">
-          <small>${itemCount} mục trong đơn</small>
-        </div>
-      </div>
-    `;
-  }).join('');
+            const totalQty = (o.items || []).reduce((sum, it) => sum + (it.quantity || 1), 0);
+            
+
+            const rawDate = o.date ? o.date.split('T')[0] : 'N/A';
+
+
+
+            let statusText;
+            let statusClass;
+            switch (o.status) {
+                case 'Đang giao':
+                    statusText = 'Đang giao';
+                    statusClass = 'delivering';
+                    break;
+                case 'Đã giao':
+                    statusText = 'Đã giao';
+                    statusClass = 'completed';
+                    break;
+                case 'Đã hủy':
+                    statusText = 'Đã hủy';
+                    statusClass = 'cancelled';
+                    break;
+                case 'Chờ xử lý': 
+                default:
+                    statusText = 'Chờ xử lý';
+                    statusClass = 'waiting';
+            }
+            
+            return `
+              <div class="order-row">
+                <span class="order-row-id">${o.id}</span>
+                <span class="order-row-date">${rawDate}</span> 
+                <span class="order-row-qty">${totalQty} sp</span>
+                <span class="order-row-total">${o.total}</span>
+                <span class="order-status ${statusClass}">${statusText}</span>
+              </div>
+            `;
+        }).join('');
+    } catch (e) {
+        console.error("Lỗi nghiêm trọng khi render lịch sử mua hàng:", e);
+        container.innerHTML = '<div class="empty-orders" style="color:red;">Lỗi khi tải lịch sử. Vui lòng F5.</div>';
+    }
 }
-
 // ===== Market Logic =====
 
 export const market = {
@@ -1291,19 +1350,25 @@ window.addEventListener('storage', (event) => {
     const adminKeys = [
         'adminProducts',
         'users',         
-        'adminImports'   
+        'adminImports',
+        'all-orders' 
     ];
 
     if (adminKeys.includes(event.key)) {
         location.reload();
     }
+    if (event.key === 'orders') {
+        const ordersModal = document.getElementById('ordersModal');
+        // Chỉ render lại nếu modal lịch sử đang mở
+        if (ordersModal && ordersModal.style.display === 'flex') {
+            // Gọi lại hàm render để cập nhật trạng thái mới
+            renderPurchaseHistory(); 
+        }
+    }
 });
 
 
-// ===== SỬA: GẮN SỰ KIỆN NÚT LỊCH SỬ MUA HÀNG (Chạy sau khi DOM ready) =====
-// Mã này chạy sau khi DOM được phân tích cú pháp (do 'defer') 
-// và (hy vọng) sau khi navbar.js's DOMContentLoaded đã chạy và hiển thị nút.
-
+//Hiển thị lịch sử mua hàng
 const historyBtn = document.getElementById('show-history-btn');
 if (historyBtn) {
     historyBtn.addEventListener('click', (e) => {
@@ -1327,6 +1392,109 @@ if (historyBtn) {
             window.closeSidebar();
         }
     });
+}
+
+// ===== SETTINGS MODAL FUNCTIONS =====
+
+function loadUserSettings() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) return null;
+
+    // Lấy danh sách users chi tiết để tìm Tên và Địa chỉ đã lưu
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    return users.find(u => u.username === currentUser.username);
+}
+
+function renderSettingsModal() {
+    const userDetail = loadUserSettings();
+    if (!userDetail) return;
+
+    // Điền dữ liệu vào form
+    document.getElementById('setting-username').value = userDetail.username || '';
+    document.getElementById('setting-email').value = userDetail.email || '';
+    document.getElementById('setting-name').value = userDetail.name || '';
+    document.getElementById('setting-address').value = userDetail.address || '';
+}
+
+window.showSettingsModal = function() {
+    renderSettingsModal();
+    const modal = document.getElementById('settingsModal');
+    if (modal) modal.style.display = 'flex';
+};
+
+window.closeSettingsModal = function() {
+    const modal = document.getElementById('settingsModal');
+    if (modal) modal.style.display = 'none';
+};
+
+// Hàm này lưu settings (cũng được gọi trong quá trình checkout)
+// ... (các code khác) ...
+
+// window.saveUserSettings
+window.saveUserSettings = function(event) {
+    if (event) event.preventDefault();
+    
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    
+    if (!currentUser) return;
+
+    const username = document.getElementById('setting-username').value;
+    const email = document.getElementById('setting-email').value;
+    const name = document.getElementById('setting-name').value.trim();
+    const address = document.getElementById('setting-address').value.trim();
+
+    const userIndex = users.findIndex(u => u.username === username);
+    
+    if (userIndex !== -1) {
+        // 1. Cập nhật vào list users chính
+        users[userIndex].email = email; 
+        users[userIndex].name = name;
+        users[userIndex].address = address;
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        // 2. Cập nhật lại currentUser
+        currentUser.email = email;
+        currentUser.name = name;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        alert("Đã lưu cài đặt tài khoản thành công!");
+        
+        window.location.reload(); 
+        
+    } else {
+         alert("Lỗi: Không tìm thấy tài khoản để lưu!");
+    }
+};
+
+// LẮNG NGHE SỰ KIỆN NÚT CÀI ĐẶT
+const settingsBtn = document.getElementById('show-settings-btn');
+if (settingsBtn) {
+    settingsBtn.addEventListener('click', (e) => {
+        e.preventDefault(); 
+        
+        if (typeof window.showSettingsModal === 'function') {
+            window.showSettingsModal();
+        }
+
+        // Đóng dropdown
+        const dropdown = document.getElementById('dropdownMenu');
+        if (dropdown) {
+            dropdown.classList.remove('show');
+        }
+
+        // Đóng sidebar (mobile)
+        if (window.closeSidebar) {
+            window.closeSidebar();
+        }
+    });
+}
+
+// LẮNG NGHE SỰ KIỆN SUBMIT FORM
+const userSettingsForm = document.getElementById('userSettingsForm');
+if (userSettingsForm) {
+    // Gắn hàm lưu vào sự kiện submit của form
+    userSettingsForm.addEventListener('submit', window.saveUserSettings);
 }
 
 // ===== XỬ LÝ MỞ POPUP TỪ HOME PAGE (Code gốc) =====
