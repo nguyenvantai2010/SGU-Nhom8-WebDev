@@ -7,7 +7,7 @@
 	<title>Home</title>
 	<link rel="stylesheet" href="css/globalStyle.css">
     <link rel="stylesheet" href="css/index.css">
-	<link rel="icon" type="image/x-icon" href="assets/icons/rickRoll.png">
+	<link rel="icon" type="image/x-icon" href="assets/images/logo.png">
 	<script src="src/navbar.js" defer></script>
 	<link rel="stylesheet" href="css/navbar.css">
     <script src="src/homeMarket.js" defer></script>
@@ -40,10 +40,8 @@
         <!-- Home -->
         <li class="home-li">
             <a href="index.html">
-                <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
-                    <path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/>
-                </svg>
-                Home
+                <img src="../assets/images/logo.png" alt="UNISHELF Logo" class="navbar-logo">
+                <h1 id="logo-name">UNISHELF</h1>
             </a>
         </li>
 
@@ -94,16 +92,6 @@
                             <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Z"/>
                         </svg>
                         Lịch sử mua hàng
-                    </a>
-                </li>
-                
-                <!-- Lịch sử bán hàng -->
-                <li>
-                    <a href="#sales-history">
-                        <svg style="padding: 0px 0px 4px 0px;" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
-                            <path d="M444-200h70v-50q50-9 86-39t36-89q0-42-24-77t-96-61q-60-20-83-35t-23-41q0-26 18.5-41t53.5-15q32 0 50 15.5t26 38.5l64-26q-11-35-40.5-61T516-710v-50h-70v50q-50 11-78 44t-28 74q0 47 27.5 76t86.5 50q63 23 87.5 41t24.5 47q0 33-23.5 48.5T486-314q-33 0-58.5-20.5T390-396l-66 26q14 48 43.5 77.5T444-252v52Z"/>
-                        </svg>
-                        Lịch sử bán hàng
                     </a>
                 </li>
                 
@@ -232,7 +220,7 @@
 			<img id="viewerImage" src="" alt="Full view">
 		</div>
 	</div>
-    <footer class="main-footer">
+<footer class="main-footer">
     <div class="footer-container">
         <div class="footer-column">
             <h3>UNISHELF</h3>
@@ -254,8 +242,12 @@
         <div class="footer-column">
             <h4>Theo dõi chúng tôi</h4>
             <div class="social-links">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
+                <ul>
+                <li><a href="#" class="facebook">Facebook </a></li>
+                <li><a href="#" class="instagram">Instagram</a></li>
+                <li><a href="#" class="tiktok">Tiktok</a></li>
+                <li><a href="#" class="zalo">Zalo</a></li>
+                </ul>
             </div>
         </div>
     </div>
@@ -263,6 +255,7 @@
         <p>&copy; 2025 UNISHELF. All rights reserved.</p>
     </div>
 </footer>
+
 </body>
 
 </html>
