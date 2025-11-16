@@ -57,12 +57,13 @@
     <div class="admin-layout hidden" id="admin-wrapper">
         <div class="admin-sidebar">
             <ul class="admin-category-bar">
-            <li id="market-tab" class="active">Market Control</li>
-            <li id="accounts-tab">Accounts Control</li>
-            <li id="imports-tab">Import Control</li>
-            <li id="price-tab">Price Control</li>
-             
+                <li id="market-tab" class="active">Market Control</li>
+                <li id="accounts-tab">Accounts Control</li>
+                <li id="imports-tab">Import Control</li>
+                <li id="price-tab">Price Control</li>
+                <li id="orders-tab">Order Management</li> 
             </ul>
+
         </div>
         <div class="admin-content">
             <h2>Admin Panel</h2>
@@ -196,7 +197,35 @@
                 </div>
                 <div class="pagination" id="price-pagination"></div>
             </div>
-        </div>              
+        </div>  
+        <div class="admin-orders" id="orders">
+            <div class="top-list">
+                <h2>Danh sách đơn hàng</h2>
+            </div>
+
+            <div class="admin-controls">
+                <input type="text" id="order-search-input" placeholder="Tìm theo ID, tên KH, hoặc email...">
+            </div>
+
+            <div class="table-wrapper">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>ID Đơn hàng</th>
+                            <th>Ngày đặt</th>
+                            <th>Khách hàng</th>
+                            <th>Địa chỉ</th>
+                            <th>Trạng thái</th>
+                            <th>Tổng tiền</th>
+                            <th>Hành động</th>  
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+            <div class="pagination" id="order-pagination"></div>
+        </div>            
     </div> 
         
     <div id="addform" class="frm">
