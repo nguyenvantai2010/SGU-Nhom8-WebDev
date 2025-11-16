@@ -1412,7 +1412,7 @@ function renderOrdersTable(page = 1) {
 
     // Lọc đơn hàng
     const filteredOrders = allOrders.filter(order => {
-        const user = order.user || { username: '', email: '' };
+        const user = order.user || { username: 'Guest', email: 'N/A', address: 'N/A' };
         return (
             order.id.toLowerCase().includes(searchTerm) ||
             user.username.toLowerCase().includes(searchTerm) ||
@@ -1428,18 +1428,18 @@ function renderOrdersTable(page = 1) {
 
     // Render
     if (ordersToRender.length === 0 && page === 1) {
-        tbody.innerHTML = '<tr><td colspan="7">Không tìm thấy đơn hàng nào.</td></tr>'; // Sửa colspan="7"
+        tbody.innerHTML = '<tr><td colspan="7">Không tìm thấy đơn hàng nào.</td></tr>'; 
     } else {
         ordersToRender.forEach(order => {
             const tr = document.createElement("tr");
-            const user = order.user || { username: 'Guest', email: 'N/A' };
+            const user = order.user || { username: 'Guest', email: 'N/A', address: 'N/A' };
             const orderStatus = order.status || 'Chờ xử lý'; // Đảm bảo có status
 
             tr.innerHTML = `
                 <td>${order.id}</td>
                 <td>${new Date(order.date).toLocaleString()}</td>
                 <td>${user.username}</td>
-                <td>${user.email}</td>
+                <td>${user.address}</td>
                 <td>${formatOrderStatus(orderStatus)}</td> <td>${order.total}</td>
                 <td>
                     <select class="order-status-select" data-id="${order.id}">

@@ -319,7 +319,8 @@ window.completePayment = function() {
                 // SỬA: Thêm thông tin người đặt hàng
                 user: {
                     username: currentUser ? currentUser.username : 'Guest',
-                    email: currentUser ? currentUser.email : 'N/A'
+                    email: currentUser ? currentUser.email : 'N/A',
+                    address: currentUser ? currentUser.address: 'N/A'
                 },
                 status: 'Đang xử lý' // <-- THÊM TRẠNG THÁI MẶC ĐỊNH
             };
@@ -1396,106 +1397,6 @@ if (historyBtn) {
 
 // ===== SETTINGS MODAL FUNCTIONS =====
 
-function loadUserSettings() {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (!currentUser) return null;
-
-    // Lấy danh sách users chi tiết để tìm Tên và Địa chỉ đã lưu
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    return users.find(u => u.username === currentUser.username);
-}
-
-function renderSettingsModal() {
-    const userDetail = loadUserSettings();
-    if (!userDetail) return;
-
-    // Điền dữ liệu vào form
-    document.getElementById('setting-username').value = userDetail.username || '';
-    document.getElementById('setting-email').value = userDetail.email || '';
-    document.getElementById('setting-name').value = userDetail.name || '';
-    document.getElementById('setting-address').value = userDetail.address || '';
-}
-
-window.showSettingsModal = function() {
-    renderSettingsModal();
-    const modal = document.getElementById('settingsModal');
-    if (modal) modal.style.display = 'flex';
-};
-
-window.closeSettingsModal = function() {
-    const modal = document.getElementById('settingsModal');
-    if (modal) modal.style.display = 'none';
-};
-
-// Hàm này lưu settings (cũng được gọi trong quá trình checkout)
-// ... (các code khác) ...
-
-// window.saveUserSettings
-window.saveUserSettings = function(event) {
-    if (event) event.preventDefault();
-    
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    
-    if (!currentUser) return;
-
-    const username = document.getElementById('setting-username').value;
-    const email = document.getElementById('setting-email').value;
-    const name = document.getElementById('setting-name').value.trim();
-    const address = document.getElementById('setting-address').value.trim();
-
-    const userIndex = users.findIndex(u => u.username === username);
-    
-    if (userIndex !== -1) {
-        // 1. Cập nhật vào list users chính
-        users[userIndex].email = email; 
-        users[userIndex].name = name;
-        users[userIndex].address = address;
-        localStorage.setItem('users', JSON.stringify(users));
-        
-        // 2. Cập nhật lại currentUser
-        currentUser.email = email;
-        currentUser.name = name;
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        
-        alert("Đã lưu cài đặt tài khoản thành công!");
-        
-        window.location.reload(); 
-        
-    } else {
-         alert("Lỗi: Không tìm thấy tài khoản để lưu!");
-    }
-};
-
-// LẮNG NGHE SỰ KIỆN NÚT CÀI ĐẶT
-const settingsBtn = document.getElementById('show-settings-btn');
-if (settingsBtn) {
-    settingsBtn.addEventListener('click', (e) => {
-        e.preventDefault(); 
-        
-        if (typeof window.showSettingsModal === 'function') {
-            window.showSettingsModal();
-        }
-
-        // Đóng dropdown
-        const dropdown = document.getElementById('dropdownMenu');
-        if (dropdown) {
-            dropdown.classList.remove('show');
-        }
-
-        // Đóng sidebar (mobile)
-        if (window.closeSidebar) {
-            window.closeSidebar();
-        }
-    });
-}
-
-// LẮNG NGHE SỰ KIỆN SUBMIT FORM
-const userSettingsForm = document.getElementById('userSettingsForm');
-if (userSettingsForm) {
-    // Gắn hàm lưu vào sự kiện submit của form
-    userSettingsForm.addEventListener('submit', window.saveUserSettings);
-}
 
 // ===== XỬ LÝ MỞ POPUP TỪ HOME PAGE (Code gốc) =====
 // (Chúng ta di chuyển code này xuống đây để nó chạy cùng cụm)
