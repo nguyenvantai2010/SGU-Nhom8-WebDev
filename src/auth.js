@@ -31,6 +31,51 @@ function toggleForm(form) {
     signinBtn.style.display = "none";
   }
 }
+//tài khoản mặc định
+function generateDefaultUsers(count) {
+    const defaultUsers = [];
+    // Thêm tài khoản user mặc định ban đầu
+    defaultUsers.push({ 
+        username: "user", 
+        password: "123456", 
+        email: "user@gmail.com", 
+        active: true,
+        name: "Người dùng Mặc Định",
+        address: "456 Đường Demo, Quận 1, TP.HCM"
+    });
+    
+    // Tạo 20 tài khoản testuser1 đến testuser20
+    for (let i = 1; i <= count; i++) {
+        defaultUsers.push({
+            username: `testuser${i}`,
+            password: "123456",
+            email: `testuser${i}@unishelf.com`,
+            active: true,
+            name: `Khách hàng ${i}`,
+            address: `123 Đường Thử Nghiệm, Quận ${Math.ceil(i/5)}, TP.HCM`
+        });
+    }
+    return defaultUsers;
+}
+
+// tài khoản mặc định
+const accountsList = JSON.parse(localStorage.getItem("users")) || generateDefaultUsers(20);
+
+
+let needsSave = false;
+accountsList.forEach(user => {
+    if (typeof user.active === 'undefined') {
+        user.active = true; 
+        needsSave = true;
+    }
+    if (typeof user.name === 'undefined') { 
+        user.name = user.username || 'N/A';
+        needsSave = true;
+    }
+});
+if (needsSave) {
+    saveAccountsToStorage();
+}
 
 // DOM ready
 document.addEventListener("DOMContentLoaded", () => {
@@ -49,7 +94,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const user = users.find(u => u.username === loginUsername.value && u.password === loginPassword.value);
 
     if (user) {
-      loginMessage.style.color = "green";
+      if(!user.active){
+        loginMessage.textContent="Tài khoản đã bị khóa, vui lòng liên hệ admin để biết thêm chi tiết.";
+      }
+      else {loginMessage.style.color = "green";
       loginMessage.textContent = "Login successful! Redirecting...";
       
       // Lưu trạng thái đăng nhập
@@ -58,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Redirect về trang chủ sau 1.5s
       setTimeout(() => {
         window.location.href = "../index.html";
-      }, 1500);
+      }, 1500);}
     } else {
       loginMessage.textContent = "Invalid username or password!";
     }

@@ -20,7 +20,17 @@ function openProductInMarket(productName) {
     // Chuyển đến market.html với query parameter
     window.location.href = `pages/market.html?product=${encodedName}`;
 }
+import { market as defaultMarketItems } from './marketController.js'; 
 
+(function initializeMarketData() {
+    const adminProductsString = localStorage.getItem("adminProducts");
+    
+    if (!adminProductsString) {
+        const dataToSave = JSON.stringify(defaultMarketItems);
+        localStorage.setItem("adminProducts", dataToSave);
+        console.log("Market data initialized in localStorage.");
+    }
+})();
 function loadHomeMarketProducts() {
     // Lấy dữ liệu từ localStorage
     const dataString = localStorage.getItem("adminProducts") || localStorage.getItem("marketItems");
